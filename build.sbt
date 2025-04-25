@@ -2,7 +2,14 @@ ThisBuild / version := "0.1.0-SNAPSHOT"
 
 ThisBuild / scalaVersion := "3.3.5"
 
+lazy val protobufJavaV = "4.30.2"
+lazy val javapoetV = "0.7.0"
+
 lazy val root = (project in file("."))
   .settings(
     name := "protoc-java-fast",
+    libraryDependencies ++= Seq(
+      "com.google.protobuf" % "protobuf-java" % protobufJavaV,
+      "com.palantir.javapoet" % "javapoet" % javapoetV,
+    )
   )
