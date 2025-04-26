@@ -262,16 +262,12 @@ object RequestInfo:
 
     def getDefaultFieldName: String = "_default" + upperName
 
-    def getInputParameterType: TypeName = {
-      descriptor.getType match {
-        case FieldDescriptorProto.Type.TYPE_STRING =>
-          return TypeName.get(classOf[CharSequence])
-        case FieldDescriptorProto.Type.TYPE_BYTES =>
-          return if (isRepeated) ArrayTypeName.of(TypeName.BYTE)
-          else TypeName.BYTE
-      }
-      getTypeName
-    }
+    def getInputParameterType: TypeName = descriptor.getType match
+      case FieldDescriptorProto.Type.TYPE_STRING =>
+        TypeName.get(classOf[CharSequence])
+      case FieldDescriptorProto.Type.TYPE_BYTES =>
+        if (isRepeated) ArrayTypeName.of(TypeName.BYTE) else TypeName.BYTE
+      case _ => getTypeName
 
     def isLazyAllocationEnabled: Boolean =
       // never enable on required fields or primitives
@@ -493,8 +489,8 @@ object RequestInfo:
     def registerAllExtensions(request: CodeGeneratorRequest): Unit = {
       request.getProtoFileList.forEach((file: DescriptorProtos.FileDescriptorProto) =>
         addExtensions(file.getPackage, file.getExtensionList)
-        for (`type` <- file.getMessageTypeList.asScala) {
-          addNestedExtensions(file.getPackage, `type`)
+        for (t <- file.getMessageTypeList.asScala) {
+          addNestedExtensions(file.getPackage, t)
         }
       )
     }
@@ -502,8 +498,8 @@ object RequestInfo:
     private def addNestedExtensions(parent: String, descriptor: DescriptorProtos.DescriptorProto): Unit =
       val fullName = parent + "." + descriptor.getName
       addExtensions(fullName, descriptor.getExtensionList)
-      for (`type` <- descriptor.getNestedTypeList.asScala) {
-        addNestedExtensions(fullName, `type`)
+      for (t <- descriptor.getNestedTypeList.asScala) {
+        addNestedExtensions(fullName, t)
       }
 
     private def addExtensions(

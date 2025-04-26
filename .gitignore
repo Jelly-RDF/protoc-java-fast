@@ -47,3 +47,6 @@ build/
 .bsp/
 
 /.idea
+
+# Testing...
+/out.java

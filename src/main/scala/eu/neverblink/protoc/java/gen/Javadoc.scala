@@ -58,9 +58,9 @@ object Javadoc:
   private def getFieldDefinitionLine(descriptor: DescriptorProtos.FieldDescriptorProto) = {
     // optional int32 my_field = 2 [default = 1];
     val label = descriptor.getLabel.toString.substring("LABEL_".length).toLowerCase(Locale.US)
-    var `type` = descriptor.getTypeName
-    if (`type`.isEmpty) `type` = descriptor.getType.toString.substring("TYPE_".length).toLowerCase(Locale.US)
-    val definition = String.format("%s %s %s = %d", label, `type`, descriptor.getName, descriptor.getNumber)
+    var t = descriptor.getTypeName
+    if (t.isEmpty) t = descriptor.getType.toString.substring("TYPE_".length).toLowerCase(Locale.US)
+    val definition = String.format("%s %s %s = %d", label, t, descriptor.getName, descriptor.getNumber)
     var options = ""
     if (descriptor.hasDefaultValue) {
       val defaultValue = escapeCommentClose(descriptor.getDefaultValue)

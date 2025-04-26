@@ -85,8 +85,8 @@ class MessageGenerator(val info: MessageInfo):
     generateComputeSerializedSize(t)
     generateMergeFrom(t)
     generateIsInitialized(t)
-    generateWriteToJson(t)
-    generateMergeFromJson(t)
+    // generateWriteToJson(t)
+    // generateMergeFromJson(t)
     generateClone(t)
     // Utility methods
     generateIsEmpty(t)

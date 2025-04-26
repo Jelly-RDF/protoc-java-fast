@@ -119,8 +119,9 @@ class FieldGenerator(val info: FieldInfo):
     if (info.isLazyAllocationEnabled) field.initializer("null")
     else if (info.isRepeated || info.isMessageOrGroup || info.isBytes || info.isString) 
       field.addModifiers(Modifier.FINAL).initializer(initializer)
-    else if (info.isPrimitive || info.isEnum) if (info.hasDefaultValue) 
-      field.initializer(initializer)
+    else if (info.isPrimitive || info.isEnum) {
+      if (info.hasDefaultValue) field.initializer(initializer)
+    }
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
     t.addField(field.build)
     if (info.isBytes && info.hasDefaultValue) {
@@ -301,7 +302,13 @@ class FieldGenerator(val info: FieldInfo):
       method.addStatement(named("$field:N = input.read$capitalizedType:L()"))
       method.addStatement(named("$setHas:L"))
     }
-    else if (info.isEnum) method.addStatement(named("final $protoEnum:T value = input.read$capitalizedType:L($type:T.converter())")).beginControlFlow("if (value != null)").addStatement(named("$field:N = value.getNumber()")).addStatement(named("$setHas:L")).nextControlFlow("else").addStatement("input.skipUnknownEnumValue()").endControlFlow
+    else if (info.isEnum)
+      method.addStatement(named("final $protoEnum:T value = input.read$capitalizedType:L($type:T.converter())"))
+        .beginControlFlow("if (value != null)").addStatement(named("$field:N = value.getNumber()"))
+        .addStatement(named("$setHas:L"))
+        .nextControlFlow("else")
+        .addStatement("input.skipUnknownEnumValue()")
+        .endControlFlow
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
 
   def generateMemberMethods(t: TypeSpec.Builder): Unit =
@@ -464,10 +471,10 @@ class FieldGenerator(val info: FieldInfo):
    *
    * @param type
    */
-  def generateExtraEnumAccessors(`type`: TypeSpec.Builder): Unit = {
+  def generateExtraEnumAccessors(t: TypeSpec.Builder): Unit = {
     if (!info.isEnum || info.isRepeated) return
     // Overload to get the internal store without conversion
-    `type`.addMethod(MethodSpec.methodBuilder(info.getterName + "Value")
+    t.addMethod(MethodSpec.methodBuilder(info.getterName + "Value")
       .addAnnotations(info.methodAnnotations)
       .addJavadoc(named("" +
         "Gets the value of the internal enum store. The result is\n" +
@@ -483,7 +490,7 @@ class FieldGenerator(val info: FieldInfo):
       .build
     )
     // Overload to set the internal value without conversion
-    `type`.addMethod(MethodSpec.methodBuilder(info.setterName + "Value")
+    t.addMethod(MethodSpec.methodBuilder(info.setterName + "Value")
       .addAnnotations(info.methodAnnotations)
       .addJavadoc(named("" +
         "Sets the value of the internal enum store. This does not\n" +
@@ -531,9 +538,9 @@ class FieldGenerator(val info: FieldInfo):
       getter.returns(typeName).addStatement(named("return $field:N.getString()"))
     else if (info.isEnum)
       if (info.hasDefaultValue)
-        getter.returns(typeName).addStatement(named("return $`type`:T.forNumberOr($field:N, $defaultEnumValue:L)"))
+        getter.returns(typeName).addStatement(named("return $type:T.forNumberOr($field:N, $defaultEnumValue:L)"))
       else
-        getter.returns(typeName).addStatement(named("return $`type`:T.forNumber($field:N)"))
+        getter.returns(typeName).addStatement(named("return $type:T.forNumber($field:N)"))
     else
       getter.returns(typeName).addStatement(named("return $field:N"))
     if (info.isRepeated || info.isMessageOrGroup || info.isBytes) {
