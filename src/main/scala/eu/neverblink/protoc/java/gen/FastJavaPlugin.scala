@@ -1,18 +1,12 @@
 package eu.neverblink.protoc.java.gen
 
-import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest
-import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse
-import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse.Feature
-import com.palantir.javapoet.JavaFile
-import com.palantir.javapoet.TypeSpec
-import RequestInfo.FileInfo
 import com.google.protobuf.compiler.PluginProtos
+import com.google.protobuf.compiler.PluginProtos.{CodeGeneratorRequest, CodeGeneratorResponse}
+import com.palantir.javapoet.{JavaFile, TypeSpec}
 
-import javax.lang.model.element.Modifier
-import java.io.IOException
-import java.io.InputStream
+import java.io.{IOException, InputStream}
 import java.util
-import java.util.function.Consumer
+import javax.lang.model.element.Modifier
 import scala.jdk.CollectionConverters.*
 
 /**
@@ -56,7 +50,7 @@ object FastJavaPlugin:
     val request = RequestInfo.withTypeRegistry(requestProto)
     // Signal support for proto3 optionals. They behave the same as proto2
     // optionals, so that feature is actually supported.
-    response.setSupportedFeatures(Feature.FEATURE_PROTO3_OPTIONAL_VALUE)
+    response.setSupportedFeatures(CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL_VALUE)
     val filesToGenerate = new util.HashSet[String](requestProto.getFileToGenerateList)
     for (
       // Only generate files that were specifically selected (see issue #62)

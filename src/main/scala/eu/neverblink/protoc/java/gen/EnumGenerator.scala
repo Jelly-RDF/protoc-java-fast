@@ -1,12 +1,10 @@
 package eu.neverblink.protoc.java.gen
 
 import com.palantir.javapoet.*
-import RequestInfo.EnumInfo
-import RequestInfo.EnumValueInfo
+import eu.neverblink.protoc.java.gen.RequestInfo.{EnumInfo, EnumValueInfo}
 
 import javax.lang.model.element.Modifier
-import java.util.function.IntConsumer
-import javax.lang.model.element.Modifier._
+import javax.lang.model.element.Modifier.*
 import scala.jdk.CollectionConverters.*
 
 /**
