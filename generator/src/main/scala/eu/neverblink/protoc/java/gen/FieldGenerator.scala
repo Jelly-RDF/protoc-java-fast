@@ -37,16 +37,6 @@ object FieldGenerator:
     // Write tag bytes as efficiently as possible
     var output = ""
     numBytes match {
-      case x if x >= 4 && x <= 5 =>
-        val fourBytes = bytes(3) << 24 | bytes(2) << 16 | bytes(1) << 8 | bytes(0)
-        output = "output.writeRawLittleEndian32(" + fourBytes + ");\n"
-        if (numBytes == 5) output += "output.writeRawByte((byte) " + bytes(4) + ");\n"
-
-      case x if x >= 2 && x <= 3 =>
-        val twoBytes = bytes(1) << 8 | bytes(0)
-        output = "output.writeRawLittleEndian16((short) " + twoBytes + ");\n"
-        if (numBytes == 3) output += "output.writeRawByte((byte) " + bytes(2) + ");\n"
-
       case _ =>
         for (i <- 0 until numBytes) {
           output += "output.writeRawByte((byte) " + bytes(i) + ");\n"
@@ -103,6 +93,7 @@ class FieldGenerator(val info: FieldInfo):
   // utility classes
   m.put("fieldNames", info.parentTypeInfo.fieldNamesClass)
   m.put("abstractMessage", RuntimeClasses.AbstractMessage)
+  m.put("repeatedMessage", RuntimeClasses.RepeatedMessage)
   m.put("protoSource", RuntimeClasses.CodedInputStream)
   m.put("protoSink", RuntimeClasses.CodedOutputStream)
   m.put("protoUtil", RuntimeClasses.ProtoUtil)
@@ -136,10 +127,11 @@ class FieldGenerator(val info: FieldInfo):
 
   private def initializer =
     val initializer = CodeBlock.builder
-    if (info.isRepeated && info.isMessageOrGroup) initializer.add("$T.newEmptyInstance($T.getFactory())", RuntimeClasses.RepeatedMessage, info.getTypeName)
+    if (info.isRepeated && info.isMessageOrGroup)
+      initializer.add("$T.emptyList()", RuntimeClasses.Collections)
     else if (info.isRepeated && info.isEnum) initializer.add("$T.newEmptyInstance($T.converter())", RuntimeClasses.RepeatedEnum, info.getTypeName)
     else if (info.isRepeated) initializer.add("$T.newEmptyInstance()", storeType)
-    else if (info.isBytes) if (!info.hasDefaultValue) initializer.add(named("$storeType:T.newEmptyInstance()"))
+    else if (info.isBytes) if (!info.hasDefaultValue) initializer.add(named("$storeType:T.EMPTY"))
     else initializer.add(named("$storeType:T.newInstance($defaultField:N)"))
     else if (info.isMessageOrGroup) initializer.add(named("$storeType:T.newInstance()"))
     else if (info.isString) if (!info.hasDefaultValue) initializer.add(named("\"\""))
@@ -161,7 +153,7 @@ class FieldGenerator(val info: FieldInfo):
     }
     else if (info.isBytes) {
       if (info.hasDefaultValue) method.addStatement(named("$field:N.copyFrom($defaultField:N)"))
-      else method.addStatement(named("$field:N.clear()"))
+      else method.addStatement(named("$field:N = ByteString.EMPTY"))
     }
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
     if (info.isLazyAllocationEnabled) method.endControlFlow
@@ -171,6 +163,7 @@ class FieldGenerator(val info: FieldInfo):
     else if (info.isRepeated || info.isBytes || info.isMessageOrGroup || info.isString) {
       if info.isLazyAllocationEnabled then
         val copySnippet = if info.isString then "$field:N = other.$field:N;\n"
+        else if info.isRepeated then "$field:N.addAll(other.$field:N);\n"
         else "$field:N.copyFrom(other.$field:N);\n"
         method.addCode(named("" +
           "if (other.$hasMethod:N()) {$>\n" +
@@ -261,9 +254,10 @@ class FieldGenerator(val info: FieldInfo):
       m
     )
     else if (info.isRepeated) method.addNamedCode("" + 
-      "for (int i = 0; i < $field:N.length(); i++) {$>\n" + 
-      "$writeTagToOutput:L" + 
-      "output.write$capitalizedType:LNoTag($field:N.$getRepeatedIndex_i:L);\n" +
+      "for (final var _field : $field:N) {$>\n" +
+      "$writeTagToOutput:L" +
+      "output.writeUInt32NoTag(_field.getCachedSize());\n" +
+      "_field.writeTo(output);\n" +
       "$writeEndGroupTagToOutput:L" + 
       "$<}\n", 
       m
@@ -296,13 +290,17 @@ class FieldGenerator(val info: FieldInfo):
       method.addStatement(named("size += ($bytesPerTag:L + $fixedWidth:L) * $field:N.length()"))
     }
     else if (info.isPacked) method.addNamedCode("" + 
-      "final int dataSize = $protoSink:T.computeRepeated$capitalizedType:LSizeNoTag($field:N);\n" +
-      "size += $bytesPerTag:L + $protoSink:T.computeDelimitedSize(dataSize);\n", 
+      "final int dataSize = $repeatedMessage:T.computeRepeated$capitalizedType:LSizeNoTag($field:N);\n" +
+      "size += $bytesPerTag:L + $repeatedMessage:T.computeDelimitedSize(dataSize);\n",
       m
     )
     else if (info.isRepeated) { // non packed
+
       method.addNamedCode("" + 
-        "size += ($bytesPerTag:L * $field:N.length()) + $protoSink:T.computeRepeated$capitalizedType:LSizeNoTag($field:N);\n", 
+        "size += " +
+        // if 1 byte per tag, we can skip the multiplication
+        (if info.bytesPerTag > 1 then "($bytesPerTag:L * $field:N.size())" else "$field:N.size()") +
+        " + $repeatedMessage:T.computeRepeated$capitalizedType:LSizeNoTag($field:N);\n",
         m
       )
     }
@@ -377,23 +375,6 @@ class FieldGenerator(val info: FieldInfo):
         .addStatement(named("return this"))
         .build
       t.addMethod(adder)
-      val addAll = MethodSpec.methodBuilder("addAll" + info.upperName)
-        .addJavadoc(Javadoc.forMessageField(info)
-          .add("\n@param values the $L to add", info.fieldName)
-          .add("\n@return this")
-          .build
-        )
-        .addAnnotations(info.methodAnnotations)
-        .addModifiers(Modifier.PUBLIC)
-        .addParameter(ArrayTypeName.of(info.getInputParameterType), "values", Modifier.FINAL)
-        .varargs(true)
-        .returns(info.parentType)
-        .addCode(clearOtherOneOfs)
-        .addCode(ensureFieldNotNull)
-        .addStatement(named("$setHas:L"))
-        .addStatement(named("$field:N.addAll(values)"))
-        .addStatement(named("return this"))
-      t.addMethod(addAll.build)
       if (info.isBytes) {
         val setBytes = MethodSpec.methodBuilder("set" + info.upperName)
           .addJavadoc(Javadoc.forMessageField(info)

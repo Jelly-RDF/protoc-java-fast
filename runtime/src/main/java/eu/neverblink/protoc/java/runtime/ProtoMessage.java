@@ -3,7 +3,6 @@ package eu.neverblink.protoc.java.runtime;
 import com.google.protobuf.*;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -335,13 +334,13 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
         }
     }
 
-    protected static void getMissingFields(String prefix, String fieldName, RepeatedMessage<?> field, List<String> results) {
-        for (int i = 0; i < field.length; i++) {
-            if (!field.array[i].isInitialized()) {
-                field.array[i].getMissingFields(prefix + fieldName + "[" + i + "].", results);
-            }
-        }
-    }
+//    protected static void getMissingFields(String prefix, String fieldName, RepeatedMessage<?> field, List<String> results) {
+//        for (int i = 0; i < field.length; i++) {
+//            if (!field.content[i].isInitialized()) {
+//                field.content[i].getMissingFields(prefix + fieldName + "[" + i + "].", results);
+//            }
+//        }
+//    }
 
     @SuppressWarnings("unchecked")
     private MessageType getThis() {

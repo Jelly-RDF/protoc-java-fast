@@ -12,6 +12,7 @@ import com.palantir.javapoet.ClassName
  */
 object RuntimeClasses:
   private val API_PACKAGE = "eu.neverblink.protoc.java.runtime"
+  private val JAVA_UTIL_PACKAGE = "java.util"
   private val GOOGLE_PACKAGE = "com.google.protobuf"
 
   val CodedInputStream = ClassName.get(GOOGLE_PACKAGE, "CodedInputStream")
@@ -21,7 +22,7 @@ object RuntimeClasses:
   val MessageFactory = ClassName.get(API_PACKAGE, "MessageFactory")
   val StringType = ClassName.get(classOf[String])
   val Utf8Decoder = ClassName.get(API_PACKAGE, "Utf8Decoder")
-  val BytesType = ClassName.get(API_PACKAGE, "RepeatedByte")
+  val BytesType = ClassName.get(GOOGLE_PACKAGE, "ByteString")
   val InvalidProtocolBufferException = ClassName.get(GOOGLE_PACKAGE, "InvalidProtocolBufferException")
   val UninitializedMessageException = ClassName.get(GOOGLE_PACKAGE, "UninitializedMessageException")
   val FieldName = ClassName.get(API_PACKAGE, "FieldName")
@@ -38,9 +39,11 @@ object RuntimeClasses:
   private val RepeatedInt = ClassName.get(API_PACKAGE, "RepeatedInt")
   private val RepeatedBoolean = ClassName.get(API_PACKAGE, "RepeatedBoolean")
   private val RepeatedString = ClassName.get(API_PACKAGE, "RepeatedString")
-  private val RepeatedBytes = ClassName.get(API_PACKAGE, "RepeatedBytes")
+  private val RepeatedBytes = ClassName.get(GOOGLE_PACKAGE, "ByteString")
+  val List = ClassName.get(JAVA_UTIL_PACKAGE, "List")
   val RepeatedMessage = ClassName.get(API_PACKAGE, "RepeatedMessage")
   val RepeatedEnum = ClassName.get(API_PACKAGE, "RepeatedEnum")
+  val Collections = ClassName.get(JAVA_UTIL_PACKAGE, "Collections")
 
   def getRepeatedStoreType(t: FieldDescriptorProto.Type) = t match
     case TYPE_DOUBLE => RepeatedDouble
@@ -58,7 +61,7 @@ object RuntimeClasses:
     case TYPE_BOOL => RepeatedBoolean
     case TYPE_ENUM => RepeatedEnum
     case TYPE_STRING => RepeatedString
-    case TYPE_GROUP => RepeatedMessage
-    case TYPE_MESSAGE => RepeatedMessage
+    case TYPE_GROUP => List
+    case TYPE_MESSAGE => List
     case TYPE_BYTES => RepeatedBytes
     case _ => throw new IllegalStateException("Unexpected value: " + t)
