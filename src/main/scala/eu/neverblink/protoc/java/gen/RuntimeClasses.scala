@@ -22,8 +22,6 @@ object RuntimeClasses:
   val BytesType = ClassName.get(API_PACKAGE, "RepeatedByte")
   val InvalidProtocolBufferException = ClassName.get(API_PACKAGE, "InvalidProtocolBufferException")
   val UninitializedMessageException = ClassName.get(API_PACKAGE, "UninitializedMessageException")
-  val JsonSink = ClassName.get(API_PACKAGE, "JsonSink")
-  val JsonSource = ClassName.get(API_PACKAGE, "JsonSource")
   val FieldName = ClassName.get(API_PACKAGE, "FieldName")
   val ProtoEnum = ClassName.get(API_PACKAGE, "ProtoEnum")
   val EnumConverter = ProtoEnum.nestedClass("EnumConverter")

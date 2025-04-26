@@ -282,35 +282,6 @@ class FieldGenerator(val info: FieldInfo):
       "size += $bytesPerTag:L + $protoSink:T.compute$capitalizedType:LSizeNoTag($field:N)"
     )) // non-repeated
 
-  def generateJsonSerializationCode(method: MethodSpec.Builder): Unit =
-    if (info.isRepeated) method.addStatement(named("output.writeRepeated$capitalizedType:L($fieldNames:T.$field:N, $field:N)"))
-    else if (info.isEnum) method.addStatement(named("output.write$capitalizedType:L($fieldNames:T.$field:N, $field:N, $type:T.converter())"))
-    else method.addStatement(named("output.write$capitalizedType:L($fieldNames:T.$field:N, $field:N)"))
-
-  def generateJsonDeserializationCode(method: MethodSpec.Builder): Unit =
-    method.addCode(clearOtherOneOfs).addCode(ensureFieldNotNull)
-    if (info.isRepeated) {
-      if (info.isEnum) method.addStatement(named("input.readRepeated$capitalizedType:L($field:N, $type:T.converter())"))
-      else method.addStatement(named("input.readRepeated$capitalizedType:L($field:N)"))
-      method.addStatement(named("$setHas:L"))
-    }
-    else if (info.isString || info.isBytes || info.isMessageOrGroup) {
-      method.addStatement(named("input.read$capitalizedType:L($field:N)"))
-      method.addStatement(named("$setHas:L"))
-    }
-    else if (info.isPrimitive) {
-      method.addStatement(named("$field:N = input.read$capitalizedType:L()"))
-      method.addStatement(named("$setHas:L"))
-    }
-    else if (info.isEnum)
-      method.addStatement(named("final $protoEnum:T value = input.read$capitalizedType:L($type:T.converter())"))
-        .beginControlFlow("if (value != null)").addStatement(named("$field:N = value.getNumber()"))
-        .addStatement(named("$setHas:L"))
-        .nextControlFlow("else")
-        .addStatement("input.skipUnknownEnumValue()")
-        .endControlFlow
-    else throw new IllegalStateException("unhandled field: " + info.descriptor)
-
   def generateMemberMethods(t: TypeSpec.Builder): Unit =
     generateInitializedMethod(t)
     generateHasMethod(t)

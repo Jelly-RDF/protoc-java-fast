@@ -85,15 +85,12 @@ class MessageGenerator(val info: MessageInfo):
     generateComputeSerializedSize(t)
     generateMergeFrom(t)
     generateIsInitialized(t)
-    // generateWriteToJson(t)
-    // generateMergeFromJson(t)
     generateClone(t)
     // Utility methods
     generateIsEmpty(t)
     // Static utilities
     generateParseFrom(t)
     generateMessageFactory(t)
-    generateJsonFieldNames(t)
     t.addField(FieldSpec
       .builder(TypeName.LONG, "serialVersionUID")
       .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
@@ -405,14 +402,6 @@ class MessageGenerator(val info: MessageInfo):
       .addStatement("return $T.mergeFrom(new $T(), input).checkInitialized()", RuntimeClasses.AbstractMessage, info.typeName)
       .build
     )
-    t.addMethod(MethodSpec.methodBuilder("parseFrom")
-      .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-      .addException(classOf[IOException])
-      .addParameter(RuntimeClasses.JsonSource, "input", Modifier.FINAL)
-      .returns(info.typeName)
-      .addStatement("return $T.mergeFrom(new $T(), input).checkInitialized()", RuntimeClasses.AbstractMessage, info.typeName)
-      .build
-    )
 
   private def generateIsInitialized(t: TypeSpec.Builder): Unit =
     // don't generate it if there is nothing that can be added
@@ -496,146 +485,6 @@ class MessageGenerator(val info: MessageInfo):
       method.endControlFlow
     }
 
-  private def generateWriteToJson(t: TypeSpec.Builder): Unit =
-    val writeTo = MethodSpec.methodBuilder("writeTo")
-      .addJavadoc(Javadoc.inherit)
-      .addAnnotation(classOf[Override])
-      .addParameter(RuntimeClasses.JsonSink, "output", Modifier.FINAL)
-      .addModifiers(Modifier.PUBLIC).addException(classOf[IOException])
-    // TODO: Is it ok to check for required fields here? This may mess with toString()
-    val needsInitializationChecks = info.hasRequiredFieldsInHierarchy
-    if (needsInitializationChecks) {
-      // Fail if any required bits are missing
-      insertFailOnMissingRequiredBits(writeTo)
-      writeTo.beginControlFlow("try")
-    }
-    writeTo.addStatement("output.beginObject()")
-    // add every set field
-    getFieldSortedByOutputOrder.forEach(f => {
-      if (f.info.isRequired) {
-        // no need to check has state again
-        f.generateJsonSerializationCode(writeTo)
-      }
-      else {
-        writeTo.beginControlFlow("if ($L)", f.info.hasBit)
-        f.generateJsonSerializationCode(writeTo)
-        writeTo.endControlFlow
-      }
-    })
-    // add unknown fields as base64
-    if (info.storeUnknownFieldsEnabled)
-      writeTo.addCode(named("if ($unknownBytes:N.length() > 0)"))
-        .beginControlFlow("")
-        .addStatement(named("output.writeBytes($abstractMessage:T.$unknownBytesKey:N, $unknownBytes:N)"))
-        .endControlFlow
-    writeTo.addStatement("output.endObject()")
-    if (needsInitializationChecks)
-      writeTo.nextControlFlow("catch ($T nestedFail)", RuntimeClasses.UninitializedMessageException)
-        .addStatement("throw rethrowFromParent(nestedFail)")
-        .endControlFlow
-    t.addMethod(writeTo.build)
-
-  private def generateMergeFromJson(t: TypeSpec.Builder): Unit =
-    val mergeFrom = MethodSpec.methodBuilder("mergeFrom")
-      .addJavadoc(Javadoc.inherit)
-      .addAnnotation(classOf[Override])
-      .returns(info.typeName)
-      .addParameter(RuntimeClasses.JsonSource, "input", Modifier.FINAL)
-      .addModifiers(Modifier.PUBLIC)
-      .addException(classOf[IOException])
-    mergeFrom.beginControlFlow("if (!input.beginObject())")
-      .addStatement("return this")
-      .endControlFlow
-    // Fallthrough optimization:
-    //
-    // Reads tag after case parser and checks if it can fall-through. In the ideal case if all fields are set
-    // and the expected order matches the incoming data, the switch would only need to be executed once
-    // for the first field.
-    // TODO: The benefits seem negligible on non-optimized sources. Deactivate for now to keep the code cleaner.
-    val enableFallthroughOptimization = false // info.getExpectedIncomingOrder() != ExpectedIncomingOrder.None;
-
-    val sortedFields = fields // getFieldSortedByExpectedIncomingOrder();
-
-    if (enableFallthroughOptimization)
-      mergeFrom.addStatement("int hash = input.nextFieldHashOrZero()")
-        .beginControlFlow("while (true)")
-        .beginControlFlow("switch (hash)")
-    else mergeFrom.beginControlFlow("while (!input.isAtEnd())")
-      .beginControlFlow("switch (input.readFieldHash())")
-    // add case statements for every field
-    for (i <- 0 until sortedFields.size) {
-      val field = sortedFields.get(i)
-      // Synonym hash check
-      val hash1 = FieldUtil.hash32(field.info.jsonName)
-      val hash2 = FieldUtil.hash32(field.info.protoFieldName)
-      if (hash1 != hash2) mergeFrom.addCode("case $L:\n", hash1)
-      // Known hash -> try to parse
-      mergeFrom.beginControlFlow("case $L:", hash2)
-        .beginControlFlow(
-          "if (input.isAtField($N.$N))", info.fieldNamesClass.simpleName, field.info.fieldName
-        )
-        .beginControlFlow("if (!input.trySkipNullValue())")
-      field.generateJsonDeserializationCode(mergeFrom)
-      // Unknown field -> skip
-      mergeFrom.endControlFlow
-        .nextControlFlow("else")
-        .addStatement("input.skipUnknownField()")
-        .endControlFlow
-      // See if we can fallthrough to the next case
-      if (enableFallthroughOptimization) {
-        // Find hashes of next entry
-        var nextHash1 = 0
-        var nextHash2 = 0
-        if (i + 1 < sortedFields.size) {
-          val nextField = sortedFields.get(i + 1)
-          nextHash1 = FieldUtil.hash32(nextField.info.jsonName)
-          nextHash2 = FieldUtil.hash32(nextField.info.protoFieldName)
-        }
-        // Check if we can fall through
-        mergeFrom.addStatement("hash = input.readFieldHashOrZero()")
-        if (nextHash1 == nextHash2) mergeFrom.beginControlFlow("if (hash != $L)", nextHash1)
-          .addStatement("break")
-          .endControlFlow
-        else mergeFrom.beginControlFlow("if (hash != $L && hash != $L)", nextHash1, nextHash2)
-          .addStatement("break")
-          .endControlFlow
-      }
-      else {
-        // Always go to main switch
-        mergeFrom.addStatement("break")
-      }
-      mergeFrom.endControlFlow
-    }
-    // add zero case -> no more entries
-    if (enableFallthroughOptimization)
-      mergeFrom.beginControlFlow("case 0:")
-        .addStatement("input.endObject()")
-        .addStatement("return this")
-        .endControlFlow
-    // add unknown bytes
-    if (info.storeUnknownFieldsEnabled) {
-      mergeFrom.beginControlFlow("case $L:", RuntimeClasses.unknownBytesFieldHash)
-        .beginControlFlow(
-          "if (input.isAtField($T.$N))",
-          RuntimeClasses.AbstractMessage,
-          RuntimeClasses.unknownBytesFieldName
-        )
-        .addStatement("mergeFrom(input.readBytesAsSource())")
-        .nextControlFlow("else")
-        .addStatement("input.skipUnknownField()")
-        .endControlFlow
-      if (enableFallthroughOptimization) mergeFrom.addStatement("hash = input.readFieldHashOrZero()")
-      mergeFrom.addStatement("break")
-      mergeFrom.endControlFlow
-    }
-    // add default case
-    mergeFrom.beginControlFlow("default:").addStatement("input.skipUnknownField()")
-    if (enableFallthroughOptimization) mergeFrom.addStatement("hash = input.readFieldHashOrZero()")
-    mergeFrom.addStatement("break").endControlFlow // case.endControlFlow// switch.endControlFlow// while
-
-    if (!enableFallthroughOptimization) mergeFrom.addStatement("input.endObject()").addStatement("return this")
-    t.addMethod(mergeFrom.build)
-
   private def generateMessageFactory(t: TypeSpec.Builder): Unit =
     val factoryReturnType = ParameterizedTypeName.get(RuntimeClasses.MessageFactory, info.typeName)
     val factoryTypeName = info.typeName.nestedClass(info.typeName.simpleName + "Factory")
@@ -660,22 +509,6 @@ class MessageGenerator(val info: MessageInfo):
       .addStatement("return $T.INSTANCE", factoryTypeName)
       .build
     )
-
-  private def generateJsonFieldNames(t: TypeSpec.Builder): Unit =
-    val fieldNamesClass = TypeSpec
-      .classBuilder(info.fieldNamesClass.simpleName)
-      .addJavadoc("Contains name constants used for serializing JSON\n")
-      .addModifiers(Modifier.STATIC)
-    fields.forEach(f => {
-      val field = FieldSpec
-        .builder(RuntimeClasses.FieldName, f.info.fieldName, Modifier.STATIC, Modifier.FINAL)
-      if (f.info.jsonName.equals(f.info.protoFieldName))
-        field.initializer("$T.forField($S)", RuntimeClasses.FieldName, f.info.jsonName)
-      else field.initializer("$T.forField($S, $S)", RuntimeClasses.FieldName, f.info.jsonName, f.info.protoFieldName)
-      fieldNamesClass.addField(field.build)
-
-    })
-    t.addType(fieldNamesClass.build)
 
   private def generateDescriptors(t: TypeSpec.Builder): Unit =
     val descriptorClass = info.parentFile.outerClassName
