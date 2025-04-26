@@ -113,7 +113,6 @@ object NamingUtil:
   
   private val collidingFieldSet = withCamelCaseNames(
     "class", // Object::getClass
-    "quick", // clearQuick
     "missing_fields", // getMissingFields
     "unknown_bytes", // getUnknownFields
     "serialized_size", // getSerializedSize

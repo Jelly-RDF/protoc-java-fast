@@ -148,26 +148,26 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
         return getThis();
     }
 
-    /**
-     * Merges the contents for one message written in length delimited form.
-     *
-     * @return this
-     */
-    public MessageType mergeDelimitedFrom(InputStream input) throws IOException {
-        int size;
-        try {
-            int firstByte = input.read();
-            if (firstByte == -1) {
-                return null;
-            }
-            size = CodedInputStream.readRawVarint32(firstByte, input);
-        } catch (IOException e) {
-            throw new InvalidProtocolBufferException(e);
-        }
-        InputStream limitedInput = new LimitedInputStream(input, size);
-        mergeFrom(CodedInputStream.newInstance(limitedInput));
-        return getThis();
-    }
+//    /**
+//     * Merges the contents for one message written in length delimited form.
+//     *
+//     * @return this
+//     */
+//    public MessageType mergeDelimitedFrom(InputStream input) throws IOException {
+//        int size;
+//        try {
+//            int firstByte = input.read();
+//            if (firstByte == -1) {
+//                return null;
+//            }
+//            size = CodedInputStream.readRawVarint32(firstByte, input);
+//        } catch (IOException e) {
+//            throw new InvalidProtocolBufferException(e);
+//        }
+//        InputStream limitedInput = new LimitedInputStream(input, size);
+//        mergeFrom(CodedInputStream.newInstance(limitedInput));
+//        return getThis();
+//    }
 
     /**
      * Parse {@code input} as a message of this type and merge it with the
@@ -267,6 +267,17 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
         msg.mergeFrom(input);
         input.checkLastTagWas(0);
         return msg;
+    }
+
+    // TODO: recursion limits???
+    protected static <T extends ProtoMessage<T>> void mergeDelimitedFrom(
+        T msg, CodedInputStream input
+    ) throws IOException {
+        final int length = input.readRawVarint32();
+        final int oldLimit = input.pushLimit(length);
+        msg.mergeFrom(input);
+        input.checkLastTagWas(0);
+        input.popLimit(oldLimit);
     }
 
     /**

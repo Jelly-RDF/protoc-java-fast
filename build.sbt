@@ -15,7 +15,7 @@ lazy val runtime = (project in file("runtime"))
 
 lazy val generator = (project in file("generator"))
   .settings(
-    name := "protoc-java-fast",
+    name := "protoc-java-fast-generator",
     libraryDependencies ++= Seq(
       "com.google.protobuf" % "protobuf-java" % protobufJavaV,
       "com.palantir.javapoet" % "javapoet" % javapoetV,

@@ -11,17 +11,19 @@ import com.palantir.javapoet.ClassName
  * @since 07 Aug 2019
  */
 object RuntimeClasses:
-  private val API_PACKAGE = "us.hebi.quickbuf"
-  val ProtoSource = ClassName.get(API_PACKAGE, "ProtoSource")
-  val ProtoSink = ClassName.get(API_PACKAGE, "ProtoSink")
+  private val API_PACKAGE = "eu.neverblink.protoc.java.runtime"
+  private val GOOGLE_PACKAGE = "com.google.protobuf"
+
+  val CodedInputStream = ClassName.get(GOOGLE_PACKAGE, "CodedInputStream")
+  val CodedOutputStream = ClassName.get(GOOGLE_PACKAGE, "CodedOutputStream")
   val ProtoUtil = ClassName.get(API_PACKAGE, "ProtoUtil")
   val AbstractMessage = ClassName.get(API_PACKAGE, "ProtoMessage")
   val MessageFactory = ClassName.get(API_PACKAGE, "MessageFactory")
-  val StringType = ClassName.get(API_PACKAGE, "Utf8String")
+  val StringType = ClassName.get(classOf[String])
   val Utf8Decoder = ClassName.get(API_PACKAGE, "Utf8Decoder")
   val BytesType = ClassName.get(API_PACKAGE, "RepeatedByte")
-  val InvalidProtocolBufferException = ClassName.get(API_PACKAGE, "InvalidProtocolBufferException")
-  val UninitializedMessageException = ClassName.get(API_PACKAGE, "UninitializedMessageException")
+  val InvalidProtocolBufferException = ClassName.get(GOOGLE_PACKAGE, "InvalidProtocolBufferException")
+  val UninitializedMessageException = ClassName.get(GOOGLE_PACKAGE, "UninitializedMessageException")
   val FieldName = ClassName.get(API_PACKAGE, "FieldName")
   val ProtoEnum = ClassName.get(API_PACKAGE, "ProtoEnum")
   val EnumConverter = ProtoEnum.nestedClass("EnumConverter")

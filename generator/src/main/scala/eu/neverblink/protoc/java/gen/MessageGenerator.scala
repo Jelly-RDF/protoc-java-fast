@@ -119,8 +119,7 @@ class MessageGenerator(val info: MessageInfo):
     )
 
   private def generateClear(t: TypeSpec.Builder): Unit =
-    t.addMethod(generateClearCode("clear", true))
-    t.addMethod(generateClearCode("clearQuick", false))
+    t.addMethod(generateClearCode("clear"))
 
   private def generateIsEmpty(t: TypeSpec.Builder): Unit =
     val isEmpty = MethodSpec.methodBuilder("isEmpty")
@@ -131,7 +130,7 @@ class MessageGenerator(val info: MessageInfo):
       .addStatement("return $N", BitField.hasNoBits(numBitFields))
     t.addMethod(isEmpty.build)
 
-  private def generateClearCode(name: String, isFullClear: Boolean) =
+  private def generateClearCode(name: String) =
     val clear = MethodSpec.methodBuilder(name)
       .addJavadoc(Javadoc.inherit)
       .addAnnotation(classOf[Override])
@@ -143,8 +142,7 @@ class MessageGenerator(val info: MessageInfo):
     // clear has state
     clear.addStatement("cachedSize = -1")
     BitField.generateClearCode(clear, numBitFields)
-    if (isFullClear) fields.forEach(_.generateClearCode(clear))
-    else fields.forEach(_.generateClearQuickCode(clear))
+    fields.forEach(_.generateClearCode(clear))
     if (info.storeUnknownFieldsEnabled) clear.addStatement(named("$unknownBytes:N.clear()"))
     clear.addStatement("return this")
     clear.build
@@ -184,7 +182,7 @@ class MessageGenerator(val info: MessageInfo):
       .addJavadoc(Javadoc.inherit)
       .addAnnotation(classOf[Override])
       .addModifiers(Modifier.PUBLIC).returns(info.typeName)
-      .addParameter(RuntimeClasses.ProtoSource, "input", Modifier.FINAL)
+      .addParameter(RuntimeClasses.CodedInputStream, "input", Modifier.FINAL)
       .addException(classOf[IOException])
     // Fallthrough optimization:
     //
@@ -267,7 +265,7 @@ class MessageGenerator(val info: MessageInfo):
       .addAnnotation(classOf[Override])
       .addModifiers(Modifier.PUBLIC)
       .returns(classOf[Unit])
-      .addParameter(RuntimeClasses.ProtoSink, "output", Modifier.FINAL)
+      .addParameter(RuntimeClasses.CodedOutputStream, "output", Modifier.FINAL)
       .addException(classOf[IOException])
     val needsInitializationChecks = info.hasRequiredFieldsInHierarchy
     if (needsInitializationChecks) {
@@ -397,7 +395,7 @@ class MessageGenerator(val info: MessageInfo):
     t.addMethod(MethodSpec.methodBuilder("parseFrom")
       .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
       .addException(classOf[IOException])
-      .addParameter(RuntimeClasses.ProtoSource, "input", Modifier.FINAL)
+      .addParameter(RuntimeClasses.CodedInputStream, "input", Modifier.FINAL)
       .returns(info.typeName)
       .addStatement("return $T.mergeFrom(new $T(), input).checkInitialized()", RuntimeClasses.AbstractMessage, info.typeName)
       .build

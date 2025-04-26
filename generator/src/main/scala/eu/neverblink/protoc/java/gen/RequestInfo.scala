@@ -420,6 +420,11 @@ object RequestInfo:
     val values = new java.util.ArrayList[RequestInfo.EnumValueInfo]
     val aliases = new java.util.ArrayList[RequestInfo.EnumValueInfo]
 
+    val nameInSnakeCase = descriptor.getName
+      .split("(?=\\p{Upper})")
+      .map(_.toUpperCase)
+      .mkString("_")
+
     for (value <- descriptor.getValueList.asScala) {
       if (usedFields.add(value.getNumber)) {
         values.add(new RequestInfo.EnumValueInfo(this, value))
@@ -442,12 +447,13 @@ object RequestInfo:
 
   class EnumValueInfo(
     var parentType: RequestInfo.EnumInfo, 
-    var descriptor: DescriptorProtos.EnumValueDescriptorProto
+    var descriptor: DescriptorProtos.EnumValueDescriptorProto,
   ) {
     val valueId: String = parentType.typeId + "." + descriptor.getName
     val sourceLocation = parentType.parentFile.getSourceLocation(valueId)
 
-    def getName: String = descriptor.getName
+    // Simplify names like in scalapb
+    def getName: String = descriptor.getName.replace(parentType.nameInSnakeCase + "_", "")
 
     def getNumber: Int = descriptor.getNumber
   }

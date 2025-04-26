@@ -182,7 +182,7 @@ class EnumGenerator(val info: EnumInfo):
     val createCaseIfs = (len: Int) => {
       info.values.stream.filter(value => value.getName.length eq len).forEach(value => {
         forName
-          .beginControlFlow("if ($T.isEqual($S, value))", RuntimeClasses.ProtoUtil, value.getName)
+          .beginControlFlow("if ($S == value)", value.getName)
           .addStatement("return $N", NamingUtil.filterKeyword(value.getName))
           .endControlFlow
       })
