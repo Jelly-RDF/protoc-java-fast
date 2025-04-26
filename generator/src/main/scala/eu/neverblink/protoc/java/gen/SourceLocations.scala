@@ -1,6 +1,7 @@
 package eu.neverblink.protoc.java.gen
 
 import com.google.protobuf.DescriptorProtos.*
+
 import java.util
 
 /**

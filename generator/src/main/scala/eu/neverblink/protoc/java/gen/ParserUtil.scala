@@ -1,14 +1,11 @@
 package eu.neverblink.protoc.java.gen
 
-import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest
-import com.google.protobuf.compiler.PluginProtos.CodeGeneratorResponse
+import com.google.protobuf.compiler.PluginProtos.{CodeGeneratorRequest, CodeGeneratorResponse}
 
-import java.io.ByteArrayOutputStream
-import java.io.PrintStream
-import java.io.UnsupportedEncodingException
+import java.io.{ByteArrayOutputStream, PrintStream, UnsupportedEncodingException}
 import java.nio.charset.StandardCharsets
-import java.util.Collections
 import java.util
+import java.util.Collections
 
 /**
  * @author Florian Enner

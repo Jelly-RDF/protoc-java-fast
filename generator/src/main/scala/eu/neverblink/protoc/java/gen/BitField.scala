@@ -1,12 +1,10 @@
 package eu.neverblink.protoc.java.gen
 
-import com.palantir.javapoet.FieldSpec
-import com.palantir.javapoet.MethodSpec
-import com.palantir.javapoet.TypeSpec
+import com.palantir.javapoet.{FieldSpec, MethodSpec, TypeSpec}
 import eu.neverblink.protoc.java.gen.RequestInfo.FieldInfo
 
-import javax.lang.model.element.Modifier
 import java.util
+import javax.lang.model.element.Modifier
 import scala.jdk.CollectionConverters.*
 
 /**

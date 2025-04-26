@@ -1,12 +1,11 @@
 package eu.neverblink.protoc.java.gen
 
 import com.palantir.javapoet.*
-import eu.neverblink.protoc.java.Helpers
 import eu.neverblink.protoc.java.gen.RequestInfo.FieldInfo
 
-import javax.lang.model.element.Modifier
 import java.util
 import java.util.function.Consumer
+import javax.lang.model.element.Modifier
 
 /**
  * This class generates all serialization logic and field related accessors.

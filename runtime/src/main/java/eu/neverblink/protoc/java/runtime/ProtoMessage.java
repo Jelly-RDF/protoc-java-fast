@@ -252,7 +252,7 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
     public static <T extends ProtoMessage<T>> T mergeFrom(T msg, final byte[] data, final int off, final int len)
             throws InvalidProtocolBufferException {
         try {
-            return ProtoMessage.mergeFrom(msg, CodedInputStream.newInstance(data, off, len));
+            return mergeFrom(msg, CodedInputStream.newInstance(data, off, len));
         } catch (InvalidProtocolBufferException e) {
             throw e;
         } catch (IOException e) {
@@ -323,8 +323,6 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
             field.getMissingFields(prefix + fieldName + ".", results);
         }
     }
-
-    // TODO :(
 
     protected static void getMissingFields(String prefix, String fieldName, RepeatedMessage<?> field, List<String> results) {
         for (int i = 0; i < field.length; i++) {

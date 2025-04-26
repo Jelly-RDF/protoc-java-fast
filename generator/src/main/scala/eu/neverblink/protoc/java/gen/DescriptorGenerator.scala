@@ -1,14 +1,11 @@
 package eu.neverblink.protoc.java.gen
 
 import com.google.protobuf.DescriptorProtos
-import com.palantir.javapoet.CodeBlock
-import com.palantir.javapoet.FieldSpec
-import com.palantir.javapoet.MethodSpec
-import com.palantir.javapoet.TypeSpec
+import com.palantir.javapoet.{CodeBlock, FieldSpec, MethodSpec, TypeSpec}
 
-import javax.lang.model.element.Modifier
 import java.util
 import java.util.Base64
+import javax.lang.model.element.Modifier
 import scala.jdk.CollectionConverters.*
 
 /**

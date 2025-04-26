@@ -1,4 +1,4 @@
-package eu.neverblink.protoc.java;
+package eu.neverblink.protoc.java.gen;
 
 import com.palantir.javapoet.ArrayTypeName;
 import com.palantir.javapoet.TypeName;

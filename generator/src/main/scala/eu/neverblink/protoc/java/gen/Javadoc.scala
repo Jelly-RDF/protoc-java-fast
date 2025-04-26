@@ -3,6 +3,7 @@ package eu.neverblink.protoc.java.gen
 import com.google.protobuf.DescriptorProtos
 import com.google.protobuf.DescriptorProtos.SourceCodeInfo
 import com.palantir.javapoet.CodeBlock
+
 import java.util
 import java.util.Locale
 
