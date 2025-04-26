@@ -421,8 +421,8 @@ object RequestInfo:
     var high = 0
     val usedFields = new java.util.HashSet[Integer]
 
-    final private val values = new java.util.ArrayList[RequestInfo.EnumValueInfo]
-    final private val aliases = new java.util.ArrayList[RequestInfo.EnumValueInfo]
+    val values = new java.util.ArrayList[RequestInfo.EnumValueInfo]
+    val aliases = new java.util.ArrayList[RequestInfo.EnumValueInfo]
 
     for (value <- descriptor.getValueList.asScala) {
       if (usedFields.add(value.getNumber)) {

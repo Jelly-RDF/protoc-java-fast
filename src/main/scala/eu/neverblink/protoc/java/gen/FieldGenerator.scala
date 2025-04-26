@@ -62,7 +62,7 @@ class FieldGenerator(val info: FieldInfo):
   val storeType = info.getStoreType
   
   // Common-variable map for named arguments
-  final protected val m = new util.HashMap[String, Any]
+  final val m = new util.HashMap[String, Any]
   m.put("field", info.fieldName)
   m.put("default", info.defaultValue)
   if (info.isEnum) {
@@ -112,7 +112,7 @@ class FieldGenerator(val info: FieldInfo):
   val enforceHasCheck = generateEnforceHasCheck
   val ensureFieldNotNull = lazyFieldInit
 
-  protected def generateMemberFields(t: TypeSpec.Builder): Unit = {
+  def generateMemberFields(t: TypeSpec.Builder): Unit = {
     val field = FieldSpec.builder(storeType, info.fieldName)
       .addJavadoc(Javadoc.forMessageField(info).build)
       .addModifiers(Modifier.PRIVATE)
@@ -148,7 +148,7 @@ class FieldGenerator(val info: FieldInfo):
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
     initializer.build
 
-  protected def generateClearCode(method: MethodSpec.Builder): Unit =
+  def generateClearCode(method: MethodSpec.Builder): Unit =
     if (info.isSingularPrimitiveOrEnum) {
       method.addStatement(named("$field:N = $default:L"))
       return
@@ -162,7 +162,7 @@ class FieldGenerator(val info: FieldInfo):
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
     if (info.isLazyAllocationEnabled) method.endControlFlow
 
-  protected def generateClearQuickCode(method: MethodSpec.Builder): Unit =
+  def generateClearQuickCode(method: MethodSpec.Builder): Unit =
     if (info.isSingularPrimitiveOrEnum) return // no action needed
     if (info.isLazyAllocationEnabled) method.beginControlFlow(named("if ($field:N != null)"))
     if (info.isMessageOrGroup) { // includes repeated messages
@@ -172,13 +172,13 @@ class FieldGenerator(val info: FieldInfo):
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
     if (info.isLazyAllocationEnabled) method.endControlFlow
 
-  protected def generateCopyFromCode(method: MethodSpec.Builder): Unit =
+  def generateCopyFromCode(method: MethodSpec.Builder): Unit =
     if (info.isSingularPrimitiveOrEnum) method.addStatement(named("$field:N = other.$field:N"))
     else if (info.isRepeated || info.isBytes || info.isMessageOrGroup || info.isString) if (info.isLazyAllocationEnabled) method.addCode(named("" + "if (other.$hasMethod:N()) {$>\n" + "$lazyInitMethod:L();\n" + "$field:N.copyFrom(other.$field:N);\n" + "$<} else {$>\n" + "$clearMethod:L();\n" + "$<}\n"))
     else method.addStatement(named("$field:N.copyFrom(other.$field:N)"))
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
 
-  protected def generateMergeFromMessageCode(method: MethodSpec.Builder): Unit =
+  def generateMergeFromMessageCode(method: MethodSpec.Builder): Unit =
     if (info.isRepeated) method.addStatement(named("$getMutableMethod:N().addAll(other.$field:N)"))
     else if (info.isMessageOrGroup) method.addStatement(named("$getMutableMethod:N().mergeFrom(other.$field:N)"))
     else if (info.isBytes) method.addStatement(named("$getMutableMethod:N().copyFrom(other.$field:N)"))
@@ -187,7 +187,7 @@ class FieldGenerator(val info: FieldInfo):
     else if (info.isPrimitive) method.addStatement(named("$setMethod:N(other.$field:N)"))
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
 
-  protected def generateEqualsStatement(method: MethodSpec.Builder): Unit =
+  def generateEqualsStatement(method: MethodSpec.Builder): Unit =
     if (info.isRepeated || info.isBytes || info.isMessageOrGroup || info.isString) method.addNamedCode("$field:N.equals(other.$field:N)", m)
     else if ((typeName eq TypeName.DOUBLE) || (typeName eq TypeName.FLOAT)) method.addNamedCode("$protoUtil:T.isEqual($field:N, other.$field:N)", m)
     else if (info.isPrimitive || info.isEnum) method.addNamedCode("$field:N == other.$field:N", m)
@@ -196,7 +196,7 @@ class FieldGenerator(val info: FieldInfo):
   /**
    * @return true if the tag needs to be read
    */
-  protected def generateMergingCode(method: MethodSpec.Builder): Boolean =
+  def generateMergingCode(method: MethodSpec.Builder): Boolean =
     method.addCode(clearOtherOneOfs).addCode(ensureFieldNotNull)
     if (info.isRepeated) {
       method.addNamedCode("tag = input.readRepeated$capitalizedType:L($field:N, tag);\n", m).addStatement(named("$setHas:L"))
@@ -222,7 +222,7 @@ class FieldGenerator(val info: FieldInfo):
   /**
    * @return true if the tag needs to be read
    */
-  protected def generateMergingCodeFromPacked(method: MethodSpec.Builder): Boolean =
+  def generateMergingCodeFromPacked(method: MethodSpec.Builder): Boolean =
     if (!info.isPackable) throw new IllegalStateException("not a packable type: " + info.descriptor)
     method.addCode(clearOtherOneOfs).addCode(ensureFieldNotNull)
     if (info.isFixedWidth) method.addStatement(named("input.readPacked$capitalizedType:L($field:N)"))
@@ -230,7 +230,7 @@ class FieldGenerator(val info: FieldInfo):
     method.addStatement(named("$setHas:L"))
     true
 
-  protected def generateSerializationCode(method: MethodSpec.Builder): Unit = {
+  def generateSerializationCode(method: MethodSpec.Builder): Unit = {
     m.put("writeTagToOutput", FieldGenerator.generateWriteVarint32(info.tag))
     if (info.isPacked) m.put("writePackedTagToOutput", FieldGenerator.generateWriteVarint32(info.packedTag))
     m.put("writeEndGroupTagToOutput", if (!info.isGroup) ""
@@ -255,7 +255,7 @@ class FieldGenerator(val info: FieldInfo):
     }
   }
 
-  protected def generateComputeSerializedSizeCode(method: MethodSpec.Builder): Unit =
+  def generateComputeSerializedSizeCode(method: MethodSpec.Builder): Unit =
     if (info.isFixedWidth && info.isPacked) method.addNamedCode("" + 
       "final int dataSize = $fixedWidth:L * $field:N.length();\n" + 
       "size += $bytesPerTag:L + $protoSink:T.computeDelimitedSize(dataSize);\n", 
@@ -281,12 +281,12 @@ class FieldGenerator(val info: FieldInfo):
       "size += $bytesPerTag:L + $protoSink:T.compute$capitalizedType:LSizeNoTag($field:N)"
     )) // non-repeated
 
-  protected def generateJsonSerializationCode(method: MethodSpec.Builder): Unit =
+  def generateJsonSerializationCode(method: MethodSpec.Builder): Unit =
     if (info.isRepeated) method.addStatement(named("output.writeRepeated$capitalizedType:L($fieldNames:T.$field:N, $field:N)"))
     else if (info.isEnum) method.addStatement(named("output.write$capitalizedType:L($fieldNames:T.$field:N, $field:N, $type:T.converter())"))
     else method.addStatement(named("output.write$capitalizedType:L($fieldNames:T.$field:N, $field:N)"))
 
-  protected def generateJsonDeserializationCode(method: MethodSpec.Builder): Unit =
+  def generateJsonDeserializationCode(method: MethodSpec.Builder): Unit =
     method.addCode(clearOtherOneOfs).addCode(ensureFieldNotNull)
     if (info.isRepeated) {
       if (info.isEnum) method.addStatement(named("input.readRepeated$capitalizedType:L($field:N, $type:T.converter())"))
@@ -304,7 +304,7 @@ class FieldGenerator(val info: FieldInfo):
     else if (info.isEnum) method.addStatement(named("final $protoEnum:T value = input.read$capitalizedType:L($type:T.converter())")).beginControlFlow("if (value != null)").addStatement(named("$field:N = value.getNumber()")).addStatement(named("$setHas:L")).nextControlFlow("else").addStatement("input.skipUnknownEnumValue()").endControlFlow
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
 
-  protected def generateMemberMethods(t: TypeSpec.Builder): Unit =
+  def generateMemberMethods(t: TypeSpec.Builder): Unit =
     generateInitializedMethod(t)
     generateHasMethod(t)
     generateClearMethod(t)
@@ -313,7 +313,7 @@ class FieldGenerator(val info: FieldInfo):
     if (info.isTryGetAccessorEnabled) generateTryGetMethod(t)
     generateSetMethods(t)
 
-  protected def generateInitializedMethod(t: TypeSpec.Builder): Unit =
+  def generateInitializedMethod(t: TypeSpec.Builder): Unit =
     if (info.isLazyAllocationEnabled)
       t.addMethod(MethodSpec.methodBuilder(info.lazyInitName)
         .addModifiers(Modifier.PRIVATE)
@@ -330,7 +330,7 @@ class FieldGenerator(val info: FieldInfo):
     CodeBlock.builder.addStatement("$N()", info.lazyInitName).build
   else FieldGenerator.EMPTY_BLOCK
 
-  protected def generateHasMethod(t: TypeSpec.Builder): Unit =
+  def generateHasMethod(t: TypeSpec.Builder): Unit =
     t.addMethod(MethodSpec.methodBuilder(info.hazzerName)
       .addJavadoc(Javadoc.forMessageField(info)
         .add("\n@return whether the $L field is set", info.fieldName)
@@ -343,7 +343,7 @@ class FieldGenerator(val info: FieldInfo):
       .build
     )
 
-  protected def generateSetMethods(t: TypeSpec.Builder): Unit =
+  def generateSetMethods(t: TypeSpec.Builder): Unit =
     if (info.isRepeated || info.isBytes) {
       val adder = MethodSpec.methodBuilder(info.adderName)
         .addJavadoc(Javadoc.forMessageField(info)
@@ -464,7 +464,7 @@ class FieldGenerator(val info: FieldInfo):
    *
    * @param type
    */
-  protected def generateExtraEnumAccessors(`type`: TypeSpec.Builder): Unit = {
+  def generateExtraEnumAccessors(`type`: TypeSpec.Builder): Unit = {
     if (!info.isEnum || info.isRepeated) return
     // Overload to get the internal store without conversion
     `type`.addMethod(MethodSpec.methodBuilder(info.getterName + "Value")
@@ -502,7 +502,7 @@ class FieldGenerator(val info: FieldInfo):
     )
   }
 
-  protected def generateTryGetMethod(t: TypeSpec.Builder): Unit = {
+  def generateTryGetMethod(t: TypeSpec.Builder): Unit = {
     val tryGet = MethodSpec.methodBuilder(info.tryGetName)
       .addJavadoc(Javadoc.forMessageField(info)
         .add("\n@return the value of $L if it is set, or empty if not", info.fieldName)
@@ -519,7 +519,7 @@ class FieldGenerator(val info: FieldInfo):
     t.addMethod(tryGet.build)
   }
 
-  protected def generateGetMethods(t: TypeSpec.Builder): Unit =
+  def generateGetMethods(t: TypeSpec.Builder): Unit =
     val getter = MethodSpec.methodBuilder(info.getterName)
       .addAnnotations(info.methodAnnotations)
       .addModifiers(Modifier.PUBLIC)
@@ -611,7 +611,7 @@ class FieldGenerator(val info: FieldInfo):
       )
     }
 
-  protected def generateClearMethod(t: TypeSpec.Builder): Unit =
+  def generateClearMethod(t: TypeSpec.Builder): Unit =
     val method = MethodSpec.methodBuilder(info.clearName)
       .addJavadoc(Javadoc.forMessageField(info).add("\n@return this").build)
       .addAnnotations(info.methodAnnotations)
