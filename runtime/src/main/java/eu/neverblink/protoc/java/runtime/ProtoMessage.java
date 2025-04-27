@@ -279,6 +279,30 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
         input.popLimit(oldLimit);
     }
 
+    protected static <T extends ProtoMessage<T>> int computeRepeatedMessageSizeNoTag(final List<T> values) {
+        int dataSize = 0;
+        for (final ProtoMessage<?> value : values) {
+            int valSize = value.getSerializedSize();
+            dataSize += CodedOutputStream.computeUInt32SizeNoTag(valSize) + valSize;
+        }
+        return dataSize;
+    }
+
+    protected static <T extends ProtoMessage<T>> int readRepeatedMessage(
+        final List<T> store,
+        final MessageFactory<T> factory,
+        final CodedInputStream input,
+        final int tag
+    ) throws IOException {
+        int nextTag;
+        do {
+            final var msg = factory.create();
+            mergeDelimitedFrom(msg, input);
+            store.add(msg);
+        } while((nextTag = input.readTag()) == tag);
+        return nextTag;
+    }
+
     /**
      * Indicates whether another object is "equal to" this one.
      * <p>

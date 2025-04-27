@@ -8,7 +8,6 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoEnum;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
-import eu.neverblink.protoc.java.runtime.RepeatedMessage;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
@@ -99,7 +98,7 @@ public final class Rdf {
     }
 
     /**
-     * @param value The numeric wire value of the corresponding enum entry.
+     * @param number The numeric wire value of the corresponding enum entry.
      * @param other Fallback value in case the value is not known.
      * @return The enum associated with the given numeric wire value, or the fallback value if unknown.
      */
@@ -286,7 +285,7 @@ public final class Rdf {
     }
 
     /**
-     * @param value The numeric wire value of the corresponding enum entry.
+     * @param number The numeric wire value of the corresponding enum entry.
      * @param other Fallback value in case the value is not known.
      * @return The enum associated with the given numeric wire value, or the fallback value if unknown.
      */
@@ -8601,10 +8600,10 @@ public final class Rdf {
     protected int computeSerializedSize() {
       int size = 0;
       if ((bitField0_ & 0x00000001) != 0) {
-        size += rows.size() + RepeatedMessage.computeRepeatedMessageSizeNoTag(rows);
+        size += rows.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(rows);
       }
       if ((bitField0_ & 0x00000002) != 0) {
-        size += metadata.size() + RepeatedMessage.computeRepeatedMessageSizeNoTag(metadata);
+        size += metadata.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(metadata);
       }
       return size;
     }
@@ -8619,7 +8618,7 @@ public final class Rdf {
           case 10: {
             // rows
             initRows();
-            tag = input.readRepeatedMessage(rows, tag);
+            tag = ProtoMessage.readRepeatedMessage(rows, RdfStreamRow.getFactory(), input, tag);
             bitField0_ |= 0x00000001;
             if (tag != 122) {
               break;
@@ -8628,7 +8627,7 @@ public final class Rdf {
           case 122: {
             // metadata
             initMetadata();
-            tag = input.readRepeatedMessage(metadata, tag);
+            tag = ProtoMessage.readRepeatedMessage(metadata, MetadataEntry.getFactory(), input, tag);
             bitField0_ |= 0x00000002;
             if (tag != 0) {
               break;
@@ -8805,25 +8804,13 @@ public final class Rdf {
 
       /**
        * <code>optional bytes value = 2;</code>
-       * @param value the value_ to add
-       * @return this
-       */
-      public MetadataEntry addValue(final byte value) {
-        initValue();
-        bitField0_ |= 0x00000002;
-        value_.add(value);
-        return this;
-      }
-
-      /**
-       * <code>optional bytes value = 2;</code>
        * @param values the value_ to set
        * @return this
        */
-      public MetadataEntry setValue(final byte... values) {
+      public MetadataEntry setValue(final ByteString values) {
         initValue();
         bitField0_ |= 0x00000002;
-        value_.copyFrom(values);
+        value_ = values;
         return this;
       }
 
@@ -8840,7 +8827,7 @@ public final class Rdf {
           }
           if (other.hasValue()) {
             initValue();
-            value_.copyFrom(other.value_);
+            value_ = other.value_;
           } else {
             clearValue();
           }
@@ -8858,7 +8845,7 @@ public final class Rdf {
           key = other.key;
         }
         if (other.hasValue()) {
-          getMutableValue().copyFrom(other.value_);
+          value_ = other.value_;
         }
         return this;
       }
@@ -8937,7 +8924,7 @@ public final class Rdf {
             case 18: {
               // value_
               initValue();
-              input.readBytes(value_);
+              value_ = input.readBytes();
               bitField0_ |= 0x00000002;
               tag = input.readTag();
               if (tag != 0) {

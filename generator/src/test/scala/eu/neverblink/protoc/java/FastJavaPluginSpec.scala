@@ -14,7 +14,8 @@ class FastJavaPluginSpec extends AnyWordSpec, Matchers:
       val is = getClass.getResourceAsStream("/rdf_descriptor.pb")
       val request = CodeGeneratorRequest.parseFrom(is)
       val response = FastJavaPlugin.handleRequest(request)
-      Using.resource(FileOutputStream("test-project/src/main/java/Rdf.java")) { fos =>
+      val path = "test-project/src/main/java/eu/ostrzyciel/jelly/core/proto/v1/Rdf.java"
+      Using.resource(FileOutputStream(path)) { fos =>
         fos.write(response.getFile(0).getContentBytes.toByteArray)
       }
     }

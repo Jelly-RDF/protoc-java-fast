@@ -114,7 +114,7 @@ class EnumGenerator(val info: EnumInfo):
     )
     typeSpec.addMethod(MethodSpec.methodBuilder("forNumberOr")
       .addJavadoc("" +
-        "@param value The numeric wire value of the corresponding enum entry.\n" +
+        "@param number The numeric wire value of the corresponding enum entry.\n" +
         "@param other Fallback value in case the value is not known.\n" +
         "@return The enum associated with the given numeric wire value, or the fallback value if unknown."
       )
