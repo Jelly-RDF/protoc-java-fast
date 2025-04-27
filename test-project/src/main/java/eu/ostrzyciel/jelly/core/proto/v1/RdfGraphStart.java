@@ -44,7 +44,7 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   }
 
   public boolean hasGraph() {
-    return (((bitField0_ & 0x0000000f)) != 0);
+    return true;
   }
 
   public RdfGraphStart clearGraph() {
@@ -58,35 +58,27 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   }
 
   private void clearGraphOtherGIri() {
-    if ((((bitField0_ & 0x0000000e)) != 0)) {
-      clearGBnode();
-      clearGDefaultGraph();
-      clearGLiteral();
-    }
+    clearGBnode();
+    clearGDefaultGraph();
+    clearGLiteral();
   }
 
   private void clearGraphOtherGBnode() {
-    if ((((bitField0_ & 0x0000000d)) != 0)) {
-      clearGIri();
-      clearGDefaultGraph();
-      clearGLiteral();
-    }
+    clearGIri();
+    clearGDefaultGraph();
+    clearGLiteral();
   }
 
   private void clearGraphOtherGDefaultGraph() {
-    if ((((bitField0_ & 0x0000000b)) != 0)) {
-      clearGIri();
-      clearGBnode();
-      clearGLiteral();
-    }
+    clearGIri();
+    clearGBnode();
+    clearGLiteral();
   }
 
   private void clearGraphOtherGLiteral() {
-    if ((((bitField0_ & 0x00000007)) != 0)) {
-      clearGIri();
-      clearGBnode();
-      clearGDefaultGraph();
-    }
+    clearGIri();
+    clearGBnode();
+    clearGDefaultGraph();
   }
 
   private void initGIri() {
@@ -97,18 +89,9 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 1;</code>
-   * @return whether the gIri field is set
-   */
-  public boolean hasGIri() {
-    return (bitField0_ & 0x00000001) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 1;</code>
    * @return this
    */
   public RdfGraphStart clearGIri() {
-    bitField0_ &= ~0x00000001;
     if (gIri != null) {
       gIri.clear();
     }
@@ -142,7 +125,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   public RdfIri getMutableGIri() {
     clearGraphOtherGIri();
     initGIri();
-    bitField0_ |= 0x00000001;
     return gIri;
   }
 
@@ -154,7 +136,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   public RdfGraphStart setGIri(final RdfIri value) {
     clearGraphOtherGIri();
     initGIri();
-    bitField0_ |= 0x00000001;
     gIri.copyFrom(value);
     return this;
   }
@@ -204,18 +185,9 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 3;</code>
-   * @return whether the gDefaultGraph field is set
-   */
-  public boolean hasGDefaultGraph() {
-    return (bitField0_ & 0x00000004) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 3;</code>
    * @return this
    */
   public RdfGraphStart clearGDefaultGraph() {
-    bitField0_ &= ~0x00000004;
     if (gDefaultGraph != null) {
       gDefaultGraph.clear();
     }
@@ -249,7 +221,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   public RdfDefaultGraph getMutableGDefaultGraph() {
     clearGraphOtherGDefaultGraph();
     initGDefaultGraph();
-    bitField0_ |= 0x00000004;
     return gDefaultGraph;
   }
 
@@ -261,7 +232,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   public RdfGraphStart setGDefaultGraph(final RdfDefaultGraph value) {
     clearGraphOtherGDefaultGraph();
     initGDefaultGraph();
-    bitField0_ |= 0x00000004;
     gDefaultGraph.copyFrom(value);
     return this;
   }
@@ -274,18 +244,9 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 4;</code>
-   * @return whether the gLiteral field is set
-   */
-  public boolean hasGLiteral() {
-    return (bitField0_ & 0x00000008) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 4;</code>
    * @return this
    */
   public RdfGraphStart clearGLiteral() {
-    bitField0_ &= ~0x00000008;
     if (gLiteral != null) {
       gLiteral.clear();
     }
@@ -319,7 +280,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   public RdfLiteral getMutableGLiteral() {
     clearGraphOtherGLiteral();
     initGLiteral();
-    bitField0_ |= 0x00000008;
     return gLiteral;
   }
 
@@ -331,7 +291,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   public RdfGraphStart setGLiteral(final RdfLiteral value) {
     clearGraphOtherGLiteral();
     initGLiteral();
-    bitField0_ |= 0x00000008;
     gLiteral.copyFrom(value);
     return this;
   }
@@ -339,28 +298,13 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   @Override
   public RdfGraphStart copyFrom(final RdfGraphStart other) {
     cachedSize = other.cachedSize;
-    if ((bitField0_ | other.bitField0_) != 0) {
-      bitField0_ = other.bitField0_;
-      if (other.hasGIri()) {
-        initGIri();
-        gIri.copyFrom(other.gIri);
-      } else {
-        clearGIri();
-      }
-      gBnode = other.gBnode;
-      if (other.hasGDefaultGraph()) {
-        initGDefaultGraph();
-        gDefaultGraph.copyFrom(other.gDefaultGraph);
-      } else {
-        clearGDefaultGraph();
-      }
-      if (other.hasGLiteral()) {
-        initGLiteral();
-        gLiteral.copyFrom(other.gLiteral);
-      } else {
-        clearGLiteral();
-      }
-    }
+    initGIri();
+    gIri.copyFrom(other.gIri);
+    gBnode = other.gBnode;
+    initGDefaultGraph();
+    gDefaultGraph.copyFrom(other.gDefaultGraph);
+    initGLiteral();
+    gLiteral.copyFrom(other.gLiteral);
     return this;
   }
 
@@ -370,16 +314,10 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
       return this;
     }
     cachedSize = -1;
-    if (other.hasGIri()) {
-      getMutableGIri().mergeFrom(other.gIri);
-    }
+    getMutableGIri().mergeFrom(other.gIri);
     gBnode = other.gBnode;
-    if (other.hasGDefaultGraph()) {
-      getMutableGDefaultGraph().mergeFrom(other.gDefaultGraph);
-    }
-    if (other.hasGLiteral()) {
-      getMutableGLiteral().mergeFrom(other.gLiteral);
-    }
+    getMutableGDefaultGraph().mergeFrom(other.gDefaultGraph);
+    getMutableGLiteral().mergeFrom(other.gLiteral);
     return this;
   }
 
@@ -389,7 +327,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
       return this;
     }
     cachedSize = -1;
-    bitField0_ = 0;
     if (gIri != null) {
       gIri.clear();
     }
@@ -414,54 +351,37 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
       return false;
     }
     RdfGraphStart other = (RdfGraphStart) o;
-    return bitField0_ == other.bitField0_
-      && (!hasGIri() || gIri.equals(other.gIri))
+    return gIri.equals(other.gIri)
       && gBnode.equals(other.gBnode)
-      && (!hasGDefaultGraph() || gDefaultGraph.equals(other.gDefaultGraph))
-      && (!hasGLiteral() || gLiteral.equals(other.gLiteral));
+      && gDefaultGraph.equals(other.gDefaultGraph)
+      && gLiteral.equals(other.gLiteral);
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    if ((bitField0_ & 0x00000001) != 0) {
-      output.writeRawByte((byte) 10);
-      output.writeUInt32NoTag(gIri.getCachedSize());
-      gIri.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      output.writeRawByte((byte) 18);
-      output.writeStringNoTag(gBnode);
-    }
-    if ((bitField0_ & 0x00000004) != 0) {
-      output.writeRawByte((byte) 26);
-      output.writeUInt32NoTag(gDefaultGraph.getCachedSize());
-      gDefaultGraph.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000008) != 0) {
-      output.writeRawByte((byte) 34);
-      output.writeUInt32NoTag(gLiteral.getCachedSize());
-      gLiteral.writeTo(output);
-    }
+    output.writeRawByte((byte) 10);
+    output.writeUInt32NoTag(gIri.getCachedSize());
+    gIri.writeTo(output);
+    output.writeRawByte((byte) 18);
+    output.writeStringNoTag(gBnode);
+    output.writeRawByte((byte) 26);
+    output.writeUInt32NoTag(gDefaultGraph.getCachedSize());
+    gDefaultGraph.writeTo(output);
+    output.writeRawByte((byte) 34);
+    output.writeUInt32NoTag(gLiteral.getCachedSize());
+    gLiteral.writeTo(output);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    if ((bitField0_ & 0x00000001) != 0) {
-      final int dataSize = gIri.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      size += 1 + CodedOutputStream.computeStringSizeNoTag(gBnode);
-    }
-    if ((bitField0_ & 0x00000004) != 0) {
-      final int dataSize = gDefaultGraph.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000008) != 0) {
-      final int dataSize = gLiteral.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
+    final int dataSize = gIri.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    size += 1 + CodedOutputStream.computeStringSizeNoTag(gBnode);
+    final int dataSize = gDefaultGraph.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = gLiteral.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
     return size;
   }
 
@@ -477,7 +397,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
           clearGraphOtherGIri();
           initGIri();
           ProtoMessage.mergeDelimitedFrom(gIri, input);
-          bitField0_ |= 0x00000001;
           tag = input.readTag();
           if (tag != 18) {
             break;
@@ -488,7 +407,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
           clearGraphOtherGBnode();
           initGBnode();
           gBnode = input.readStringRequireUtf8();
-          bitField0_ |= 0x00000002;
           tag = input.readTag();
           if (tag != 26) {
             break;
@@ -499,7 +417,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
           clearGraphOtherGDefaultGraph();
           initGDefaultGraph();
           ProtoMessage.mergeDelimitedFrom(gDefaultGraph, input);
-          bitField0_ |= 0x00000004;
           tag = input.readTag();
           if (tag != 34) {
             break;
@@ -510,7 +427,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
           clearGraphOtherGLiteral();
           initGLiteral();
           ProtoMessage.mergeDelimitedFrom(gLiteral, input);
-          bitField0_ |= 0x00000008;
           tag = input.readTag();
           if (tag != 0) {
             break;
@@ -533,11 +449,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   @Override
   public RdfGraphStart clone() {
     return new RdfGraphStart().copyFrom(this);
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return ((bitField0_) == 0);
   }
 
   public static RdfGraphStart parseFrom(final byte[] data) throws InvalidProtocolBufferException {

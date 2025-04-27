@@ -104,7 +104,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   public boolean hasSubject() {
-    return (((bitField0_ & 0x0000f000)) != 0);
+    return true;
   }
 
   public RdfQuad clearSubject() {
@@ -118,39 +118,31 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   private void clearSubjectOtherSIri() {
-    if ((((bitField0_ & 0x0000e000)) != 0)) {
-      clearSBnode();
-      clearSLiteral();
-      clearSTripleTerm();
-    }
+    clearSBnode();
+    clearSLiteral();
+    clearSTripleTerm();
   }
 
   private void clearSubjectOtherSBnode() {
-    if ((((bitField0_ & 0x0000d000)) != 0)) {
-      clearSIri();
-      clearSLiteral();
-      clearSTripleTerm();
-    }
+    clearSIri();
+    clearSLiteral();
+    clearSTripleTerm();
   }
 
   private void clearSubjectOtherSLiteral() {
-    if ((((bitField0_ & 0x0000b000)) != 0)) {
-      clearSIri();
-      clearSBnode();
-      clearSTripleTerm();
-    }
+    clearSIri();
+    clearSBnode();
+    clearSTripleTerm();
   }
 
   private void clearSubjectOtherSTripleTerm() {
-    if ((((bitField0_ & 0x00007000)) != 0)) {
-      clearSIri();
-      clearSBnode();
-      clearSLiteral();
-    }
+    clearSIri();
+    clearSBnode();
+    clearSLiteral();
   }
 
   public boolean hasPredicate() {
-    return (((bitField0_ & 0x00000f00)) != 0);
+    return true;
   }
 
   public RdfQuad clearPredicate() {
@@ -164,39 +156,31 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   private void clearPredicateOtherPIri() {
-    if ((((bitField0_ & 0x00000e00)) != 0)) {
-      clearPBnode();
-      clearPLiteral();
-      clearPTripleTerm();
-    }
+    clearPBnode();
+    clearPLiteral();
+    clearPTripleTerm();
   }
 
   private void clearPredicateOtherPBnode() {
-    if ((((bitField0_ & 0x00000d00)) != 0)) {
-      clearPIri();
-      clearPLiteral();
-      clearPTripleTerm();
-    }
+    clearPIri();
+    clearPLiteral();
+    clearPTripleTerm();
   }
 
   private void clearPredicateOtherPLiteral() {
-    if ((((bitField0_ & 0x00000b00)) != 0)) {
-      clearPIri();
-      clearPBnode();
-      clearPTripleTerm();
-    }
+    clearPIri();
+    clearPBnode();
+    clearPTripleTerm();
   }
 
   private void clearPredicateOtherPTripleTerm() {
-    if ((((bitField0_ & 0x00000700)) != 0)) {
-      clearPIri();
-      clearPBnode();
-      clearPLiteral();
-    }
+    clearPIri();
+    clearPBnode();
+    clearPLiteral();
   }
 
   public boolean hasObject() {
-    return (((bitField0_ & 0x000000f0)) != 0);
+    return true;
   }
 
   public RdfQuad clearObject() {
@@ -210,39 +194,31 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   private void clearObjectOtherOIri() {
-    if ((((bitField0_ & 0x000000e0)) != 0)) {
-      clearOBnode();
-      clearOLiteral();
-      clearOTripleTerm();
-    }
+    clearOBnode();
+    clearOLiteral();
+    clearOTripleTerm();
   }
 
   private void clearObjectOtherOBnode() {
-    if ((((bitField0_ & 0x000000d0)) != 0)) {
-      clearOIri();
-      clearOLiteral();
-      clearOTripleTerm();
-    }
+    clearOIri();
+    clearOLiteral();
+    clearOTripleTerm();
   }
 
   private void clearObjectOtherOLiteral() {
-    if ((((bitField0_ & 0x000000b0)) != 0)) {
-      clearOIri();
-      clearOBnode();
-      clearOTripleTerm();
-    }
+    clearOIri();
+    clearOBnode();
+    clearOTripleTerm();
   }
 
   private void clearObjectOtherOTripleTerm() {
-    if ((((bitField0_ & 0x00000070)) != 0)) {
-      clearOIri();
-      clearOBnode();
-      clearOLiteral();
-    }
+    clearOIri();
+    clearOBnode();
+    clearOLiteral();
   }
 
   public boolean hasGraph() {
-    return (((bitField0_ & 0x0000000f)) != 0);
+    return true;
   }
 
   public RdfQuad clearGraph() {
@@ -256,35 +232,27 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   private void clearGraphOtherGIri() {
-    if ((((bitField0_ & 0x0000000e)) != 0)) {
-      clearGBnode();
-      clearGDefaultGraph();
-      clearGLiteral();
-    }
+    clearGBnode();
+    clearGDefaultGraph();
+    clearGLiteral();
   }
 
   private void clearGraphOtherGBnode() {
-    if ((((bitField0_ & 0x0000000d)) != 0)) {
-      clearGIri();
-      clearGDefaultGraph();
-      clearGLiteral();
-    }
+    clearGIri();
+    clearGDefaultGraph();
+    clearGLiteral();
   }
 
   private void clearGraphOtherGDefaultGraph() {
-    if ((((bitField0_ & 0x0000000b)) != 0)) {
-      clearGIri();
-      clearGBnode();
-      clearGLiteral();
-    }
+    clearGIri();
+    clearGBnode();
+    clearGLiteral();
   }
 
   private void clearGraphOtherGLiteral() {
-    if ((((bitField0_ & 0x00000007)) != 0)) {
-      clearGIri();
-      clearGBnode();
-      clearGDefaultGraph();
-    }
+    clearGIri();
+    clearGBnode();
+    clearGDefaultGraph();
   }
 
   private void initSIri() {
@@ -295,18 +263,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri s_iri = 1;</code>
-   * @return whether the sIri field is set
-   */
-  public boolean hasSIri() {
-    return (bitField0_ & 0x00001000) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri s_iri = 1;</code>
    * @return this
    */
   public RdfQuad clearSIri() {
-    bitField0_ &= ~0x00001000;
     if (sIri != null) {
       sIri.clear();
     }
@@ -340,7 +299,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfIri getMutableSIri() {
     clearSubjectOtherSIri();
     initSIri();
-    bitField0_ |= 0x00001000;
     return sIri;
   }
 
@@ -352,7 +310,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setSIri(final RdfIri value) {
     clearSubjectOtherSIri();
     initSIri();
-    bitField0_ |= 0x00001000;
     sIri.copyFrom(value);
     return this;
   }
@@ -402,18 +359,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral s_literal = 3;</code>
-   * @return whether the sLiteral field is set
-   */
-  public boolean hasSLiteral() {
-    return (bitField0_ & 0x00004000) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral s_literal = 3;</code>
    * @return this
    */
   public RdfQuad clearSLiteral() {
-    bitField0_ &= ~0x00004000;
     if (sLiteral != null) {
       sLiteral.clear();
     }
@@ -447,7 +395,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfLiteral getMutableSLiteral() {
     clearSubjectOtherSLiteral();
     initSLiteral();
-    bitField0_ |= 0x00004000;
     return sLiteral;
   }
 
@@ -459,7 +406,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setSLiteral(final RdfLiteral value) {
     clearSubjectOtherSLiteral();
     initSLiteral();
-    bitField0_ |= 0x00004000;
     sLiteral.copyFrom(value);
     return this;
   }
@@ -472,18 +418,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple s_triple_term = 4;</code>
-   * @return whether the sTripleTerm field is set
-   */
-  public boolean hasSTripleTerm() {
-    return (bitField0_ & 0x00008000) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple s_triple_term = 4;</code>
    * @return this
    */
   public RdfQuad clearSTripleTerm() {
-    bitField0_ &= ~0x00008000;
     if (sTripleTerm != null) {
       sTripleTerm.clear();
     }
@@ -517,7 +454,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfTriple getMutableSTripleTerm() {
     clearSubjectOtherSTripleTerm();
     initSTripleTerm();
-    bitField0_ |= 0x00008000;
     return sTripleTerm;
   }
 
@@ -529,7 +465,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setSTripleTerm(final RdfTriple value) {
     clearSubjectOtherSTripleTerm();
     initSTripleTerm();
-    bitField0_ |= 0x00008000;
     sTripleTerm.copyFrom(value);
     return this;
   }
@@ -542,18 +477,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri p_iri = 5;</code>
-   * @return whether the pIri field is set
-   */
-  public boolean hasPIri() {
-    return (bitField0_ & 0x00000100) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri p_iri = 5;</code>
    * @return this
    */
   public RdfQuad clearPIri() {
-    bitField0_ &= ~0x00000100;
     if (pIri != null) {
       pIri.clear();
     }
@@ -587,7 +513,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfIri getMutablePIri() {
     clearPredicateOtherPIri();
     initPIri();
-    bitField0_ |= 0x00000100;
     return pIri;
   }
 
@@ -599,7 +524,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setPIri(final RdfIri value) {
     clearPredicateOtherPIri();
     initPIri();
-    bitField0_ |= 0x00000100;
     pIri.copyFrom(value);
     return this;
   }
@@ -649,18 +573,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral p_literal = 7;</code>
-   * @return whether the pLiteral field is set
-   */
-  public boolean hasPLiteral() {
-    return (bitField0_ & 0x00000400) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral p_literal = 7;</code>
    * @return this
    */
   public RdfQuad clearPLiteral() {
-    bitField0_ &= ~0x00000400;
     if (pLiteral != null) {
       pLiteral.clear();
     }
@@ -694,7 +609,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfLiteral getMutablePLiteral() {
     clearPredicateOtherPLiteral();
     initPLiteral();
-    bitField0_ |= 0x00000400;
     return pLiteral;
   }
 
@@ -706,7 +620,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setPLiteral(final RdfLiteral value) {
     clearPredicateOtherPLiteral();
     initPLiteral();
-    bitField0_ |= 0x00000400;
     pLiteral.copyFrom(value);
     return this;
   }
@@ -719,18 +632,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple p_triple_term = 8;</code>
-   * @return whether the pTripleTerm field is set
-   */
-  public boolean hasPTripleTerm() {
-    return (bitField0_ & 0x00000800) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple p_triple_term = 8;</code>
    * @return this
    */
   public RdfQuad clearPTripleTerm() {
-    bitField0_ &= ~0x00000800;
     if (pTripleTerm != null) {
       pTripleTerm.clear();
     }
@@ -764,7 +668,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfTriple getMutablePTripleTerm() {
     clearPredicateOtherPTripleTerm();
     initPTripleTerm();
-    bitField0_ |= 0x00000800;
     return pTripleTerm;
   }
 
@@ -776,7 +679,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setPTripleTerm(final RdfTriple value) {
     clearPredicateOtherPTripleTerm();
     initPTripleTerm();
-    bitField0_ |= 0x00000800;
     pTripleTerm.copyFrom(value);
     return this;
   }
@@ -789,18 +691,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri o_iri = 9;</code>
-   * @return whether the oIri field is set
-   */
-  public boolean hasOIri() {
-    return (bitField0_ & 0x00000010) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri o_iri = 9;</code>
    * @return this
    */
   public RdfQuad clearOIri() {
-    bitField0_ &= ~0x00000010;
     if (oIri != null) {
       oIri.clear();
     }
@@ -834,7 +727,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfIri getMutableOIri() {
     clearObjectOtherOIri();
     initOIri();
-    bitField0_ |= 0x00000010;
     return oIri;
   }
 
@@ -846,7 +738,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setOIri(final RdfIri value) {
     clearObjectOtherOIri();
     initOIri();
-    bitField0_ |= 0x00000010;
     oIri.copyFrom(value);
     return this;
   }
@@ -896,18 +787,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral o_literal = 11;</code>
-   * @return whether the oLiteral field is set
-   */
-  public boolean hasOLiteral() {
-    return (bitField0_ & 0x00000040) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral o_literal = 11;</code>
    * @return this
    */
   public RdfQuad clearOLiteral() {
-    bitField0_ &= ~0x00000040;
     if (oLiteral != null) {
       oLiteral.clear();
     }
@@ -941,7 +823,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfLiteral getMutableOLiteral() {
     clearObjectOtherOLiteral();
     initOLiteral();
-    bitField0_ |= 0x00000040;
     return oLiteral;
   }
 
@@ -953,7 +834,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setOLiteral(final RdfLiteral value) {
     clearObjectOtherOLiteral();
     initOLiteral();
-    bitField0_ |= 0x00000040;
     oLiteral.copyFrom(value);
     return this;
   }
@@ -966,18 +846,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple o_triple_term = 12;</code>
-   * @return whether the oTripleTerm field is set
-   */
-  public boolean hasOTripleTerm() {
-    return (bitField0_ & 0x00000080) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple o_triple_term = 12;</code>
    * @return this
    */
   public RdfQuad clearOTripleTerm() {
-    bitField0_ &= ~0x00000080;
     if (oTripleTerm != null) {
       oTripleTerm.clear();
     }
@@ -1011,7 +882,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfTriple getMutableOTripleTerm() {
     clearObjectOtherOTripleTerm();
     initOTripleTerm();
-    bitField0_ |= 0x00000080;
     return oTripleTerm;
   }
 
@@ -1023,7 +893,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setOTripleTerm(final RdfTriple value) {
     clearObjectOtherOTripleTerm();
     initOTripleTerm();
-    bitField0_ |= 0x00000080;
     oTripleTerm.copyFrom(value);
     return this;
   }
@@ -1036,18 +905,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 13;</code>
-   * @return whether the gIri field is set
-   */
-  public boolean hasGIri() {
-    return (bitField0_ & 0x00000001) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 13;</code>
    * @return this
    */
   public RdfQuad clearGIri() {
-    bitField0_ &= ~0x00000001;
     if (gIri != null) {
       gIri.clear();
     }
@@ -1081,7 +941,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfIri getMutableGIri() {
     clearGraphOtherGIri();
     initGIri();
-    bitField0_ |= 0x00000001;
     return gIri;
   }
 
@@ -1093,7 +952,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setGIri(final RdfIri value) {
     clearGraphOtherGIri();
     initGIri();
-    bitField0_ |= 0x00000001;
     gIri.copyFrom(value);
     return this;
   }
@@ -1143,18 +1001,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 15;</code>
-   * @return whether the gDefaultGraph field is set
-   */
-  public boolean hasGDefaultGraph() {
-    return (bitField0_ & 0x00000004) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 15;</code>
    * @return this
    */
   public RdfQuad clearGDefaultGraph() {
-    bitField0_ &= ~0x00000004;
     if (gDefaultGraph != null) {
       gDefaultGraph.clear();
     }
@@ -1188,7 +1037,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfDefaultGraph getMutableGDefaultGraph() {
     clearGraphOtherGDefaultGraph();
     initGDefaultGraph();
-    bitField0_ |= 0x00000004;
     return gDefaultGraph;
   }
 
@@ -1200,7 +1048,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setGDefaultGraph(final RdfDefaultGraph value) {
     clearGraphOtherGDefaultGraph();
     initGDefaultGraph();
-    bitField0_ |= 0x00000004;
     gDefaultGraph.copyFrom(value);
     return this;
   }
@@ -1213,18 +1060,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 16;</code>
-   * @return whether the gLiteral field is set
-   */
-  public boolean hasGLiteral() {
-    return (bitField0_ & 0x00000008) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 16;</code>
    * @return this
    */
   public RdfQuad clearGLiteral() {
-    bitField0_ &= ~0x00000008;
     if (gLiteral != null) {
       gLiteral.clear();
     }
@@ -1258,7 +1096,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfLiteral getMutableGLiteral() {
     clearGraphOtherGLiteral();
     initGLiteral();
-    bitField0_ |= 0x00000008;
     return gLiteral;
   }
 
@@ -1270,7 +1107,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setGLiteral(final RdfLiteral value) {
     clearGraphOtherGLiteral();
     initGLiteral();
-    bitField0_ |= 0x00000008;
     gLiteral.copyFrom(value);
     return this;
   }
@@ -1278,85 +1114,34 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   @Override
   public RdfQuad copyFrom(final RdfQuad other) {
     cachedSize = other.cachedSize;
-    if ((bitField0_ | other.bitField0_) != 0) {
-      bitField0_ = other.bitField0_;
-      if (other.hasSIri()) {
-        initSIri();
-        sIri.copyFrom(other.sIri);
-      } else {
-        clearSIri();
-      }
-      sBnode = other.sBnode;
-      if (other.hasSLiteral()) {
-        initSLiteral();
-        sLiteral.copyFrom(other.sLiteral);
-      } else {
-        clearSLiteral();
-      }
-      if (other.hasSTripleTerm()) {
-        initSTripleTerm();
-        sTripleTerm.copyFrom(other.sTripleTerm);
-      } else {
-        clearSTripleTerm();
-      }
-      if (other.hasPIri()) {
-        initPIri();
-        pIri.copyFrom(other.pIri);
-      } else {
-        clearPIri();
-      }
-      pBnode = other.pBnode;
-      if (other.hasPLiteral()) {
-        initPLiteral();
-        pLiteral.copyFrom(other.pLiteral);
-      } else {
-        clearPLiteral();
-      }
-      if (other.hasPTripleTerm()) {
-        initPTripleTerm();
-        pTripleTerm.copyFrom(other.pTripleTerm);
-      } else {
-        clearPTripleTerm();
-      }
-      if (other.hasOIri()) {
-        initOIri();
-        oIri.copyFrom(other.oIri);
-      } else {
-        clearOIri();
-      }
-      oBnode = other.oBnode;
-      if (other.hasOLiteral()) {
-        initOLiteral();
-        oLiteral.copyFrom(other.oLiteral);
-      } else {
-        clearOLiteral();
-      }
-      if (other.hasOTripleTerm()) {
-        initOTripleTerm();
-        oTripleTerm.copyFrom(other.oTripleTerm);
-      } else {
-        clearOTripleTerm();
-      }
-      if (other.hasGIri()) {
-        initGIri();
-        gIri.copyFrom(other.gIri);
-      } else {
-        clearGIri();
-      }
-      gBnode = other.gBnode;
-      if (other.hasGDefaultGraph()) {
-        initGDefaultGraph();
-        gDefaultGraph.copyFrom(other.gDefaultGraph);
-      } else {
-        clearGDefaultGraph();
-      }
-      if (other.hasGLiteral()) {
-        initGLiteral();
-        gLiteral.copyFrom(other.gLiteral);
-      } else {
-        clearGLiteral();
-      }
-    }
+    initSIri();
+    sIri.copyFrom(other.sIri);
+    sBnode = other.sBnode;
+    initSLiteral();
+    sLiteral.copyFrom(other.sLiteral);
+    initSTripleTerm();
+    sTripleTerm.copyFrom(other.sTripleTerm);
+    initPIri();
+    pIri.copyFrom(other.pIri);
+    pBnode = other.pBnode;
+    initPLiteral();
+    pLiteral.copyFrom(other.pLiteral);
+    initPTripleTerm();
+    pTripleTerm.copyFrom(other.pTripleTerm);
+    initOIri();
+    oIri.copyFrom(other.oIri);
+    oBnode = other.oBnode;
+    initOLiteral();
+    oLiteral.copyFrom(other.oLiteral);
+    initOTripleTerm();
+    oTripleTerm.copyFrom(other.oTripleTerm);
+    initGIri();
+    gIri.copyFrom(other.gIri);
+    gBnode = other.gBnode;
+    initGDefaultGraph();
+    gDefaultGraph.copyFrom(other.gDefaultGraph);
+    initGLiteral();
+    gLiteral.copyFrom(other.gLiteral);
     return this;
   }
 
@@ -1366,46 +1151,22 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
       return this;
     }
     cachedSize = -1;
-    if (other.hasSIri()) {
-      getMutableSIri().mergeFrom(other.sIri);
-    }
+    getMutableSIri().mergeFrom(other.sIri);
     sBnode = other.sBnode;
-    if (other.hasSLiteral()) {
-      getMutableSLiteral().mergeFrom(other.sLiteral);
-    }
-    if (other.hasSTripleTerm()) {
-      getMutableSTripleTerm().mergeFrom(other.sTripleTerm);
-    }
-    if (other.hasPIri()) {
-      getMutablePIri().mergeFrom(other.pIri);
-    }
+    getMutableSLiteral().mergeFrom(other.sLiteral);
+    getMutableSTripleTerm().mergeFrom(other.sTripleTerm);
+    getMutablePIri().mergeFrom(other.pIri);
     pBnode = other.pBnode;
-    if (other.hasPLiteral()) {
-      getMutablePLiteral().mergeFrom(other.pLiteral);
-    }
-    if (other.hasPTripleTerm()) {
-      getMutablePTripleTerm().mergeFrom(other.pTripleTerm);
-    }
-    if (other.hasOIri()) {
-      getMutableOIri().mergeFrom(other.oIri);
-    }
+    getMutablePLiteral().mergeFrom(other.pLiteral);
+    getMutablePTripleTerm().mergeFrom(other.pTripleTerm);
+    getMutableOIri().mergeFrom(other.oIri);
     oBnode = other.oBnode;
-    if (other.hasOLiteral()) {
-      getMutableOLiteral().mergeFrom(other.oLiteral);
-    }
-    if (other.hasOTripleTerm()) {
-      getMutableOTripleTerm().mergeFrom(other.oTripleTerm);
-    }
-    if (other.hasGIri()) {
-      getMutableGIri().mergeFrom(other.gIri);
-    }
+    getMutableOLiteral().mergeFrom(other.oLiteral);
+    getMutableOTripleTerm().mergeFrom(other.oTripleTerm);
+    getMutableGIri().mergeFrom(other.gIri);
     gBnode = other.gBnode;
-    if (other.hasGDefaultGraph()) {
-      getMutableGDefaultGraph().mergeFrom(other.gDefaultGraph);
-    }
-    if (other.hasGLiteral()) {
-      getMutableGLiteral().mergeFrom(other.gLiteral);
-    }
+    getMutableGDefaultGraph().mergeFrom(other.gDefaultGraph);
+    getMutableGLiteral().mergeFrom(other.gLiteral);
     return this;
   }
 
@@ -1415,7 +1176,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
       return this;
     }
     cachedSize = -1;
-    bitField0_ = 0;
     if (sIri != null) {
       sIri.clear();
     }
@@ -1476,169 +1236,104 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
       return false;
     }
     RdfQuad other = (RdfQuad) o;
-    return bitField0_ == other.bitField0_
-      && (!hasSIri() || sIri.equals(other.sIri))
+    return sIri.equals(other.sIri)
       && sBnode.equals(other.sBnode)
-      && (!hasSLiteral() || sLiteral.equals(other.sLiteral))
-      && (!hasSTripleTerm() || sTripleTerm.equals(other.sTripleTerm))
-      && (!hasPIri() || pIri.equals(other.pIri))
+      && sLiteral.equals(other.sLiteral)
+      && sTripleTerm.equals(other.sTripleTerm)
+      && pIri.equals(other.pIri)
       && pBnode.equals(other.pBnode)
-      && (!hasPLiteral() || pLiteral.equals(other.pLiteral))
-      && (!hasPTripleTerm() || pTripleTerm.equals(other.pTripleTerm))
-      && (!hasOIri() || oIri.equals(other.oIri))
+      && pLiteral.equals(other.pLiteral)
+      && pTripleTerm.equals(other.pTripleTerm)
+      && oIri.equals(other.oIri)
       && oBnode.equals(other.oBnode)
-      && (!hasOLiteral() || oLiteral.equals(other.oLiteral))
-      && (!hasOTripleTerm() || oTripleTerm.equals(other.oTripleTerm))
-      && (!hasGIri() || gIri.equals(other.gIri))
+      && oLiteral.equals(other.oLiteral)
+      && oTripleTerm.equals(other.oTripleTerm)
+      && gIri.equals(other.gIri)
       && gBnode.equals(other.gBnode)
-      && (!hasGDefaultGraph() || gDefaultGraph.equals(other.gDefaultGraph))
-      && (!hasGLiteral() || gLiteral.equals(other.gLiteral));
+      && gDefaultGraph.equals(other.gDefaultGraph)
+      && gLiteral.equals(other.gLiteral);
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    if ((bitField0_ & 0x00001000) != 0) {
-      output.writeRawByte((byte) 10);
-      output.writeUInt32NoTag(sIri.getCachedSize());
-      sIri.writeTo(output);
-    }
-    if ((bitField0_ & 0x00002000) != 0) {
-      output.writeRawByte((byte) 18);
-      output.writeStringNoTag(sBnode);
-    }
-    if ((bitField0_ & 0x00004000) != 0) {
-      output.writeRawByte((byte) 26);
-      output.writeUInt32NoTag(sLiteral.getCachedSize());
-      sLiteral.writeTo(output);
-    }
-    if ((bitField0_ & 0x00008000) != 0) {
-      output.writeRawByte((byte) 34);
-      output.writeUInt32NoTag(sTripleTerm.getCachedSize());
-      sTripleTerm.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000100) != 0) {
-      output.writeRawByte((byte) 42);
-      output.writeUInt32NoTag(pIri.getCachedSize());
-      pIri.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000200) != 0) {
-      output.writeRawByte((byte) 50);
-      output.writeStringNoTag(pBnode);
-    }
-    if ((bitField0_ & 0x00000400) != 0) {
-      output.writeRawByte((byte) 58);
-      output.writeUInt32NoTag(pLiteral.getCachedSize());
-      pLiteral.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000800) != 0) {
-      output.writeRawByte((byte) 66);
-      output.writeUInt32NoTag(pTripleTerm.getCachedSize());
-      pTripleTerm.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000010) != 0) {
-      output.writeRawByte((byte) 74);
-      output.writeUInt32NoTag(oIri.getCachedSize());
-      oIri.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000020) != 0) {
-      output.writeRawByte((byte) 82);
-      output.writeStringNoTag(oBnode);
-    }
-    if ((bitField0_ & 0x00000040) != 0) {
-      output.writeRawByte((byte) 90);
-      output.writeUInt32NoTag(oLiteral.getCachedSize());
-      oLiteral.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000080) != 0) {
-      output.writeRawByte((byte) 98);
-      output.writeUInt32NoTag(oTripleTerm.getCachedSize());
-      oTripleTerm.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000001) != 0) {
-      output.writeRawByte((byte) 106);
-      output.writeUInt32NoTag(gIri.getCachedSize());
-      gIri.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      output.writeRawByte((byte) 114);
-      output.writeStringNoTag(gBnode);
-    }
-    if ((bitField0_ & 0x00000004) != 0) {
-      output.writeRawByte((byte) 122);
-      output.writeUInt32NoTag(gDefaultGraph.getCachedSize());
-      gDefaultGraph.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000008) != 0) {
-      output.writeRawByte((byte) 130);
-      output.writeRawByte((byte) 1);
-      output.writeUInt32NoTag(gLiteral.getCachedSize());
-      gLiteral.writeTo(output);
-    }
+    output.writeRawByte((byte) 10);
+    output.writeUInt32NoTag(sIri.getCachedSize());
+    sIri.writeTo(output);
+    output.writeRawByte((byte) 18);
+    output.writeStringNoTag(sBnode);
+    output.writeRawByte((byte) 26);
+    output.writeUInt32NoTag(sLiteral.getCachedSize());
+    sLiteral.writeTo(output);
+    output.writeRawByte((byte) 34);
+    output.writeUInt32NoTag(sTripleTerm.getCachedSize());
+    sTripleTerm.writeTo(output);
+    output.writeRawByte((byte) 42);
+    output.writeUInt32NoTag(pIri.getCachedSize());
+    pIri.writeTo(output);
+    output.writeRawByte((byte) 50);
+    output.writeStringNoTag(pBnode);
+    output.writeRawByte((byte) 58);
+    output.writeUInt32NoTag(pLiteral.getCachedSize());
+    pLiteral.writeTo(output);
+    output.writeRawByte((byte) 66);
+    output.writeUInt32NoTag(pTripleTerm.getCachedSize());
+    pTripleTerm.writeTo(output);
+    output.writeRawByte((byte) 74);
+    output.writeUInt32NoTag(oIri.getCachedSize());
+    oIri.writeTo(output);
+    output.writeRawByte((byte) 82);
+    output.writeStringNoTag(oBnode);
+    output.writeRawByte((byte) 90);
+    output.writeUInt32NoTag(oLiteral.getCachedSize());
+    oLiteral.writeTo(output);
+    output.writeRawByte((byte) 98);
+    output.writeUInt32NoTag(oTripleTerm.getCachedSize());
+    oTripleTerm.writeTo(output);
+    output.writeRawByte((byte) 106);
+    output.writeUInt32NoTag(gIri.getCachedSize());
+    gIri.writeTo(output);
+    output.writeRawByte((byte) 114);
+    output.writeStringNoTag(gBnode);
+    output.writeRawByte((byte) 122);
+    output.writeUInt32NoTag(gDefaultGraph.getCachedSize());
+    gDefaultGraph.writeTo(output);
+    output.writeRawByte((byte) 130);
+    output.writeRawByte((byte) 1);
+    output.writeUInt32NoTag(gLiteral.getCachedSize());
+    gLiteral.writeTo(output);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    if ((bitField0_ & 0x00001000) != 0) {
-      final int dataSize = sIri.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00002000) != 0) {
-      size += 1 + CodedOutputStream.computeStringSizeNoTag(sBnode);
-    }
-    if ((bitField0_ & 0x00004000) != 0) {
-      final int dataSize = sLiteral.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00008000) != 0) {
-      final int dataSize = sTripleTerm.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000100) != 0) {
-      final int dataSize = pIri.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000200) != 0) {
-      size += 1 + CodedOutputStream.computeStringSizeNoTag(pBnode);
-    }
-    if ((bitField0_ & 0x00000400) != 0) {
-      final int dataSize = pLiteral.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000800) != 0) {
-      final int dataSize = pTripleTerm.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000010) != 0) {
-      final int dataSize = oIri.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000020) != 0) {
-      size += 1 + CodedOutputStream.computeStringSizeNoTag(oBnode);
-    }
-    if ((bitField0_ & 0x00000040) != 0) {
-      final int dataSize = oLiteral.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000080) != 0) {
-      final int dataSize = oTripleTerm.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000001) != 0) {
-      final int dataSize = gIri.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      size += 1 + CodedOutputStream.computeStringSizeNoTag(gBnode);
-    }
-    if ((bitField0_ & 0x00000004) != 0) {
-      final int dataSize = gDefaultGraph.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000008) != 0) {
-      final int dataSize = gLiteral.getSerializedSize();
-      size += 2 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
+    final int dataSize = sIri.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    size += 1 + CodedOutputStream.computeStringSizeNoTag(sBnode);
+    final int dataSize = sLiteral.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = sTripleTerm.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = pIri.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    size += 1 + CodedOutputStream.computeStringSizeNoTag(pBnode);
+    final int dataSize = pLiteral.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = pTripleTerm.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = oIri.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    size += 1 + CodedOutputStream.computeStringSizeNoTag(oBnode);
+    final int dataSize = oLiteral.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = oTripleTerm.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = gIri.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    size += 1 + CodedOutputStream.computeStringSizeNoTag(gBnode);
+    final int dataSize = gDefaultGraph.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = gLiteral.getSerializedSize();
+    size += 2 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
     return size;
   }
 
@@ -1654,7 +1349,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearSubjectOtherSIri();
           initSIri();
           ProtoMessage.mergeDelimitedFrom(sIri, input);
-          bitField0_ |= 0x00001000;
           tag = input.readTag();
           if (tag != 18) {
             break;
@@ -1665,7 +1359,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearSubjectOtherSBnode();
           initSBnode();
           sBnode = input.readStringRequireUtf8();
-          bitField0_ |= 0x00002000;
           tag = input.readTag();
           if (tag != 26) {
             break;
@@ -1676,7 +1369,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearSubjectOtherSLiteral();
           initSLiteral();
           ProtoMessage.mergeDelimitedFrom(sLiteral, input);
-          bitField0_ |= 0x00004000;
           tag = input.readTag();
           if (tag != 34) {
             break;
@@ -1687,7 +1379,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearSubjectOtherSTripleTerm();
           initSTripleTerm();
           ProtoMessage.mergeDelimitedFrom(sTripleTerm, input);
-          bitField0_ |= 0x00008000;
           tag = input.readTag();
           if (tag != 42) {
             break;
@@ -1698,7 +1389,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearPredicateOtherPIri();
           initPIri();
           ProtoMessage.mergeDelimitedFrom(pIri, input);
-          bitField0_ |= 0x00000100;
           tag = input.readTag();
           if (tag != 50) {
             break;
@@ -1709,7 +1399,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearPredicateOtherPBnode();
           initPBnode();
           pBnode = input.readStringRequireUtf8();
-          bitField0_ |= 0x00000200;
           tag = input.readTag();
           if (tag != 58) {
             break;
@@ -1720,7 +1409,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearPredicateOtherPLiteral();
           initPLiteral();
           ProtoMessage.mergeDelimitedFrom(pLiteral, input);
-          bitField0_ |= 0x00000400;
           tag = input.readTag();
           if (tag != 66) {
             break;
@@ -1731,7 +1419,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearPredicateOtherPTripleTerm();
           initPTripleTerm();
           ProtoMessage.mergeDelimitedFrom(pTripleTerm, input);
-          bitField0_ |= 0x00000800;
           tag = input.readTag();
           if (tag != 74) {
             break;
@@ -1742,7 +1429,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearObjectOtherOIri();
           initOIri();
           ProtoMessage.mergeDelimitedFrom(oIri, input);
-          bitField0_ |= 0x00000010;
           tag = input.readTag();
           if (tag != 82) {
             break;
@@ -1753,7 +1439,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearObjectOtherOBnode();
           initOBnode();
           oBnode = input.readStringRequireUtf8();
-          bitField0_ |= 0x00000020;
           tag = input.readTag();
           if (tag != 90) {
             break;
@@ -1764,7 +1449,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearObjectOtherOLiteral();
           initOLiteral();
           ProtoMessage.mergeDelimitedFrom(oLiteral, input);
-          bitField0_ |= 0x00000040;
           tag = input.readTag();
           if (tag != 98) {
             break;
@@ -1775,7 +1459,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearObjectOtherOTripleTerm();
           initOTripleTerm();
           ProtoMessage.mergeDelimitedFrom(oTripleTerm, input);
-          bitField0_ |= 0x00000080;
           tag = input.readTag();
           if (tag != 106) {
             break;
@@ -1786,7 +1469,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearGraphOtherGIri();
           initGIri();
           ProtoMessage.mergeDelimitedFrom(gIri, input);
-          bitField0_ |= 0x00000001;
           tag = input.readTag();
           if (tag != 114) {
             break;
@@ -1797,7 +1479,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearGraphOtherGBnode();
           initGBnode();
           gBnode = input.readStringRequireUtf8();
-          bitField0_ |= 0x00000002;
           tag = input.readTag();
           if (tag != 122) {
             break;
@@ -1808,7 +1489,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearGraphOtherGDefaultGraph();
           initGDefaultGraph();
           ProtoMessage.mergeDelimitedFrom(gDefaultGraph, input);
-          bitField0_ |= 0x00000004;
           tag = input.readTag();
           if (tag != 130) {
             break;
@@ -1819,7 +1499,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
           clearGraphOtherGLiteral();
           initGLiteral();
           ProtoMessage.mergeDelimitedFrom(gLiteral, input);
-          bitField0_ |= 0x00000008;
           tag = input.readTag();
           if (tag != 0) {
             break;
@@ -1842,11 +1521,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   @Override
   public RdfQuad clone() {
     return new RdfQuad().copyFrom(this);
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return ((bitField0_) == 0);
   }
 
   public static RdfQuad parseFrom(final byte[] data) throws InvalidProtocolBufferException {

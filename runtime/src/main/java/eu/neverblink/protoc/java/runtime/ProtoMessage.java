@@ -19,7 +19,7 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
 
     // Keep the first bitfield in the parent class so that it
     // is likely in the same cache line as the object header
-    protected int bitField0_;
+    // protected int bitField0_;
 
     protected ProtoMessage() {
     }

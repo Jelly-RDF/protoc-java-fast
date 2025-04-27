@@ -141,7 +141,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions setPhysicalTypeValue(final int value) {
-    bitField0_ |= 0x00000002;
     physicalType = value;
     return this;
   }
@@ -328,7 +327,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions setLogicalTypeValue(final int value) {
-    bitField0_ |= 0x00000080;
     logicalType = value;
     return this;
   }
@@ -373,18 +371,15 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
   @Override
   public RdfStreamOptions copyFrom(final RdfStreamOptions other) {
     cachedSize = other.cachedSize;
-    if ((bitField0_ | other.bitField0_) != 0) {
-      bitField0_ = other.bitField0_;
-      streamName = other.streamName;
-      physicalType = other.physicalType;
-      generalizedStatements = other.generalizedStatements;
-      rdfStar = other.rdfStar;
-      maxNameTableSize = other.maxNameTableSize;
-      maxPrefixTableSize = other.maxPrefixTableSize;
-      maxDatatypeTableSize = other.maxDatatypeTableSize;
-      logicalType = other.logicalType;
-      version = other.version;
-    }
+    streamName = other.streamName;
+    physicalType = other.physicalType;
+    generalizedStatements = other.generalizedStatements;
+    rdfStar = other.rdfStar;
+    maxNameTableSize = other.maxNameTableSize;
+    maxPrefixTableSize = other.maxPrefixTableSize;
+    maxDatatypeTableSize = other.maxDatatypeTableSize;
+    logicalType = other.logicalType;
+    version = other.version;
     return this;
   }
 
@@ -412,7 +407,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
       return this;
     }
     cachedSize = -1;
-    bitField0_ = 0;
     if (streamName != null) {
       streamName = "";
     }
@@ -436,8 +430,7 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
       return false;
     }
     RdfStreamOptions other = (RdfStreamOptions) o;
-    return bitField0_ == other.bitField0_
-      && streamName.equals(other.streamName)
+    return streamName.equals(other.streamName)
       && physicalType == other.physicalType
       && generalizedStatements == other.generalizedStatements
       && rdfStar == other.rdfStar
@@ -450,74 +443,38 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    if ((bitField0_ & 0x00000001) != 0) {
-      output.writeRawByte((byte) 10);
-      output.writeStringNoTag(streamName);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      output.writeRawByte((byte) 16);
-      output.writeEnumNoTag(physicalType);
-    }
-    if ((bitField0_ & 0x00000004) != 0) {
-      output.writeRawByte((byte) 24);
-      output.writeBoolNoTag(generalizedStatements);
-    }
-    if ((bitField0_ & 0x00000008) != 0) {
-      output.writeRawByte((byte) 32);
-      output.writeBoolNoTag(rdfStar);
-    }
-    if ((bitField0_ & 0x00000010) != 0) {
-      output.writeRawByte((byte) 72);
-      output.writeUInt32NoTag(maxNameTableSize);
-    }
-    if ((bitField0_ & 0x00000020) != 0) {
-      output.writeRawByte((byte) 80);
-      output.writeUInt32NoTag(maxPrefixTableSize);
-    }
-    if ((bitField0_ & 0x00000040) != 0) {
-      output.writeRawByte((byte) 88);
-      output.writeUInt32NoTag(maxDatatypeTableSize);
-    }
-    if ((bitField0_ & 0x00000080) != 0) {
-      output.writeRawByte((byte) 112);
-      output.writeEnumNoTag(logicalType);
-    }
-    if ((bitField0_ & 0x00000100) != 0) {
-      output.writeRawByte((byte) 120);
-      output.writeUInt32NoTag(version);
-    }
+    output.writeRawByte((byte) 10);
+    output.writeStringNoTag(streamName);
+    output.writeRawByte((byte) 16);
+    output.writeEnumNoTag(physicalType);
+    output.writeRawByte((byte) 24);
+    output.writeBoolNoTag(generalizedStatements);
+    output.writeRawByte((byte) 32);
+    output.writeBoolNoTag(rdfStar);
+    output.writeRawByte((byte) 72);
+    output.writeUInt32NoTag(maxNameTableSize);
+    output.writeRawByte((byte) 80);
+    output.writeUInt32NoTag(maxPrefixTableSize);
+    output.writeRawByte((byte) 88);
+    output.writeUInt32NoTag(maxDatatypeTableSize);
+    output.writeRawByte((byte) 112);
+    output.writeEnumNoTag(logicalType);
+    output.writeRawByte((byte) 120);
+    output.writeUInt32NoTag(version);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    if ((bitField0_ & 0x00000001) != 0) {
-      size += 1 + CodedOutputStream.computeStringSizeNoTag(streamName);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      size += 1 + CodedOutputStream.computeEnumSizeNoTag(physicalType);
-    }
-    if ((bitField0_ & 0x00000004) != 0) {
-      size += 2;
-    }
-    if ((bitField0_ & 0x00000008) != 0) {
-      size += 2;
-    }
-    if ((bitField0_ & 0x00000010) != 0) {
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxNameTableSize);
-    }
-    if ((bitField0_ & 0x00000020) != 0) {
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxPrefixTableSize);
-    }
-    if ((bitField0_ & 0x00000040) != 0) {
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxDatatypeTableSize);
-    }
-    if ((bitField0_ & 0x00000080) != 0) {
-      size += 1 + CodedOutputStream.computeEnumSizeNoTag(logicalType);
-    }
-    if ((bitField0_ & 0x00000100) != 0) {
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(version);
-    }
+    size += 1 + CodedOutputStream.computeStringSizeNoTag(streamName);
+    size += 1 + CodedOutputStream.computeEnumSizeNoTag(physicalType);
+    size += 2;
+    size += 2;
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxNameTableSize);
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxPrefixTableSize);
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxDatatypeTableSize);
+    size += 1 + CodedOutputStream.computeEnumSizeNoTag(logicalType);
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(version);
     return size;
   }
 
@@ -532,7 +489,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
           // streamName
           initStreamName();
           streamName = input.readStringRequireUtf8();
-          bitField0_ |= 0x00000001;
           tag = input.readTag();
           if (tag != 16) {
             break;
@@ -543,7 +499,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
           final int value = input.readInt32();
           if (PhysicalStreamType.forNumber(value) != null) {
             physicalType = value;
-            bitField0_ |= 0x00000002;
           }
           tag = input.readTag();
           if (tag != 24) {
@@ -553,7 +508,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
         case 24: {
           // generalizedStatements
           generalizedStatements = input.readBool();
-          bitField0_ |= 0x00000004;
           tag = input.readTag();
           if (tag != 32) {
             break;
@@ -562,7 +516,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
         case 32: {
           // rdfStar
           rdfStar = input.readBool();
-          bitField0_ |= 0x00000008;
           tag = input.readTag();
           if (tag != 72) {
             break;
@@ -571,7 +524,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
         case 72: {
           // maxNameTableSize
           maxNameTableSize = input.readUInt32();
-          bitField0_ |= 0x00000010;
           tag = input.readTag();
           if (tag != 80) {
             break;
@@ -580,7 +532,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
         case 80: {
           // maxPrefixTableSize
           maxPrefixTableSize = input.readUInt32();
-          bitField0_ |= 0x00000020;
           tag = input.readTag();
           if (tag != 88) {
             break;
@@ -589,7 +540,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
         case 88: {
           // maxDatatypeTableSize
           maxDatatypeTableSize = input.readUInt32();
-          bitField0_ |= 0x00000040;
           tag = input.readTag();
           if (tag != 112) {
             break;
@@ -600,7 +550,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
           final int value = input.readInt32();
           if (LogicalStreamType.forNumber(value) != null) {
             logicalType = value;
-            bitField0_ |= 0x00000080;
           }
           tag = input.readTag();
           if (tag != 120) {
@@ -610,7 +559,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
         case 120: {
           // version
           version = input.readUInt32();
-          bitField0_ |= 0x00000100;
           tag = input.readTag();
           if (tag != 0) {
             break;
@@ -633,11 +581,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
   @Override
   public RdfStreamOptions clone() {
     return new RdfStreamOptions().copyFrom(this);
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return ((bitField0_) == 0);
   }
 
   public static RdfStreamOptions parseFrom(final byte[] data) throws

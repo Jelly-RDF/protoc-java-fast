@@ -39,7 +39,7 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   }
 
   public boolean hasLiteralKind() {
-    return (((bitField0_ & 0x00000003)) != 0);
+    return true;
   }
 
   public RdfLiteral clearLiteralKind() {
@@ -51,15 +51,11 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   }
 
   private void clearLiteralKindOtherLangtag() {
-    if ((((bitField0_ & 0x00000002)) != 0)) {
-      clearDatatype();
-    }
+    clearDatatype();
   }
 
   private void clearLiteralKindOtherDatatype() {
-    if ((((bitField0_ & 0x00000001)) != 0)) {
-      clearLangtag();
-    }
+    clearLangtag();
   }
 
   private void initLex() {
@@ -166,12 +162,9 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   @Override
   public RdfLiteral copyFrom(final RdfLiteral other) {
     cachedSize = other.cachedSize;
-    if ((bitField0_ | other.bitField0_) != 0) {
-      bitField0_ = other.bitField0_;
-      lex = other.lex;
-      langtag = other.langtag;
-      datatype = other.datatype;
-    }
+    lex = other.lex;
+    langtag = other.langtag;
+    datatype = other.datatype;
     return this;
   }
 
@@ -193,7 +186,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
       return this;
     }
     cachedSize = -1;
-    bitField0_ = 0;
     if (lex != null) {
       lex = "";
     }
@@ -213,40 +205,27 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
       return false;
     }
     RdfLiteral other = (RdfLiteral) o;
-    return bitField0_ == other.bitField0_
-      && lex.equals(other.lex)
+    return lex.equals(other.lex)
       && langtag.equals(other.langtag)
       && datatype == other.datatype;
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    if ((bitField0_ & 0x00000004) != 0) {
-      output.writeRawByte((byte) 10);
-      output.writeStringNoTag(lex);
-    }
-    if ((bitField0_ & 0x00000001) != 0) {
-      output.writeRawByte((byte) 18);
-      output.writeStringNoTag(langtag);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      output.writeRawByte((byte) 24);
-      output.writeUInt32NoTag(datatype);
-    }
+    output.writeRawByte((byte) 10);
+    output.writeStringNoTag(lex);
+    output.writeRawByte((byte) 18);
+    output.writeStringNoTag(langtag);
+    output.writeRawByte((byte) 24);
+    output.writeUInt32NoTag(datatype);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    if ((bitField0_ & 0x00000004) != 0) {
-      size += 1 + CodedOutputStream.computeStringSizeNoTag(lex);
-    }
-    if ((bitField0_ & 0x00000001) != 0) {
-      size += 1 + CodedOutputStream.computeStringSizeNoTag(langtag);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(datatype);
-    }
+    size += 1 + CodedOutputStream.computeStringSizeNoTag(lex);
+    size += 1 + CodedOutputStream.computeStringSizeNoTag(langtag);
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(datatype);
     return size;
   }
 
@@ -261,7 +240,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
           // lex
           initLex();
           lex = input.readStringRequireUtf8();
-          bitField0_ |= 0x00000004;
           tag = input.readTag();
           if (tag != 18) {
             break;
@@ -272,7 +250,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
           clearLiteralKindOtherLangtag();
           initLangtag();
           langtag = input.readStringRequireUtf8();
-          bitField0_ |= 0x00000001;
           tag = input.readTag();
           if (tag != 24) {
             break;
@@ -282,7 +259,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
           // datatype
           clearLiteralKindOtherDatatype();
           datatype = input.readUInt32();
-          bitField0_ |= 0x00000002;
           tag = input.readTag();
           if (tag != 0) {
             break;
@@ -305,11 +281,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   @Override
   public RdfLiteral clone() {
     return new RdfLiteral().copyFrom(this);
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return ((bitField0_) == 0);
   }
 
   public static RdfLiteral parseFrom(final byte[] data) throws InvalidProtocolBufferException {

@@ -90,11 +90,8 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
   @Override
   public RdfIri copyFrom(final RdfIri other) {
     cachedSize = other.cachedSize;
-    if ((bitField0_ | other.bitField0_) != 0) {
-      bitField0_ = other.bitField0_;
-      prefixId = other.prefixId;
-      nameId = other.nameId;
-    }
+    prefixId = other.prefixId;
+    nameId = other.nameId;
     return this;
   }
 
@@ -115,7 +112,6 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
       return this;
     }
     cachedSize = -1;
-    bitField0_ = 0;
     prefixId = 0;
     nameId = 0;
     return this;
@@ -130,32 +126,23 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
       return false;
     }
     RdfIri other = (RdfIri) o;
-    return bitField0_ == other.bitField0_
-      && prefixId == other.prefixId
+    return prefixId == other.prefixId
       && nameId == other.nameId;
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    if ((bitField0_ & 0x00000001) != 0) {
-      output.writeRawByte((byte) 8);
-      output.writeUInt32NoTag(prefixId);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      output.writeRawByte((byte) 16);
-      output.writeUInt32NoTag(nameId);
-    }
+    output.writeRawByte((byte) 8);
+    output.writeUInt32NoTag(prefixId);
+    output.writeRawByte((byte) 16);
+    output.writeUInt32NoTag(nameId);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    if ((bitField0_ & 0x00000001) != 0) {
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(prefixId);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(nameId);
-    }
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(prefixId);
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(nameId);
     return size;
   }
 
@@ -169,7 +156,6 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
         case 8: {
           // prefixId
           prefixId = input.readUInt32();
-          bitField0_ |= 0x00000001;
           tag = input.readTag();
           if (tag != 16) {
             break;
@@ -178,7 +164,6 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
         case 16: {
           // nameId
           nameId = input.readUInt32();
-          bitField0_ |= 0x00000002;
           tag = input.readTag();
           if (tag != 0) {
             break;
@@ -201,11 +186,6 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
   @Override
   public RdfIri clone() {
     return new RdfIri().copyFrom(this);
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return ((bitField0_) == 0);
   }
 
   public static RdfIri parseFrom(final byte[] data) throws InvalidProtocolBufferException {

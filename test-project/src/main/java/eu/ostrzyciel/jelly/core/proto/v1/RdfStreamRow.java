@@ -69,7 +69,7 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   }
 
   public boolean hasRow() {
-    return (((bitField0_ & 0x000001ff)) != 0);
+    return true;
   }
 
   public RdfStreamRow clearRow() {
@@ -88,120 +88,102 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   }
 
   private void clearRowOtherOptions() {
-    if ((((bitField0_ & 0x000001fe)) != 0)) {
-      clearTriple();
-      clearQuad();
-      clearGraphStart();
-      clearGraphEnd();
-      clearNamespace();
-      clearName();
-      clearPrefix();
-      clearDatatype();
-    }
+    clearTriple();
+    clearQuad();
+    clearGraphStart();
+    clearGraphEnd();
+    clearNamespace();
+    clearName();
+    clearPrefix();
+    clearDatatype();
   }
 
   private void clearRowOtherTriple() {
-    if ((((bitField0_ & 0x000001fd)) != 0)) {
-      clearOptions();
-      clearQuad();
-      clearGraphStart();
-      clearGraphEnd();
-      clearNamespace();
-      clearName();
-      clearPrefix();
-      clearDatatype();
-    }
+    clearOptions();
+    clearQuad();
+    clearGraphStart();
+    clearGraphEnd();
+    clearNamespace();
+    clearName();
+    clearPrefix();
+    clearDatatype();
   }
 
   private void clearRowOtherQuad() {
-    if ((((bitField0_ & 0x000001fb)) != 0)) {
-      clearOptions();
-      clearTriple();
-      clearGraphStart();
-      clearGraphEnd();
-      clearNamespace();
-      clearName();
-      clearPrefix();
-      clearDatatype();
-    }
+    clearOptions();
+    clearTriple();
+    clearGraphStart();
+    clearGraphEnd();
+    clearNamespace();
+    clearName();
+    clearPrefix();
+    clearDatatype();
   }
 
   private void clearRowOtherGraphStart() {
-    if ((((bitField0_ & 0x000001f7)) != 0)) {
-      clearOptions();
-      clearTriple();
-      clearQuad();
-      clearGraphEnd();
-      clearNamespace();
-      clearName();
-      clearPrefix();
-      clearDatatype();
-    }
+    clearOptions();
+    clearTriple();
+    clearQuad();
+    clearGraphEnd();
+    clearNamespace();
+    clearName();
+    clearPrefix();
+    clearDatatype();
   }
 
   private void clearRowOtherGraphEnd() {
-    if ((((bitField0_ & 0x000001ef)) != 0)) {
-      clearOptions();
-      clearTriple();
-      clearQuad();
-      clearGraphStart();
-      clearNamespace();
-      clearName();
-      clearPrefix();
-      clearDatatype();
-    }
+    clearOptions();
+    clearTriple();
+    clearQuad();
+    clearGraphStart();
+    clearNamespace();
+    clearName();
+    clearPrefix();
+    clearDatatype();
   }
 
   private void clearRowOtherNamespace() {
-    if ((((bitField0_ & 0x000001df)) != 0)) {
-      clearOptions();
-      clearTriple();
-      clearQuad();
-      clearGraphStart();
-      clearGraphEnd();
-      clearName();
-      clearPrefix();
-      clearDatatype();
-    }
+    clearOptions();
+    clearTriple();
+    clearQuad();
+    clearGraphStart();
+    clearGraphEnd();
+    clearName();
+    clearPrefix();
+    clearDatatype();
   }
 
   private void clearRowOtherName() {
-    if ((((bitField0_ & 0x000001bf)) != 0)) {
-      clearOptions();
-      clearTriple();
-      clearQuad();
-      clearGraphStart();
-      clearGraphEnd();
-      clearNamespace();
-      clearPrefix();
-      clearDatatype();
-    }
+    clearOptions();
+    clearTriple();
+    clearQuad();
+    clearGraphStart();
+    clearGraphEnd();
+    clearNamespace();
+    clearPrefix();
+    clearDatatype();
   }
 
   private void clearRowOtherPrefix() {
-    if ((((bitField0_ & 0x0000017f)) != 0)) {
-      clearOptions();
-      clearTriple();
-      clearQuad();
-      clearGraphStart();
-      clearGraphEnd();
-      clearNamespace();
-      clearName();
-      clearDatatype();
-    }
+    clearOptions();
+    clearTriple();
+    clearQuad();
+    clearGraphStart();
+    clearGraphEnd();
+    clearNamespace();
+    clearName();
+    clearDatatype();
   }
 
   private void clearRowOtherDatatype() {
-    if ((((bitField0_ & 0x000000ff)) != 0)) {
-      clearOptions();
-      clearTriple();
-      clearQuad();
-      clearGraphStart();
-      clearGraphEnd();
-      clearNamespace();
-      clearName();
-      clearPrefix();
-    }
+    clearOptions();
+    clearTriple();
+    clearQuad();
+    clearGraphStart();
+    clearGraphEnd();
+    clearNamespace();
+    clearName();
+    clearPrefix();
   }
 
   private void initOptions() {
@@ -212,18 +194,9 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamOptions options = 1;</code>
-   * @return whether the options field is set
-   */
-  public boolean hasOptions() {
-    return (bitField0_ & 0x00000001) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamOptions options = 1;</code>
    * @return this
    */
   public RdfStreamRow clearOptions() {
-    bitField0_ &= ~0x00000001;
     if (options != null) {
       options.clear();
     }
@@ -257,7 +230,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfStreamOptions getMutableOptions() {
     clearRowOtherOptions();
     initOptions();
-    bitField0_ |= 0x00000001;
     return options;
   }
 
@@ -269,7 +241,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfStreamRow setOptions(final RdfStreamOptions value) {
     clearRowOtherOptions();
     initOptions();
-    bitField0_ |= 0x00000001;
     options.copyFrom(value);
     return this;
   }
@@ -282,18 +253,9 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple triple = 2;</code>
-   * @return whether the triple field is set
-   */
-  public boolean hasTriple() {
-    return (bitField0_ & 0x00000002) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple triple = 2;</code>
    * @return this
    */
   public RdfStreamRow clearTriple() {
-    bitField0_ &= ~0x00000002;
     if (triple != null) {
       triple.clear();
     }
@@ -327,7 +289,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfTriple getMutableTriple() {
     clearRowOtherTriple();
     initTriple();
-    bitField0_ |= 0x00000002;
     return triple;
   }
 
@@ -339,7 +300,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfStreamRow setTriple(final RdfTriple value) {
     clearRowOtherTriple();
     initTriple();
-    bitField0_ |= 0x00000002;
     triple.copyFrom(value);
     return this;
   }
@@ -352,18 +312,9 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfQuad quad = 3;</code>
-   * @return whether the quad field is set
-   */
-  public boolean hasQuad() {
-    return (bitField0_ & 0x00000004) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfQuad quad = 3;</code>
    * @return this
    */
   public RdfStreamRow clearQuad() {
-    bitField0_ &= ~0x00000004;
     if (quad != null) {
       quad.clear();
     }
@@ -397,7 +348,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfQuad getMutableQuad() {
     clearRowOtherQuad();
     initQuad();
-    bitField0_ |= 0x00000004;
     return quad;
   }
 
@@ -409,7 +359,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfStreamRow setQuad(final RdfQuad value) {
     clearRowOtherQuad();
     initQuad();
-    bitField0_ |= 0x00000004;
     quad.copyFrom(value);
     return this;
   }
@@ -422,18 +371,9 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphStart graph_start = 4;</code>
-   * @return whether the graphStart field is set
-   */
-  public boolean hasGraphStart() {
-    return (bitField0_ & 0x00000008) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphStart graph_start = 4;</code>
    * @return this
    */
   public RdfStreamRow clearGraphStart() {
-    bitField0_ &= ~0x00000008;
     if (graphStart != null) {
       graphStart.clear();
     }
@@ -467,7 +407,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfGraphStart getMutableGraphStart() {
     clearRowOtherGraphStart();
     initGraphStart();
-    bitField0_ |= 0x00000008;
     return graphStart;
   }
 
@@ -479,7 +418,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfStreamRow setGraphStart(final RdfGraphStart value) {
     clearRowOtherGraphStart();
     initGraphStart();
-    bitField0_ |= 0x00000008;
     graphStart.copyFrom(value);
     return this;
   }
@@ -492,18 +430,9 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphEnd graph_end = 5;</code>
-   * @return whether the graphEnd field is set
-   */
-  public boolean hasGraphEnd() {
-    return (bitField0_ & 0x00000010) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphEnd graph_end = 5;</code>
    * @return this
    */
   public RdfStreamRow clearGraphEnd() {
-    bitField0_ &= ~0x00000010;
     if (graphEnd != null) {
       graphEnd.clear();
     }
@@ -537,7 +466,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfGraphEnd getMutableGraphEnd() {
     clearRowOtherGraphEnd();
     initGraphEnd();
-    bitField0_ |= 0x00000010;
     return graphEnd;
   }
 
@@ -549,7 +477,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfStreamRow setGraphEnd(final RdfGraphEnd value) {
     clearRowOtherGraphEnd();
     initGraphEnd();
-    bitField0_ |= 0x00000010;
     graphEnd.copyFrom(value);
     return this;
   }
@@ -562,18 +489,9 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNamespaceDeclaration namespace = 6;</code>
-   * @return whether the namespace field is set
-   */
-  public boolean hasNamespace() {
-    return (bitField0_ & 0x00000020) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNamespaceDeclaration namespace = 6;</code>
    * @return this
    */
   public RdfStreamRow clearNamespace() {
-    bitField0_ &= ~0x00000020;
     if (namespace != null) {
       namespace.clear();
     }
@@ -607,7 +525,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfNamespaceDeclaration getMutableNamespace() {
     clearRowOtherNamespace();
     initNamespace();
-    bitField0_ |= 0x00000020;
     return namespace;
   }
 
@@ -619,7 +536,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfStreamRow setNamespace(final RdfNamespaceDeclaration value) {
     clearRowOtherNamespace();
     initNamespace();
-    bitField0_ |= 0x00000020;
     namespace.copyFrom(value);
     return this;
   }
@@ -632,18 +548,9 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNameEntry name = 9;</code>
-   * @return whether the name field is set
-   */
-  public boolean hasName() {
-    return (bitField0_ & 0x00000040) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNameEntry name = 9;</code>
    * @return this
    */
   public RdfStreamRow clearName() {
-    bitField0_ &= ~0x00000040;
     if (name != null) {
       name.clear();
     }
@@ -677,7 +584,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfNameEntry getMutableName() {
     clearRowOtherName();
     initName();
-    bitField0_ |= 0x00000040;
     return name;
   }
 
@@ -689,7 +595,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfStreamRow setName(final RdfNameEntry value) {
     clearRowOtherName();
     initName();
-    bitField0_ |= 0x00000040;
     name.copyFrom(value);
     return this;
   }
@@ -702,18 +607,9 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfPrefixEntry prefix = 10;</code>
-   * @return whether the prefix field is set
-   */
-  public boolean hasPrefix() {
-    return (bitField0_ & 0x00000080) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfPrefixEntry prefix = 10;</code>
    * @return this
    */
   public RdfStreamRow clearPrefix() {
-    bitField0_ &= ~0x00000080;
     if (prefix != null) {
       prefix.clear();
     }
@@ -747,7 +643,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfPrefixEntry getMutablePrefix() {
     clearRowOtherPrefix();
     initPrefix();
-    bitField0_ |= 0x00000080;
     return prefix;
   }
 
@@ -759,7 +654,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfStreamRow setPrefix(final RdfPrefixEntry value) {
     clearRowOtherPrefix();
     initPrefix();
-    bitField0_ |= 0x00000080;
     prefix.copyFrom(value);
     return this;
   }
@@ -772,18 +666,9 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDatatypeEntry datatype = 11;</code>
-   * @return whether the datatype field is set
-   */
-  public boolean hasDatatype() {
-    return (bitField0_ & 0x00000100) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDatatypeEntry datatype = 11;</code>
    * @return this
    */
   public RdfStreamRow clearDatatype() {
-    bitField0_ &= ~0x00000100;
     if (datatype != null) {
       datatype.clear();
     }
@@ -817,7 +702,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfDatatypeEntry getMutableDatatype() {
     clearRowOtherDatatype();
     initDatatype();
-    bitField0_ |= 0x00000100;
     return datatype;
   }
 
@@ -829,7 +713,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   public RdfStreamRow setDatatype(final RdfDatatypeEntry value) {
     clearRowOtherDatatype();
     initDatatype();
-    bitField0_ |= 0x00000100;
     datatype.copyFrom(value);
     return this;
   }
@@ -837,63 +720,24 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   @Override
   public RdfStreamRow copyFrom(final RdfStreamRow other) {
     cachedSize = other.cachedSize;
-    if ((bitField0_ | other.bitField0_) != 0) {
-      bitField0_ = other.bitField0_;
-      if (other.hasOptions()) {
-        initOptions();
-        options.copyFrom(other.options);
-      } else {
-        clearOptions();
-      }
-      if (other.hasTriple()) {
-        initTriple();
-        triple.copyFrom(other.triple);
-      } else {
-        clearTriple();
-      }
-      if (other.hasQuad()) {
-        initQuad();
-        quad.copyFrom(other.quad);
-      } else {
-        clearQuad();
-      }
-      if (other.hasGraphStart()) {
-        initGraphStart();
-        graphStart.copyFrom(other.graphStart);
-      } else {
-        clearGraphStart();
-      }
-      if (other.hasGraphEnd()) {
-        initGraphEnd();
-        graphEnd.copyFrom(other.graphEnd);
-      } else {
-        clearGraphEnd();
-      }
-      if (other.hasNamespace()) {
-        initNamespace();
-        namespace.copyFrom(other.namespace);
-      } else {
-        clearNamespace();
-      }
-      if (other.hasName()) {
-        initName();
-        name.copyFrom(other.name);
-      } else {
-        clearName();
-      }
-      if (other.hasPrefix()) {
-        initPrefix();
-        prefix.copyFrom(other.prefix);
-      } else {
-        clearPrefix();
-      }
-      if (other.hasDatatype()) {
-        initDatatype();
-        datatype.copyFrom(other.datatype);
-      } else {
-        clearDatatype();
-      }
-    }
+    initOptions();
+    options.copyFrom(other.options);
+    initTriple();
+    triple.copyFrom(other.triple);
+    initQuad();
+    quad.copyFrom(other.quad);
+    initGraphStart();
+    graphStart.copyFrom(other.graphStart);
+    initGraphEnd();
+    graphEnd.copyFrom(other.graphEnd);
+    initNamespace();
+    namespace.copyFrom(other.namespace);
+    initName();
+    name.copyFrom(other.name);
+    initPrefix();
+    prefix.copyFrom(other.prefix);
+    initDatatype();
+    datatype.copyFrom(other.datatype);
     return this;
   }
 
@@ -903,33 +747,15 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
       return this;
     }
     cachedSize = -1;
-    if (other.hasOptions()) {
-      getMutableOptions().mergeFrom(other.options);
-    }
-    if (other.hasTriple()) {
-      getMutableTriple().mergeFrom(other.triple);
-    }
-    if (other.hasQuad()) {
-      getMutableQuad().mergeFrom(other.quad);
-    }
-    if (other.hasGraphStart()) {
-      getMutableGraphStart().mergeFrom(other.graphStart);
-    }
-    if (other.hasGraphEnd()) {
-      getMutableGraphEnd().mergeFrom(other.graphEnd);
-    }
-    if (other.hasNamespace()) {
-      getMutableNamespace().mergeFrom(other.namespace);
-    }
-    if (other.hasName()) {
-      getMutableName().mergeFrom(other.name);
-    }
-    if (other.hasPrefix()) {
-      getMutablePrefix().mergeFrom(other.prefix);
-    }
-    if (other.hasDatatype()) {
-      getMutableDatatype().mergeFrom(other.datatype);
-    }
+    getMutableOptions().mergeFrom(other.options);
+    getMutableTriple().mergeFrom(other.triple);
+    getMutableQuad().mergeFrom(other.quad);
+    getMutableGraphStart().mergeFrom(other.graphStart);
+    getMutableGraphEnd().mergeFrom(other.graphEnd);
+    getMutableNamespace().mergeFrom(other.namespace);
+    getMutableName().mergeFrom(other.name);
+    getMutablePrefix().mergeFrom(other.prefix);
+    getMutableDatatype().mergeFrom(other.datatype);
     return this;
   }
 
@@ -939,7 +765,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
       return this;
     }
     cachedSize = -1;
-    bitField0_ = 0;
     if (options != null) {
       options.clear();
     }
@@ -979,106 +804,69 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
       return false;
     }
     RdfStreamRow other = (RdfStreamRow) o;
-    return bitField0_ == other.bitField0_
-      && (!hasOptions() || options.equals(other.options))
-      && (!hasTriple() || triple.equals(other.triple))
-      && (!hasQuad() || quad.equals(other.quad))
-      && (!hasGraphStart() || graphStart.equals(other.graphStart))
-      && (!hasGraphEnd() || graphEnd.equals(other.graphEnd))
-      && (!hasNamespace() || namespace.equals(other.namespace))
-      && (!hasName() || name.equals(other.name))
-      && (!hasPrefix() || prefix.equals(other.prefix))
-      && (!hasDatatype() || datatype.equals(other.datatype));
+    return options.equals(other.options)
+      && triple.equals(other.triple)
+      && quad.equals(other.quad)
+      && graphStart.equals(other.graphStart)
+      && graphEnd.equals(other.graphEnd)
+      && namespace.equals(other.namespace)
+      && name.equals(other.name)
+      && prefix.equals(other.prefix)
+      && datatype.equals(other.datatype);
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    if ((bitField0_ & 0x00000001) != 0) {
-      output.writeRawByte((byte) 10);
-      output.writeUInt32NoTag(options.getCachedSize());
-      options.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      output.writeRawByte((byte) 18);
-      output.writeUInt32NoTag(triple.getCachedSize());
-      triple.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000004) != 0) {
-      output.writeRawByte((byte) 26);
-      output.writeUInt32NoTag(quad.getCachedSize());
-      quad.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000008) != 0) {
-      output.writeRawByte((byte) 34);
-      output.writeUInt32NoTag(graphStart.getCachedSize());
-      graphStart.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000010) != 0) {
-      output.writeRawByte((byte) 42);
-      output.writeUInt32NoTag(graphEnd.getCachedSize());
-      graphEnd.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000020) != 0) {
-      output.writeRawByte((byte) 50);
-      output.writeUInt32NoTag(namespace.getCachedSize());
-      namespace.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000040) != 0) {
-      output.writeRawByte((byte) 74);
-      output.writeUInt32NoTag(name.getCachedSize());
-      name.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000080) != 0) {
-      output.writeRawByte((byte) 82);
-      output.writeUInt32NoTag(prefix.getCachedSize());
-      prefix.writeTo(output);
-    }
-    if ((bitField0_ & 0x00000100) != 0) {
-      output.writeRawByte((byte) 90);
-      output.writeUInt32NoTag(datatype.getCachedSize());
-      datatype.writeTo(output);
-    }
+    output.writeRawByte((byte) 10);
+    output.writeUInt32NoTag(options.getCachedSize());
+    options.writeTo(output);
+    output.writeRawByte((byte) 18);
+    output.writeUInt32NoTag(triple.getCachedSize());
+    triple.writeTo(output);
+    output.writeRawByte((byte) 26);
+    output.writeUInt32NoTag(quad.getCachedSize());
+    quad.writeTo(output);
+    output.writeRawByte((byte) 34);
+    output.writeUInt32NoTag(graphStart.getCachedSize());
+    graphStart.writeTo(output);
+    output.writeRawByte((byte) 42);
+    output.writeUInt32NoTag(graphEnd.getCachedSize());
+    graphEnd.writeTo(output);
+    output.writeRawByte((byte) 50);
+    output.writeUInt32NoTag(namespace.getCachedSize());
+    namespace.writeTo(output);
+    output.writeRawByte((byte) 74);
+    output.writeUInt32NoTag(name.getCachedSize());
+    name.writeTo(output);
+    output.writeRawByte((byte) 82);
+    output.writeUInt32NoTag(prefix.getCachedSize());
+    prefix.writeTo(output);
+    output.writeRawByte((byte) 90);
+    output.writeUInt32NoTag(datatype.getCachedSize());
+    datatype.writeTo(output);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    if ((bitField0_ & 0x00000001) != 0) {
-      final int dataSize = options.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      final int dataSize = triple.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000004) != 0) {
-      final int dataSize = quad.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000008) != 0) {
-      final int dataSize = graphStart.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000010) != 0) {
-      final int dataSize = graphEnd.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000020) != 0) {
-      final int dataSize = namespace.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000040) != 0) {
-      final int dataSize = name.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000080) != 0) {
-      final int dataSize = prefix.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
-    if ((bitField0_ & 0x00000100) != 0) {
-      final int dataSize = datatype.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
+    final int dataSize = options.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = triple.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = quad.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = graphStart.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = graphEnd.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = namespace.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = name.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = prefix.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    final int dataSize = datatype.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
     return size;
   }
 
@@ -1094,7 +882,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
           clearRowOtherOptions();
           initOptions();
           ProtoMessage.mergeDelimitedFrom(options, input);
-          bitField0_ |= 0x00000001;
           tag = input.readTag();
           if (tag != 18) {
             break;
@@ -1105,7 +892,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
           clearRowOtherTriple();
           initTriple();
           ProtoMessage.mergeDelimitedFrom(triple, input);
-          bitField0_ |= 0x00000002;
           tag = input.readTag();
           if (tag != 26) {
             break;
@@ -1116,7 +902,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
           clearRowOtherQuad();
           initQuad();
           ProtoMessage.mergeDelimitedFrom(quad, input);
-          bitField0_ |= 0x00000004;
           tag = input.readTag();
           if (tag != 34) {
             break;
@@ -1127,7 +912,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
           clearRowOtherGraphStart();
           initGraphStart();
           ProtoMessage.mergeDelimitedFrom(graphStart, input);
-          bitField0_ |= 0x00000008;
           tag = input.readTag();
           if (tag != 42) {
             break;
@@ -1138,7 +922,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
           clearRowOtherGraphEnd();
           initGraphEnd();
           ProtoMessage.mergeDelimitedFrom(graphEnd, input);
-          bitField0_ |= 0x00000010;
           tag = input.readTag();
           if (tag != 50) {
             break;
@@ -1149,7 +932,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
           clearRowOtherNamespace();
           initNamespace();
           ProtoMessage.mergeDelimitedFrom(namespace, input);
-          bitField0_ |= 0x00000020;
           tag = input.readTag();
           if (tag != 74) {
             break;
@@ -1160,7 +942,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
           clearRowOtherName();
           initName();
           ProtoMessage.mergeDelimitedFrom(name, input);
-          bitField0_ |= 0x00000040;
           tag = input.readTag();
           if (tag != 82) {
             break;
@@ -1171,7 +952,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
           clearRowOtherPrefix();
           initPrefix();
           ProtoMessage.mergeDelimitedFrom(prefix, input);
-          bitField0_ |= 0x00000080;
           tag = input.readTag();
           if (tag != 90) {
             break;
@@ -1182,7 +962,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
           clearRowOtherDatatype();
           initDatatype();
           ProtoMessage.mergeDelimitedFrom(datatype, input);
-          bitField0_ |= 0x00000100;
           tag = input.readTag();
           if (tag != 0) {
             break;
@@ -1205,11 +984,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   @Override
   public RdfStreamRow clone() {
     return new RdfStreamRow().copyFrom(this);
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return ((bitField0_) == 0);
   }
 
   public static RdfStreamRow parseFrom(final byte[] data) throws InvalidProtocolBufferException {

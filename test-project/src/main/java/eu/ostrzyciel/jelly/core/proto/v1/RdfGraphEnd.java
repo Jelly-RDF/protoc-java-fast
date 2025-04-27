@@ -95,11 +95,6 @@ public final class RdfGraphEnd extends ProtoMessage<RdfGraphEnd> implements Clon
     return new RdfGraphEnd().copyFrom(this);
   }
 
-  @Override
-  public boolean isEmpty() {
-    return ((bitField0_) == 0);
-  }
-
   public static RdfGraphEnd parseFrom(final byte[] data) throws InvalidProtocolBufferException {
     return ProtoMessage.mergeFrom(new RdfGraphEnd(), data).checkInitialized();
   }

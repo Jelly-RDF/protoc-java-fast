@@ -99,11 +99,8 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
   @Override
   public RdfPrefixEntry copyFrom(final RdfPrefixEntry other) {
     cachedSize = other.cachedSize;
-    if ((bitField0_ | other.bitField0_) != 0) {
-      bitField0_ = other.bitField0_;
-      id = other.id;
-      value_ = other.value_;
-    }
+    id = other.id;
+    value_ = other.value_;
     return this;
   }
 
@@ -124,7 +121,6 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
       return this;
     }
     cachedSize = -1;
-    bitField0_ = 0;
     id = 0;
     if (value_ != null) {
       value_ = "";
@@ -141,32 +137,23 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
       return false;
     }
     RdfPrefixEntry other = (RdfPrefixEntry) o;
-    return bitField0_ == other.bitField0_
-      && id == other.id
+    return id == other.id
       && value_.equals(other.value_);
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    if ((bitField0_ & 0x00000001) != 0) {
-      output.writeRawByte((byte) 8);
-      output.writeUInt32NoTag(id);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      output.writeRawByte((byte) 18);
-      output.writeStringNoTag(value_);
-    }
+    output.writeRawByte((byte) 8);
+    output.writeUInt32NoTag(id);
+    output.writeRawByte((byte) 18);
+    output.writeStringNoTag(value_);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    if ((bitField0_ & 0x00000001) != 0) {
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(id);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      size += 1 + CodedOutputStream.computeStringSizeNoTag(value_);
-    }
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(id);
+    size += 1 + CodedOutputStream.computeStringSizeNoTag(value_);
     return size;
   }
 
@@ -180,7 +167,6 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
         case 8: {
           // id
           id = input.readUInt32();
-          bitField0_ |= 0x00000001;
           tag = input.readTag();
           if (tag != 18) {
             break;
@@ -190,7 +176,6 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
           // value_
           initValue();
           value_ = input.readStringRequireUtf8();
-          bitField0_ |= 0x00000002;
           tag = input.readTag();
           if (tag != 0) {
             break;
@@ -213,11 +198,6 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
   @Override
   public RdfPrefixEntry clone() {
     return new RdfPrefixEntry().copyFrom(this);
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return ((bitField0_) == 0);
   }
 
   public static RdfPrefixEntry parseFrom(final byte[] data) throws InvalidProtocolBufferException {

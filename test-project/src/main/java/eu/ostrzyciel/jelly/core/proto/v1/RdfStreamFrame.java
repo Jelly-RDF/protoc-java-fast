@@ -44,18 +44,9 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
   /**
    * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamRow rows = 1;</code>
-   * @return whether the rows field is set
-   */
-  public boolean hasRows() {
-    return (bitField0_ & 0x00000001) != 0;
-  }
-
-  /**
-   * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamRow rows = 1;</code>
    * @return this
    */
   public RdfStreamFrame clearRows() {
-    bitField0_ &= ~0x00000001;
     if (rows != null) {
       rows.clear();
     }
@@ -88,7 +79,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
    */
   public List<RdfStreamRow> getMutableRows() {
     initRows();
-    bitField0_ |= 0x00000001;
     return rows;
   }
 
@@ -99,7 +89,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
    */
   public RdfStreamFrame addRows(final RdfStreamRow value) {
     initRows();
-    bitField0_ |= 0x00000001;
     rows.add(value);
     return this;
   }
@@ -112,18 +101,9 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
   /**
    * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamFrame.MetadataEntry metadata = 15;</code>
-   * @return whether the metadata field is set
-   */
-  public boolean hasMetadata() {
-    return (bitField0_ & 0x00000002) != 0;
-  }
-
-  /**
-   * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamFrame.MetadataEntry metadata = 15;</code>
    * @return this
    */
   public RdfStreamFrame clearMetadata() {
-    bitField0_ &= ~0x00000002;
     if (metadata != null) {
       metadata.clear();
     }
@@ -156,7 +136,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
    */
   public List<MetadataEntry> getMutableMetadata() {
     initMetadata();
-    bitField0_ |= 0x00000002;
     return metadata;
   }
 
@@ -167,7 +146,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
    */
   public RdfStreamFrame addMetadata(final MetadataEntry value) {
     initMetadata();
-    bitField0_ |= 0x00000002;
     metadata.add(value);
     return this;
   }
@@ -175,21 +153,10 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
   @Override
   public RdfStreamFrame copyFrom(final RdfStreamFrame other) {
     cachedSize = other.cachedSize;
-    if ((bitField0_ | other.bitField0_) != 0) {
-      bitField0_ = other.bitField0_;
-      if (other.hasRows()) {
-        initRows();
-        rows.addAll(other.rows);
-      } else {
-        clearRows();
-      }
-      if (other.hasMetadata()) {
-        initMetadata();
-        metadata.addAll(other.metadata);
-      } else {
-        clearMetadata();
-      }
-    }
+    initRows();
+    rows.addAll(other.rows);
+    initMetadata();
+    metadata.addAll(other.metadata);
     return this;
   }
 
@@ -199,12 +166,8 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
       return this;
     }
     cachedSize = -1;
-    if (other.hasRows()) {
-      getMutableRows().addAll(other.rows);
-    }
-    if (other.hasMetadata()) {
-      getMutableMetadata().addAll(other.metadata);
-    }
+    getMutableRows().addAll(other.rows);
+    getMutableMetadata().addAll(other.metadata);
     return this;
   }
 
@@ -214,7 +177,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
       return this;
     }
     cachedSize = -1;
-    bitField0_ = 0;
     if (rows != null) {
       rows.clear();
     }
@@ -233,38 +195,29 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
       return false;
     }
     RdfStreamFrame other = (RdfStreamFrame) o;
-    return bitField0_ == other.bitField0_
-      && (!hasRows() || rows.equals(other.rows))
-      && (!hasMetadata() || metadata.equals(other.metadata));
+    return rows.equals(other.rows)
+      && metadata.equals(other.metadata);
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    if ((bitField0_ & 0x00000001) != 0) {
-      for (final var _field : rows) {
-        output.writeRawByte((byte) 10);
-        output.writeUInt32NoTag(_field.getCachedSize());
-        _field.writeTo(output);
-      }
+    for (final var _field : rows) {
+      output.writeRawByte((byte) 10);
+      output.writeUInt32NoTag(_field.getCachedSize());
+      _field.writeTo(output);
     }
-    if ((bitField0_ & 0x00000002) != 0) {
-      for (final var _field : metadata) {
-        output.writeRawByte((byte) 122);
-        output.writeUInt32NoTag(_field.getCachedSize());
-        _field.writeTo(output);
-      }
+    for (final var _field : metadata) {
+      output.writeRawByte((byte) 122);
+      output.writeUInt32NoTag(_field.getCachedSize());
+      _field.writeTo(output);
     }
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    if ((bitField0_ & 0x00000001) != 0) {
-      size += rows.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(rows);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      size += metadata.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(metadata);
-    }
+    size += rows.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(rows);
+    size += metadata.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(metadata);
     return size;
   }
 
@@ -279,7 +232,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
           // rows
           initRows();
           tag = ProtoMessage.readRepeatedMessage(rows, RdfStreamRow.getFactory(), input, tag);
-          bitField0_ |= 0x00000001;
           if (tag != 122) {
             break;
           }
@@ -288,7 +240,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
           // metadata
           initMetadata();
           tag = ProtoMessage.readRepeatedMessage(metadata, MetadataEntry.getFactory(), input, tag);
-          bitField0_ |= 0x00000002;
           if (tag != 0) {
             break;
           }
@@ -310,11 +261,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
   @Override
   public RdfStreamFrame clone() {
     return new RdfStreamFrame().copyFrom(this);
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return ((bitField0_) == 0);
   }
 
   public static RdfStreamFrame parseFrom(final byte[] data) throws InvalidProtocolBufferException {
@@ -435,7 +381,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
      */
     public ByteString getMutableValue() {
       initValue();
-      bitField0_ |= 0x00000002;
       return value_;
     }
 
@@ -452,11 +397,8 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
     @Override
     public MetadataEntry copyFrom(final MetadataEntry other) {
       cachedSize = other.cachedSize;
-      if ((bitField0_ | other.bitField0_) != 0) {
-        bitField0_ = other.bitField0_;
-        key = other.key;
-        value_ = other.value_;
-      }
+      key = other.key;
+      value_ = other.value_;
       return this;
     }
 
@@ -477,7 +419,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
         return this;
       }
       cachedSize = -1;
-      bitField0_ = 0;
       if (key != null) {
         key = "";
       }
@@ -496,32 +437,23 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
         return false;
       }
       MetadataEntry other = (MetadataEntry) o;
-      return bitField0_ == other.bitField0_
-        && key.equals(other.key)
+      return key.equals(other.key)
         && value_.equals(other.value_);
     }
 
     @Override
     public void writeTo(final CodedOutputStream output) throws IOException {
-      if ((bitField0_ & 0x00000001) != 0) {
-        output.writeRawByte((byte) 10);
-        output.writeStringNoTag(key);
-      }
-      if ((bitField0_ & 0x00000002) != 0) {
-        output.writeRawByte((byte) 18);
-        output.writeBytesNoTag(value_);
-      }
+      output.writeRawByte((byte) 10);
+      output.writeStringNoTag(key);
+      output.writeRawByte((byte) 18);
+      output.writeBytesNoTag(value_);
     }
 
     @Override
     protected int computeSerializedSize() {
       int size = 0;
-      if ((bitField0_ & 0x00000001) != 0) {
-        size += 1 + CodedOutputStream.computeStringSizeNoTag(key);
-      }
-      if ((bitField0_ & 0x00000002) != 0) {
-        size += 1 + CodedOutputStream.computeBytesSizeNoTag(value_);
-      }
+      size += 1 + CodedOutputStream.computeStringSizeNoTag(key);
+      size += 1 + CodedOutputStream.computeBytesSizeNoTag(value_);
       return size;
     }
 
@@ -536,7 +468,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
             // key
             initKey();
             key = input.readStringRequireUtf8();
-            bitField0_ |= 0x00000001;
             tag = input.readTag();
             if (tag != 18) {
               break;
@@ -546,7 +477,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
             // value_
             initValue();
             value_ = input.readBytes();
-            bitField0_ |= 0x00000002;
             tag = input.readTag();
             if (tag != 0) {
               break;
@@ -569,11 +499,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
     @Override
     public MetadataEntry clone() {
       return new MetadataEntry().copyFrom(this);
-    }
-
-    @Override
-    public boolean isEmpty() {
-      return ((bitField0_) == 0);
     }
 
     public static MetadataEntry parseFrom(final byte[] data) throws InvalidProtocolBufferException {

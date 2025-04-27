@@ -159,9 +159,6 @@ object RequestInfo:
         parentFile, this, typeName, descriptor.getOneofDecl(i), i
       ))
     }
-    val numBitFields = BitField.getNumberOfFields(fields.size)
-
-    def hasRequiredFieldsInHierarchy: Boolean = parentFile.parentRequest.typeRegistry.hasRequiredFieldsInHierarchy(typeName)
   }
 
   class FieldInfo(
@@ -173,9 +170,6 @@ object RequestInfo:
   ) {
     val fieldId: String = parentTypeInfo.typeId + "." + descriptor.getName
     val sourceLocation = parentFile.getSourceLocation(fieldId)
-    val hasBit = BitField.hasBit(bitIndex)
-    val setBit = BitField.setBit(bitIndex)
-    val clearBit = BitField.clearBit(bitIndex)
     var upperCaseName: String = null
     if (isGroup) {
       // name is all lowercase, so convert the type name instead (e.g. ".package.OptionalGroup")
@@ -191,7 +185,6 @@ object RequestInfo:
     ) upperCaseName += descriptor.getNumber
     val upperName = upperCaseName
     val lowerName = Character.toLowerCase(upperName.charAt(0)) + upperName.substring(1)
-    val hazzerName = "has" + upperName
     val setterName = "set" + upperName
     val getterName = "get" + upperName
     val tryGetName = "tryGet" + upperName

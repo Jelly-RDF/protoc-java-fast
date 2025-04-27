@@ -65,11 +65,7 @@ class FieldGenerator(val info: FieldInfo):
   m.put("getMethod", info.getterName)
   m.put("setMethod", info.setterName)
   m.put("addMethod", info.adderName)
-  m.put("hasMethod", info.hazzerName)
   m.put("clearMethod", info.clearName)
-  m.put("getHas", info.hasBit)
-  m.put("setHas", info.setBit)
-  m.put("clearHas", info.clearBit)
   m.put("message", info.parentType)
   m.put("type", typeName)
   m.put("number", info.number)
@@ -146,12 +142,8 @@ class FieldGenerator(val info: FieldInfo):
         val copySnippet = if info.isRepeated then "$field:N.addAll(other.$field:N);\n"
         else "$field:N.copyFrom(other.$field:N);\n"
         method.addCode(named("" +
-          "if (other.$hasMethod:N()) {$>\n" +
           "$lazyInitMethod:L();\n" +
-          copySnippet +
-          "$<} else {$>\n" +
-          "$clearMethod:L();\n" +
-          "$<}\n"
+          copySnippet
         ))
       else method.addStatement(named("$field:N.copyFrom(other.$field:N)"))
     }
@@ -180,29 +172,23 @@ class FieldGenerator(val info: FieldInfo):
       method.addStatement(
           "tag = $T.readRepeatedMessage($N, $T.getFactory(), input, tag)",
           RuntimeClasses.AbstractMessage, info.fieldName, info.getTypeName
-        ).addStatement(named("$setHas:L"))
+        )
       return false // tag is already read, so don't read again
     } else if (info.isRepeated) {
       method.addNamedCode("tag = input.readRepeated$capitalizedType:L($field:N, tag);\n", m)
-        .addStatement(named("$setHas:L"))
       return false // tag is already read, so don't read again
     } else if (info.isString)
       method.addStatement(named("$field:N = input.readStringRequireUtf8()"))
-        .addStatement(named("$setHas:L"))
     else if (info.isMessageOrGroup)
       method.addStatement("$T.mergeDelimitedFrom($N, input)", RuntimeClasses.AbstractMessage, info.fieldName)
-        .addStatement(named("$setHas:L"))
     else if (info.isBytes)
       method.addStatement(named("$field:N = input.readBytes()"))
-        .addStatement(named("$setHas:L"))
     else if (info.isPrimitive)
       method.addStatement(named("$field:N = input.read$capitalizedType:L()"))
-        .addStatement(named("$setHas:L"))
     else if (info.isEnum) {
       method.addStatement("final int value = input.readInt32()")
         .beginControlFlow("if ($T.forNumber(value) != null)", typeName)
         .addStatement(named("$field:N = value"))
-        .addStatement(named("$setHas:L"))
       method.endControlFlow
     }
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
@@ -216,7 +202,6 @@ class FieldGenerator(val info: FieldInfo):
     method.addCode(clearOtherOneOfs).addCode(ensureFieldNotNull)
     if (info.isFixedWidth) method.addStatement(named("input.readPacked$capitalizedType:L($field:N)"))
     else method.addStatement(named("input.readPacked$capitalizedType:L($field:N, tag)"))
-    method.addStatement(named("$setHas:L"))
     true
 
   def generateSerializationCode(method: MethodSpec.Builder): Unit = {
@@ -300,7 +285,6 @@ class FieldGenerator(val info: FieldInfo):
 
   def generateMemberMethods(t: TypeSpec.Builder): Unit =
     generateInitializedMethod(t)
-    if (info.isPresenceEnabled) generateHasMethod(t)
     generateClearMethod(t)
     generateGetMethods(t)
     if (info.isEnum) generateExtraEnumAccessors(t)
@@ -322,19 +306,6 @@ class FieldGenerator(val info: FieldInfo):
   private def lazyFieldInit = if (info.isLazyAllocationEnabled)
     CodeBlock.builder.addStatement("$N()", info.lazyInitName).build
   else FieldGenerator.EMPTY_BLOCK
-
-  def generateHasMethod(t: TypeSpec.Builder): Unit =
-    t.addMethod(MethodSpec.methodBuilder(info.hazzerName)
-      .addJavadoc(Javadoc.forMessageField(info)
-        .add("\n@return whether the $L field is set", info.fieldName)
-        .build
-      )
-      .addAnnotations(info.methodAnnotations)
-      .addModifiers(Modifier.PUBLIC)
-      .returns(TypeName.BOOLEAN)
-      .addStatement(named("return $getHas:L"))
-      .build
-    )
 
   def generateSetMethods(t: TypeSpec.Builder): Unit =
     if (info.isBytes) {
@@ -365,7 +336,6 @@ class FieldGenerator(val info: FieldInfo):
         .returns(info.parentType)
         .addCode(clearOtherOneOfs)
         .addCode(ensureFieldNotNull)
-        .addStatement(named("$setHas:L"))
         .addStatement(named("$field:N.add(value)"))
         .addStatement(named("return this"))
         .build
@@ -383,7 +353,6 @@ class FieldGenerator(val info: FieldInfo):
         .addParameter(info.getInputParameterType, "value", Modifier.FINAL)
         .addCode(clearOtherOneOfs)
         .addCode(ensureFieldNotNull)
-        .addStatement(named("$setHas:L"))
         .addStatement(named("$field:N.copyFrom(value)"))
         .addStatement(named("return this"))
         .build
@@ -463,7 +432,7 @@ class FieldGenerator(val info: FieldInfo):
       .addModifiers(Modifier.PUBLIC)
       .addParameter(classOf[Int], "value", Modifier.FINAL)
       .returns(info.parentType)
-      .addNamedCode("" + "$setHas:L;\n" + "$field:N = value;\n" + "return this;\n", m)
+      .addNamedCode("" + "$field:N = value;\n" + "return this;\n", m)
       .build
     )
   }
@@ -507,7 +476,6 @@ class FieldGenerator(val info: FieldInfo):
         .returns(storeType)
         .addCode(clearOtherOneOfs)
         .addCode(ensureFieldNotNull)
-        .addStatement(named("$setHas:L"))
         .addStatement(named("return $field:N"))
         .build
       t.addMethod(getter.build)
@@ -524,7 +492,6 @@ class FieldGenerator(val info: FieldInfo):
       .addAnnotations(info.methodAnnotations)
       .addModifiers(Modifier.PUBLIC)
       .returns(info.parentType)
-    if info.isPresenceEnabled then method.addStatement(named("$clearHas:L"))
     generateClearCode(method)
     method.addStatement("return this")
     t.addMethod(method.build)

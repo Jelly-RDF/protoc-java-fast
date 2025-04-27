@@ -21,7 +21,6 @@ class MessageGenerator(val info: MessageInfo):
   final val m = new java.util.HashMap[String, AnyRef]
   
   info.fields.forEach(f => fields.add(new FieldGenerator(f)))
-  val numBitFields = info.numBitFields
   m.put("abstractMessage", RuntimeClasses.AbstractMessage)
   m.put("unknownBytes", RuntimeClasses.unknownBytesField)
   m.put("unknownBytesKey", RuntimeClasses.unknownBytesFieldName)
@@ -67,7 +66,6 @@ class MessageGenerator(val info: MessageInfo):
     // Constructor
     t.addMethod(MethodSpec.constructorBuilder.addModifiers(Modifier.PRIVATE).build)
     // Member state
-    BitField.generateMemberFields(t, numBitFields)
     fields.forEach(_.generateMemberFields(t))
     // OneOf Accessors
     info.oneOfs.stream
@@ -82,10 +80,7 @@ class MessageGenerator(val info: MessageInfo):
     generateWriteTo(t)
     generateComputeSerializedSize(t)
     generateMergeFrom(t)
-    generateIsInitialized(t)
     generateClone(t)
-    // Utility methods
-    generateIsEmpty(t)
     // Static utilities
     generateParseFrom(t)
     generateMessageFactory(t)
@@ -95,15 +90,6 @@ class MessageGenerator(val info: MessageInfo):
 
   private def generateClear(t: TypeSpec.Builder): Unit =
     t.addMethod(generateClearCode("clear"))
-
-  private def generateIsEmpty(t: TypeSpec.Builder): Unit =
-    val isEmpty = MethodSpec.methodBuilder("isEmpty")
-      .addJavadoc(Javadoc.inherit)
-      .addAnnotation(classOf[Override])
-      .addModifiers(Modifier.PUBLIC)
-      .returns(classOf[Boolean])
-      .addStatement("return $N", BitField.hasNoBits(numBitFields))
-    t.addMethod(isEmpty.build)
 
   private def generateClearCode(name: String) =
     val clear = MethodSpec.methodBuilder(name)
@@ -116,7 +102,6 @@ class MessageGenerator(val info: MessageInfo):
     clear.beginControlFlow("if (isEmpty())").addStatement("return this").endControlFlow
     // clear has state
     clear.addStatement("cachedSize = -1")
-    BitField.generateClearCode(clear, numBitFields)
     fields.forEach(_.generateClearCode(clear))
     clear.addStatement("return this")
     clear.build
@@ -137,18 +122,10 @@ class MessageGenerator(val info: MessageInfo):
     equals.addStatement("$1T other = ($1T) o", info.typeName)
     // Check whether all of the same fields are set
     if (info.fieldCount > 0) {
-      equals.addCode("return $L$>", BitField.getEqualsStatement(0))
-      for (i <- 1 until numBitFields) {
-        equals.addCode("\n&& $L", BitField.getEqualsStatement(i))
-      }
-      for (field <- fields.asScala) {
-        if field.info.isPresenceEnabled then
-          equals.addCode("\n&& (!$1N() || ", field.info.hazzerName)
-          field.generateEqualsStatement(equals)
-          equals.addCode(")")
-        else
-          equals.addCode("\n&& ")
-          field.generateEqualsStatement(equals)
+      equals.addCode("return $>")
+      for ((field, i) <- fields.asScala.zipWithIndex) {
+        if i > 0 then equals.addCode("\n&& ")
+        field.generateEqualsStatement(equals)
       }
       equals.addCode(";$<\n")
     }
@@ -243,27 +220,18 @@ class MessageGenerator(val info: MessageInfo):
       .returns(classOf[Unit])
       .addParameter(RuntimeClasses.CodedOutputStream, "output", Modifier.FINAL)
       .addException(classOf[IOException])
-    val needsInitializationChecks = info.hasRequiredFieldsInHierarchy
-    if (needsInitializationChecks) {
-      // Fail if any required bits are missing
-      insertFailOnMissingRequiredBits(writeTo)
-      writeTo.beginControlFlow("try")
-    }
     getFieldSortedByOutputOrder.forEach(f => {
       if (f.info.isRequired) {
         // no need to check has state again
         f.generateSerializationCode(writeTo)
       }
       else {
-        writeTo.beginControlFlow("if ($L)", f.info.hasBit)
+        // TODO: implement
+        // writeTo.beginControlFlow("if ($L)", f.info.hasBit)
         f.generateSerializationCode(writeTo)
-        writeTo.endControlFlow
+        // writeTo.endControlFlow
       }
     })
-    if (needsInitializationChecks)
-      writeTo.nextControlFlow("catch ($T nestedFail)", RuntimeClasses.UninitializedMessageException)
-        .addStatement("throw rethrowFromParent(nestedFail)")
-        .endControlFlow
     t.addMethod(writeTo.build)
 
   private def generateComputeSerializedSize(t: TypeSpec.Builder): Unit =
@@ -272,12 +240,6 @@ class MessageGenerator(val info: MessageInfo):
       .addAnnotation(classOf[Override])
       .addModifiers(Modifier.PROTECTED)
       .returns(classOf[Int])
-    val needsInitializationChecks = info.hasRequiredFieldsInHierarchy
-    if (needsInitializationChecks) {
-      // Fail if any required bits are missing
-      insertFailOnMissingRequiredBits(computeSerializedSize)
-      computeSerializedSize.beginControlFlow("try")
-    }
     // Check all required fields at once
     computeSerializedSize.addStatement("int size = 0")
     fields.forEach(f => {
@@ -286,16 +248,13 @@ class MessageGenerator(val info: MessageInfo):
         f.generateComputeSerializedSizeCode(computeSerializedSize)
       }
       else {
-        computeSerializedSize.beginControlFlow("if ($L)", f.info.hasBit)
+        // TODO: implement
+        // computeSerializedSize.beginControlFlow("if ($L)", f.info.hasBit)
         f.generateComputeSerializedSizeCode(computeSerializedSize)
-        computeSerializedSize.endControlFlow
+        // computeSerializedSize.endControlFlow
       }
     })
     computeSerializedSize.addStatement("return size")
-    if (needsInitializationChecks) computeSerializedSize
-      .nextControlFlow("catch ($T nestedFail)", RuntimeClasses.UninitializedMessageException)
-      .addStatement("throw rethrowFromParent(nestedFail)")
-      .endControlFlow
     t.addMethod(computeSerializedSize.build)
 
   private def generateCopyFrom(t: TypeSpec.Builder): Unit =
@@ -306,16 +265,7 @@ class MessageGenerator(val info: MessageInfo):
       .addModifiers(Modifier.PUBLIC)
       .returns(info.typeName)
     copyFrom.addStatement("cachedSize = other.cachedSize")
-    for (i <- 0 until numBitFields) {
-      val fieldIndex = i
-      // We don't need to copy if neither message has any fields set
-      copyFrom.beginControlFlow("if ($L)", BitField.isCopyFromNeeded(fieldIndex))
-      BitField.generateCopyFromCode(copyFrom, fieldIndex)
-      fields.stream
-        .filter(field => BitField.isBitInField(field.info.bitIndex, fieldIndex))
-        .forEach(_.generateCopyFromCode(copyFrom))
-      copyFrom.endControlFlow
-    }
+    fields.stream.forEach(_.generateCopyFromCode(copyFrom))
     copyFrom.addStatement("return this")
     t.addMethod(copyFrom.build)
 
@@ -328,9 +278,7 @@ class MessageGenerator(val info: MessageInfo):
     mergeFrom.beginControlFlow("if (other.isEmpty())").addStatement("return this").endControlFlow
     mergeFrom.addStatement("cachedSize = -1")
     fields.forEach(field => {
-      if (field.info.isPresenceEnabled) mergeFrom.beginControlFlow("if (other.$L())", field.info.hazzerName)
       field.generateMergeFromMessageCode(mergeFrom)
-      if (field.info.isPresenceEnabled) mergeFrom.endControlFlow
     })
     mergeFrom.addStatement("return this")
     t.addMethod(mergeFrom.build)
@@ -363,88 +311,6 @@ class MessageGenerator(val info: MessageInfo):
       .addStatement("return $T.mergeFrom(new $T(), input).checkInitialized()", RuntimeClasses.AbstractMessage, info.typeName)
       .build
     )
-
-  private def generateIsInitialized(t: TypeSpec.Builder): Unit =
-    // don't generate it if there is nothing that can be added
-    if (!info.hasRequiredFieldsInHierarchy) return
-    val isInitialized = MethodSpec.methodBuilder("isInitialized")
-      .addJavadoc(Javadoc.inherit)
-      .addAnnotation(classOf[Override])
-      .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-      .returns(classOf[Boolean])
-    // Check bits first
-    insertOnMissingRequiredBits(isInitialized, m => m.addStatement("return false"))
-    // Check sub-messages (including optional and repeated)
-    fields.stream.map(_.info)
-      .filter(_.isMessageOrGroupWithRequiredFieldsInHierarchy)
-      .forEach(field => {
-        // isInitialized check
-        if (field.isRequired) {
-          // has bit was already checked
-          isInitialized.beginControlFlow("if (!$N.isInitialized())", field.fieldName)
-        }
-        else {
-          // We need to check has bit ourselves
-          isInitialized.beginControlFlow(
-            "if ($L() && !$N.isInitialized())", field.hazzerName, field.fieldName
-          )
-        }
-        isInitialized.addStatement("return false").endControlFlow
-    })
-    isInitialized.addStatement("return true")
-    t.addMethod(isInitialized.build)
-    // Don't generate lookup if there is no point
-    if (fields.stream.map(_.info).noneMatch(field => field.isRequired || field.isMessageOrGroup))
-      return
-    // missing fields lookup
-    val getMissingFields = MethodSpec.methodBuilder("getMissingFields")
-      .addJavadoc(Javadoc.inherit)
-      .addAnnotation(classOf[Override])
-      .addModifiers(Modifier.PROTECTED, Modifier.FINAL)
-      .addParameter(classOf[String], "prefix")
-      .addParameter(ParameterizedTypeName.get(classOf[java.util.List[_]], classOf[String]), "results")
-    for (fieldGen <- fields.asScala) {
-      val field = fieldGen.info
-      val name = field.descriptor.getName
-      val checkNestedField = CodeBlock.builder
-        .addStatement("getMissingFields(prefix, $S, $N, results)", name, field.fieldName)
-        .build
-      if (field.isRequired) {
-        getMissingFields
-          .beginControlFlow("if (!$N())", field.hazzerName)
-          .addStatement("results.add(prefix + $S)", name)
-        if (field.isMessageOrGroupWithRequiredFieldsInHierarchy)
-          getMissingFields.nextControlFlow("else", field.fieldName).addCode(checkNestedField)
-        getMissingFields.endControlFlow
-      }
-      else if (field.isMessageOrGroupWithRequiredFieldsInHierarchy)
-        getMissingFields
-          .beginControlFlow("if ($L() && !$N.isInitialized())", field.hazzerName, field.fieldName)
-          .addCode(checkNestedField)
-          .endControlFlow
-    }
-    t.addMethod(getMissingFields.build)
-
-  private def insertFailOnMissingRequiredBits(method: MethodSpec.Builder): Unit =
-    insertOnMissingRequiredBits(
-      method,
-      m => m.addStatement("throw new $T(this)", RuntimeClasses.UninitializedMessageException)
-    )
-
-  private def insertOnMissingRequiredBits(
-    method: MethodSpec.Builder,
-    onCondition: MethodSpec.Builder => Unit,
-  ): Unit =
-    // check if all required bits are set
-    val requiredFields = fields.stream
-      .map(_.info)
-      .filter(_.isRequired)
-      .collect(Collectors.toList)
-    if (requiredFields.size > 0) {
-      method.beginControlFlow("if ($L)", BitField.isMissingAnyBit(requiredFields))
-      onCondition(method)
-      method.endControlFlow
-    }
 
   private def generateMessageFactory(t: TypeSpec.Builder): Unit =
     val factoryReturnType = ParameterizedTypeName.get(RuntimeClasses.MessageFactory, info.typeName)

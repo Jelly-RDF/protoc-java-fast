@@ -20,7 +20,9 @@ class OneOfGenerator(val info: OneOfInfo):
     val has = MethodSpec.methodBuilder(info.hazzerName)
       .addModifiers(Modifier.PUBLIC)
       .returns(classOf[Boolean])
-      .addStatement("return $L", BitField.hasAnyBit(fields))
+      // TODO: implement
+      .addStatement("return true")
+      // .addStatement("return $L", BitField.hasAnyBit(fields))
     // Method that clears all fields
     val clear = MethodSpec.methodBuilder(info.clearName)
       .addModifiers(Modifier.PUBLIC)
@@ -42,11 +44,13 @@ class OneOfGenerator(val info: OneOfInfo):
         val clearOthers = MethodSpec
           .methodBuilder(field.getClearOtherOneOfName)
           .addModifiers(Modifier.PRIVATE)
-          .beginControlFlow("if ($L)", BitField.hasAnyBit(otherFields))
+          // TODO: implement
+          // .beginControlFlow("if ($L)", BitField.hasAnyBit(otherFields))
         for (otherField <- otherFields.asScala) {
           clearOthers.addStatement("$N()", otherField.clearName)
         }
-        clearOthers.endControlFlow
+        // TODO: implement
+        // clearOthers.endControlFlow
         t.addMethod(clearOthers.build)
       }
     }

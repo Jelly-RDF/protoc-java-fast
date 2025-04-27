@@ -77,18 +77,9 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri value = 2;</code>
-   * @return whether the value_ field is set
-   */
-  public boolean hasValue() {
-    return (bitField0_ & 0x00000002) != 0;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri value = 2;</code>
    * @return this
    */
   public RdfNamespaceDeclaration clearValue() {
-    bitField0_ &= ~0x00000002;
     if (value_ != null) {
       value_.clear();
     }
@@ -121,7 +112,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
    */
   public RdfIri getMutableValue() {
     initValue();
-    bitField0_ |= 0x00000002;
     return value_;
   }
 
@@ -132,7 +122,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
    */
   public RdfNamespaceDeclaration setValue(final RdfIri value) {
     initValue();
-    bitField0_ |= 0x00000002;
     value_.copyFrom(value);
     return this;
   }
@@ -140,16 +129,9 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
   @Override
   public RdfNamespaceDeclaration copyFrom(final RdfNamespaceDeclaration other) {
     cachedSize = other.cachedSize;
-    if ((bitField0_ | other.bitField0_) != 0) {
-      bitField0_ = other.bitField0_;
-      name = other.name;
-      if (other.hasValue()) {
-        initValue();
-        value_.copyFrom(other.value_);
-      } else {
-        clearValue();
-      }
-    }
+    name = other.name;
+    initValue();
+    value_.copyFrom(other.value_);
     return this;
   }
 
@@ -160,9 +142,7 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
     }
     cachedSize = -1;
     name = other.name;
-    if (other.hasValue()) {
-      getMutableValue().mergeFrom(other.value_);
-    }
+    getMutableValue().mergeFrom(other.value_);
     return this;
   }
 
@@ -172,7 +152,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
       return this;
     }
     cachedSize = -1;
-    bitField0_ = 0;
     if (name != null) {
       name = "";
     }
@@ -191,34 +170,25 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
       return false;
     }
     RdfNamespaceDeclaration other = (RdfNamespaceDeclaration) o;
-    return bitField0_ == other.bitField0_
-      && name.equals(other.name)
-      && (!hasValue() || value_.equals(other.value_));
+    return name.equals(other.name)
+      && value_.equals(other.value_);
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    if ((bitField0_ & 0x00000001) != 0) {
-      output.writeRawByte((byte) 10);
-      output.writeStringNoTag(name);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      output.writeRawByte((byte) 18);
-      output.writeUInt32NoTag(value_.getCachedSize());
-      value_.writeTo(output);
-    }
+    output.writeRawByte((byte) 10);
+    output.writeStringNoTag(name);
+    output.writeRawByte((byte) 18);
+    output.writeUInt32NoTag(value_.getCachedSize());
+    value_.writeTo(output);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    if ((bitField0_ & 0x00000001) != 0) {
-      size += 1 + CodedOutputStream.computeStringSizeNoTag(name);
-    }
-    if ((bitField0_ & 0x00000002) != 0) {
-      final int dataSize = value_.getSerializedSize();
-      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    }
+    size += 1 + CodedOutputStream.computeStringSizeNoTag(name);
+    final int dataSize = value_.getSerializedSize();
+    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
     return size;
   }
 
@@ -233,7 +203,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
           // name
           initName();
           name = input.readStringRequireUtf8();
-          bitField0_ |= 0x00000001;
           tag = input.readTag();
           if (tag != 18) {
             break;
@@ -243,7 +212,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
           // value_
           initValue();
           ProtoMessage.mergeDelimitedFrom(value_, input);
-          bitField0_ |= 0x00000002;
           tag = input.readTag();
           if (tag != 0) {
             break;
@@ -266,11 +234,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
   @Override
   public RdfNamespaceDeclaration clone() {
     return new RdfNamespaceDeclaration().copyFrom(this);
-  }
-
-  @Override
-  public boolean isEmpty() {
-    return ((bitField0_) == 0);
   }
 
   public static RdfNamespaceDeclaration parseFrom(final byte[] data) throws

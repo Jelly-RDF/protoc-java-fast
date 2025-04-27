@@ -95,11 +95,6 @@ public final class RdfDefaultGraph extends ProtoMessage<RdfDefaultGraph> impleme
     return new RdfDefaultGraph().copyFrom(this);
   }
 
-  @Override
-  public boolean isEmpty() {
-    return ((bitField0_) == 0);
-  }
-
   public static RdfDefaultGraph parseFrom(final byte[] data) throws InvalidProtocolBufferException {
     return ProtoMessage.mergeFrom(new RdfDefaultGraph(), data).checkInitialized();
   }
