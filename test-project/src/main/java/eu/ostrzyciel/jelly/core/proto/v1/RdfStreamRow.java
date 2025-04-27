@@ -13,8 +13,6 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cloneable {
-  private static final long serialVersionUID = 0L;
-
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamOptions options = 1;</code>
    */

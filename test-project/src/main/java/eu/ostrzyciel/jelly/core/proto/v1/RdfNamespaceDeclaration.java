@@ -13,8 +13,6 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDeclaration> implements Cloneable {
-  private static final long serialVersionUID = 0L;
-
   /**
    * <code>optional string name = 1;</code>
    */
@@ -43,18 +41,9 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
 
   /**
    * <code>optional string name = 1;</code>
-   * @return whether the name field is set
-   */
-  public boolean hasName() {
-    return (bitField0_ & 0x00000001) != 0;
-  }
-
-  /**
-   * <code>optional string name = 1;</code>
    * @return this
    */
   public RdfNamespaceDeclaration clearName() {
-    bitField0_ &= ~0x00000001;
     if (name != null) {
       name = "";
     }
@@ -76,8 +65,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
    * @return this
    */
   public RdfNamespaceDeclaration setName(final String value) {
-    initName();
-    bitField0_ |= 0x00000001;
     name = value;
     return this;
   }
@@ -155,12 +142,7 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
     cachedSize = other.cachedSize;
     if ((bitField0_ | other.bitField0_) != 0) {
       bitField0_ = other.bitField0_;
-      if (other.hasName()) {
-        initName();
-        name = other.name;
-      } else {
-        clearName();
-      }
+      name = other.name;
       if (other.hasValue()) {
         initValue();
         value_.copyFrom(other.value_);
@@ -177,9 +159,7 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
       return this;
     }
     cachedSize = -1;
-    if (other.hasName()) {
-      name = other.name;
-    }
+    name = other.name;
     if (other.hasValue()) {
       getMutableValue().mergeFrom(other.value_);
     }
@@ -212,7 +192,7 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
     }
     RdfNamespaceDeclaration other = (RdfNamespaceDeclaration) o;
     return bitField0_ == other.bitField0_
-      && (!hasName() || name.equals(other.name))
+      && name.equals(other.name)
       && (!hasValue() || value_.equals(other.value_));
   }
 

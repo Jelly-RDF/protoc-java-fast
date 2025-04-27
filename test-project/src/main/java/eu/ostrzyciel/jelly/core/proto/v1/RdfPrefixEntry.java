@@ -13,8 +13,6 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implements Cloneable {
-  private static final long serialVersionUID = 0L;
-
   /**
    * <code>optional uint32 id = 1;</code>
    */
@@ -37,18 +35,9 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
 
   /**
    * <code>optional uint32 id = 1;</code>
-   * @return whether the id field is set
-   */
-  public boolean hasId() {
-    return (bitField0_ & 0x00000001) != 0;
-  }
-
-  /**
-   * <code>optional uint32 id = 1;</code>
    * @return this
    */
   public RdfPrefixEntry clearId() {
-    bitField0_ &= ~0x00000001;
     id = 0;
     return this;
   }
@@ -67,7 +56,6 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
    * @return this
    */
   public RdfPrefixEntry setId(final int value) {
-    bitField0_ |= 0x00000001;
     id = value;
     return this;
   }
@@ -80,18 +68,9 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
 
   /**
    * <code>optional string value = 2;</code>
-   * @return whether the value_ field is set
-   */
-  public boolean hasValue() {
-    return (bitField0_ & 0x00000002) != 0;
-  }
-
-  /**
-   * <code>optional string value = 2;</code>
    * @return this
    */
   public RdfPrefixEntry clearValue() {
-    bitField0_ &= ~0x00000002;
     if (value_ != null) {
       value_ = "";
     }
@@ -113,8 +92,6 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
    * @return this
    */
   public RdfPrefixEntry setValue(final String value) {
-    initValue();
-    bitField0_ |= 0x00000002;
     value_ = value;
     return this;
   }
@@ -125,12 +102,7 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
     if ((bitField0_ | other.bitField0_) != 0) {
       bitField0_ = other.bitField0_;
       id = other.id;
-      if (other.hasValue()) {
-        initValue();
-        value_ = other.value_;
-      } else {
-        clearValue();
-      }
+      value_ = other.value_;
     }
     return this;
   }
@@ -141,12 +113,8 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
       return this;
     }
     cachedSize = -1;
-    if (other.hasId()) {
-      setId(other.id);
-    }
-    if (other.hasValue()) {
-      value_ = other.value_;
-    }
+    setId(other.id);
+    value_ = other.value_;
     return this;
   }
 
@@ -174,8 +142,8 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
     }
     RdfPrefixEntry other = (RdfPrefixEntry) o;
     return bitField0_ == other.bitField0_
-      && (!hasId() || id == other.id)
-      && (!hasValue() || value_.equals(other.value_));
+      && id == other.id
+      && value_.equals(other.value_);
   }
 
   @Override

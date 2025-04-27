@@ -49,9 +49,6 @@ object FastJavaPlugin:
   def handleRequest(requestProto: PluginProtos.CodeGeneratorRequest): CodeGeneratorResponse =
     val response = CodeGeneratorResponse.newBuilder
     val request = RequestInfo.withTypeRegistry(requestProto)
-    // Signal support for proto3 optionals. They behave the same as proto2
-    // optionals, so that feature is actually supported.
-    response.setSupportedFeatures(CodeGeneratorResponse.Feature.FEATURE_PROTO3_OPTIONAL_VALUE)
     val filesToGenerate = new util.HashSet[String](requestProto.getFileToGenerateList)
     for (
       // Only generate files that were specifically selected (see issue #62)

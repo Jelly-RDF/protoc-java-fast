@@ -13,8 +13,6 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Cloneable {
-  private static final long serialVersionUID = 0L;
-
   /**
    * <code>optional string lex = 1;</code>
    */
@@ -72,18 +70,9 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
 
   /**
    * <code>optional string lex = 1;</code>
-   * @return whether the lex field is set
-   */
-  public boolean hasLex() {
-    return (bitField0_ & 0x00000004) != 0;
-  }
-
-  /**
-   * <code>optional string lex = 1;</code>
    * @return this
    */
   public RdfLiteral clearLex() {
-    bitField0_ &= ~0x00000004;
     if (lex != null) {
       lex = "";
     }
@@ -105,8 +94,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
    * @return this
    */
   public RdfLiteral setLex(final String value) {
-    initLex();
-    bitField0_ |= 0x00000004;
     lex = value;
     return this;
   }
@@ -119,18 +106,9 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
 
   /**
    * <code>optional string langtag = 2;</code>
-   * @return whether the langtag field is set
-   */
-  public boolean hasLangtag() {
-    return (bitField0_ & 0x00000001) != 0;
-  }
-
-  /**
-   * <code>optional string langtag = 2;</code>
    * @return this
    */
   public RdfLiteral clearLangtag() {
-    bitField0_ &= ~0x00000001;
     if (langtag != null) {
       langtag = "";
     }
@@ -153,18 +131,8 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
    */
   public RdfLiteral setLangtag(final String value) {
     clearLiteralKindOtherLangtag();
-    initLangtag();
-    bitField0_ |= 0x00000001;
     langtag = value;
     return this;
-  }
-
-  /**
-   * <code>optional uint32 datatype = 3;</code>
-   * @return whether the datatype field is set
-   */
-  public boolean hasDatatype() {
-    return (bitField0_ & 0x00000002) != 0;
   }
 
   /**
@@ -172,7 +140,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
    * @return this
    */
   public RdfLiteral clearDatatype() {
-    bitField0_ &= ~0x00000002;
     datatype = 0;
     return this;
   }
@@ -192,7 +159,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
    */
   public RdfLiteral setDatatype(final int value) {
     clearLiteralKindOtherDatatype();
-    bitField0_ |= 0x00000002;
     datatype = value;
     return this;
   }
@@ -202,18 +168,8 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
     cachedSize = other.cachedSize;
     if ((bitField0_ | other.bitField0_) != 0) {
       bitField0_ = other.bitField0_;
-      if (other.hasLex()) {
-        initLex();
-        lex = other.lex;
-      } else {
-        clearLex();
-      }
-      if (other.hasLangtag()) {
-        initLangtag();
-        langtag = other.langtag;
-      } else {
-        clearLangtag();
-      }
+      lex = other.lex;
+      langtag = other.langtag;
       datatype = other.datatype;
     }
     return this;
@@ -225,15 +181,9 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
       return this;
     }
     cachedSize = -1;
-    if (other.hasLex()) {
-      lex = other.lex;
-    }
-    if (other.hasLangtag()) {
-      langtag = other.langtag;
-    }
-    if (other.hasDatatype()) {
-      setDatatype(other.datatype);
-    }
+    lex = other.lex;
+    langtag = other.langtag;
+    setDatatype(other.datatype);
     return this;
   }
 
@@ -264,9 +214,9 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
     }
     RdfLiteral other = (RdfLiteral) o;
     return bitField0_ == other.bitField0_
-      && (!hasLex() || lex.equals(other.lex))
-      && (!hasLangtag() || langtag.equals(other.langtag))
-      && (!hasDatatype() || datatype == other.datatype);
+      && lex.equals(other.lex)
+      && langtag.equals(other.langtag)
+      && datatype == other.datatype;
   }
 
   @Override

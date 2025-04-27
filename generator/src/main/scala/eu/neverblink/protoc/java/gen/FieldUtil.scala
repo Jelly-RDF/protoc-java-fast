@@ -184,40 +184,7 @@ object FieldUtil:
     case TYPE_BYTES => false
     case _ => throw new Exception("Unsupported type: " + t)
 
-  def getDefaultValue(descriptor: FieldDescriptorProto): String =
-    val value = descriptor.getDefaultValue
-    if (value.isEmpty) return getEmptyDefaultValue(descriptor.getType)
-    // Some values need to be special cased to result in valid Java syntax
-    descriptor.getType match
-      case TYPE_DOUBLE =>
-        value match
-          case "nan" => "Double.NaN"
-          case "-inf" => "Double.NEGATIVE_INFINITY"
-          case "+inf" => "Double.POSITIVE_INFINITY"
-          case "inf" => "Double.POSITIVE_INFINITY"
-          case _ => value + "D"
-      case TYPE_FLOAT =>
-        value match {
-          case "nan" => "Float.NaN"
-          case "-inf" => "Float.NEGATIVE_INFINITY"
-          case "+inf" => "Float.POSITIVE_INFINITY"
-          case "inf" => "Float.POSITIVE_INFINITY"
-          case _ => value + "F"
-        }
-      case TYPE_SFIXED64 => value + "L"
-      case TYPE_SINT64 => value + "L"
-      case TYPE_INT64 => value + "L"
-      case TYPE_FIXED64 => java.lang.Long.parseUnsignedLong(value) + "L"
-      case TYPE_UINT64 => java.lang.Long.parseUnsignedLong(value) + "L"
-      case TYPE_FIXED32 => String.valueOf(Integer.parseUnsignedInt(value))
-      case TYPE_UINT32 => String.valueOf(Integer.parseUnsignedInt(value))
-      // Note: Google does some odd things with non-ascii default Strings in order
-      // to not need to store UTF-8 or literals with escaped unicode, but I'm really
-      // not sure what the problems with either of those options are. Maybe they need
-      // to support some archaic Java runtimes that didn't support it?
-      case _ => value
-
-  private def getEmptyDefaultValue(t: FieldDescriptorProto.Type) = t match
+  def getEmptyDefaultValue(t: FieldDescriptorProto.Type) = t match
     case TYPE_DOUBLE => "0D"
     case TYPE_FLOAT => "0F"
     case TYPE_SFIXED64 => "0L"

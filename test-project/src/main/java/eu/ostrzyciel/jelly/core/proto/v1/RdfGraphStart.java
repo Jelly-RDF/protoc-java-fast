@@ -13,8 +13,6 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements Cloneable {
-  private static final long serialVersionUID = 0L;
-
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 1;</code>
    */
@@ -169,18 +167,9 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
 
   /**
    * <code>optional string g_bnode = 2;</code>
-   * @return whether the gBnode field is set
-   */
-  public boolean hasGBnode() {
-    return (bitField0_ & 0x00000002) != 0;
-  }
-
-  /**
-   * <code>optional string g_bnode = 2;</code>
    * @return this
    */
   public RdfGraphStart clearGBnode() {
-    bitField0_ &= ~0x00000002;
     if (gBnode != null) {
       gBnode = "";
     }
@@ -203,8 +192,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
    */
   public RdfGraphStart setGBnode(final String value) {
     clearGraphOtherGBnode();
-    initGBnode();
-    bitField0_ |= 0x00000002;
     gBnode = value;
     return this;
   }
@@ -360,12 +347,7 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
       } else {
         clearGIri();
       }
-      if (other.hasGBnode()) {
-        initGBnode();
-        gBnode = other.gBnode;
-      } else {
-        clearGBnode();
-      }
+      gBnode = other.gBnode;
       if (other.hasGDefaultGraph()) {
         initGDefaultGraph();
         gDefaultGraph.copyFrom(other.gDefaultGraph);
@@ -391,9 +373,7 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
     if (other.hasGIri()) {
       getMutableGIri().mergeFrom(other.gIri);
     }
-    if (other.hasGBnode()) {
-      gBnode = other.gBnode;
-    }
+    gBnode = other.gBnode;
     if (other.hasGDefaultGraph()) {
       getMutableGDefaultGraph().mergeFrom(other.gDefaultGraph);
     }
@@ -436,7 +416,7 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
     RdfGraphStart other = (RdfGraphStart) o;
     return bitField0_ == other.bitField0_
       && (!hasGIri() || gIri.equals(other.gIri))
-      && (!hasGBnode() || gBnode.equals(other.gBnode))
+      && gBnode.equals(other.gBnode)
       && (!hasGDefaultGraph() || gDefaultGraph.equals(other.gDefaultGraph))
       && (!hasGLiteral() || gLiteral.equals(other.gLiteral));
   }

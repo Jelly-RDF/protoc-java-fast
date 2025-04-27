@@ -71,7 +71,6 @@ class MessageGenerator(val info: MessageInfo):
     fields.forEach(_.generateMemberFields(t))
     // OneOf Accessors
     info.oneOfs.stream
-      .filter(info => !info.synthetic)
       .map(new OneOfGenerator(_))
       .forEach(_.generateMemberMethods(t))
     // Fields accessors
@@ -90,12 +89,6 @@ class MessageGenerator(val info: MessageInfo):
     // Static utilities
     generateParseFrom(t)
     generateMessageFactory(t)
-    t.addField(FieldSpec
-      .builder(TypeName.LONG, "serialVersionUID")
-      .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
-      .initializer("0L")
-      .build
-    )
     // Descriptors
     if (info.parentFile.parentRequest.pluginOptions.generateDescriptors) generateDescriptors(t)
     t.build
@@ -149,9 +142,13 @@ class MessageGenerator(val info: MessageInfo):
         equals.addCode("\n&& $L", BitField.getEqualsStatement(i))
       }
       for (field <- fields.asScala) {
-        equals.addCode("\n&& (!$1N() || ", field.info.hazzerName)
-        field.generateEqualsStatement(equals)
-        equals.addCode(")")
+        if field.info.isPresenceEnabled then
+          equals.addCode("\n&& (!$1N() || ", field.info.hazzerName)
+          field.generateEqualsStatement(equals)
+          equals.addCode(")")
+        else
+          equals.addCode("\n&& ")
+          field.generateEqualsStatement(equals)
       }
       equals.addCode(";$<\n")
     }
@@ -331,9 +328,9 @@ class MessageGenerator(val info: MessageInfo):
     mergeFrom.beginControlFlow("if (other.isEmpty())").addStatement("return this").endControlFlow
     mergeFrom.addStatement("cachedSize = -1")
     fields.forEach(field => {
-      mergeFrom.beginControlFlow("if (other.$L())", field.info.hazzerName)
+      if (field.info.isPresenceEnabled) mergeFrom.beginControlFlow("if (other.$L())", field.info.hazzerName)
       field.generateMergeFromMessageCode(mergeFrom)
-      mergeFrom.endControlFlow
+      if (field.info.isPresenceEnabled) mergeFrom.endControlFlow
     })
     mergeFrom.addStatement("return this")
     t.addMethod(mergeFrom.build)

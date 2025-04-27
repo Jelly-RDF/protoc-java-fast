@@ -16,8 +16,6 @@ import java.util.List;
  */
 @SuppressWarnings("hiding")
 public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implements Cloneable {
-  private static final long serialVersionUID = 0L;
-
   /**
    * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamRow rows = 1;</code>
    */
@@ -338,8 +336,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
    * Protobuf type {@code MetadataEntry}
    */
   public static final class MetadataEntry extends ProtoMessage<MetadataEntry> implements Cloneable {
-    private static final long serialVersionUID = 0L;
-
     /**
      * <code>optional string key = 1;</code>
      */
@@ -368,18 +364,9 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
     /**
      * <code>optional string key = 1;</code>
-     * @return whether the key field is set
-     */
-    public boolean hasKey() {
-      return (bitField0_ & 0x00000001) != 0;
-    }
-
-    /**
-     * <code>optional string key = 1;</code>
      * @return this
      */
     public MetadataEntry clearKey() {
-      bitField0_ &= ~0x00000001;
       if (key != null) {
         key = "";
       }
@@ -401,8 +388,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
      * @return this
      */
     public MetadataEntry setKey(final String value) {
-      initKey();
-      bitField0_ |= 0x00000001;
       key = value;
       return this;
     }
@@ -415,18 +400,9 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
     /**
      * <code>optional bytes value = 2;</code>
-     * @return whether the value_ field is set
-     */
-    public boolean hasValue() {
-      return (bitField0_ & 0x00000002) != 0;
-    }
-
-    /**
-     * <code>optional bytes value = 2;</code>
      * @return this
      */
     public MetadataEntry clearValue() {
-      bitField0_ &= ~0x00000002;
       if (value_ != null) {
         value_ = ByteString.EMPTY;
       }
@@ -469,8 +445,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
      * @return this
      */
     public MetadataEntry setValue(final ByteString values) {
-      initValue();
-      bitField0_ |= 0x00000002;
       value_ = values;
       return this;
     }
@@ -480,18 +454,8 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
       cachedSize = other.cachedSize;
       if ((bitField0_ | other.bitField0_) != 0) {
         bitField0_ = other.bitField0_;
-        if (other.hasKey()) {
-          initKey();
-          key = other.key;
-        } else {
-          clearKey();
-        }
-        if (other.hasValue()) {
-          initValue();
-          value_ = other.value_;
-        } else {
-          clearValue();
-        }
+        key = other.key;
+        value_ = other.value_;
       }
       return this;
     }
@@ -502,12 +466,8 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
         return this;
       }
       cachedSize = -1;
-      if (other.hasKey()) {
-        key = other.key;
-      }
-      if (other.hasValue()) {
-        value_ = other.value_;
-      }
+      key = other.key;
+      value_ = other.value_;
       return this;
     }
 
@@ -537,8 +497,8 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
       }
       MetadataEntry other = (MetadataEntry) o;
       return bitField0_ == other.bitField0_
-        && (!hasKey() || key.equals(other.key))
-        && (!hasValue() || value_.equals(other.value_));
+        && key.equals(other.key)
+        && value_.equals(other.value_);
     }
 
     @Override

@@ -13,8 +13,6 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
-  private static final long serialVersionUID = 0L;
-
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri s_iri = 1;</code>
    */
@@ -367,18 +365,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional string s_bnode = 2;</code>
-   * @return whether the sBnode field is set
-   */
-  public boolean hasSBnode() {
-    return (bitField0_ & 0x00002000) != 0;
-  }
-
-  /**
-   * <code>optional string s_bnode = 2;</code>
    * @return this
    */
   public RdfQuad clearSBnode() {
-    bitField0_ &= ~0x00002000;
     if (sBnode != null) {
       sBnode = "";
     }
@@ -401,8 +390,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
    */
   public RdfQuad setSBnode(final String value) {
     clearSubjectOtherSBnode();
-    initSBnode();
-    bitField0_ |= 0x00002000;
     sBnode = value;
     return this;
   }
@@ -625,18 +612,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional string p_bnode = 6;</code>
-   * @return whether the pBnode field is set
-   */
-  public boolean hasPBnode() {
-    return (bitField0_ & 0x00000200) != 0;
-  }
-
-  /**
-   * <code>optional string p_bnode = 6;</code>
    * @return this
    */
   public RdfQuad clearPBnode() {
-    bitField0_ &= ~0x00000200;
     if (pBnode != null) {
       pBnode = "";
     }
@@ -659,8 +637,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
    */
   public RdfQuad setPBnode(final String value) {
     clearPredicateOtherPBnode();
-    initPBnode();
-    bitField0_ |= 0x00000200;
     pBnode = value;
     return this;
   }
@@ -883,18 +859,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional string o_bnode = 10;</code>
-   * @return whether the oBnode field is set
-   */
-  public boolean hasOBnode() {
-    return (bitField0_ & 0x00000020) != 0;
-  }
-
-  /**
-   * <code>optional string o_bnode = 10;</code>
    * @return this
    */
   public RdfQuad clearOBnode() {
-    bitField0_ &= ~0x00000020;
     if (oBnode != null) {
       oBnode = "";
     }
@@ -917,8 +884,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
    */
   public RdfQuad setOBnode(final String value) {
     clearObjectOtherOBnode();
-    initOBnode();
-    bitField0_ |= 0x00000020;
     oBnode = value;
     return this;
   }
@@ -1141,18 +1106,9 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   /**
    * <code>optional string g_bnode = 14;</code>
-   * @return whether the gBnode field is set
-   */
-  public boolean hasGBnode() {
-    return (bitField0_ & 0x00000002) != 0;
-  }
-
-  /**
-   * <code>optional string g_bnode = 14;</code>
    * @return this
    */
   public RdfQuad clearGBnode() {
-    bitField0_ &= ~0x00000002;
     if (gBnode != null) {
       gBnode = "";
     }
@@ -1175,8 +1131,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
    */
   public RdfQuad setGBnode(final String value) {
     clearGraphOtherGBnode();
-    initGBnode();
-    bitField0_ |= 0x00000002;
     gBnode = value;
     return this;
   }
@@ -1332,12 +1286,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
       } else {
         clearSIri();
       }
-      if (other.hasSBnode()) {
-        initSBnode();
-        sBnode = other.sBnode;
-      } else {
-        clearSBnode();
-      }
+      sBnode = other.sBnode;
       if (other.hasSLiteral()) {
         initSLiteral();
         sLiteral.copyFrom(other.sLiteral);
@@ -1356,12 +1305,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
       } else {
         clearPIri();
       }
-      if (other.hasPBnode()) {
-        initPBnode();
-        pBnode = other.pBnode;
-      } else {
-        clearPBnode();
-      }
+      pBnode = other.pBnode;
       if (other.hasPLiteral()) {
         initPLiteral();
         pLiteral.copyFrom(other.pLiteral);
@@ -1380,12 +1324,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
       } else {
         clearOIri();
       }
-      if (other.hasOBnode()) {
-        initOBnode();
-        oBnode = other.oBnode;
-      } else {
-        clearOBnode();
-      }
+      oBnode = other.oBnode;
       if (other.hasOLiteral()) {
         initOLiteral();
         oLiteral.copyFrom(other.oLiteral);
@@ -1404,12 +1343,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
       } else {
         clearGIri();
       }
-      if (other.hasGBnode()) {
-        initGBnode();
-        gBnode = other.gBnode;
-      } else {
-        clearGBnode();
-      }
+      gBnode = other.gBnode;
       if (other.hasGDefaultGraph()) {
         initGDefaultGraph();
         gDefaultGraph.copyFrom(other.gDefaultGraph);
@@ -1435,9 +1369,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
     if (other.hasSIri()) {
       getMutableSIri().mergeFrom(other.sIri);
     }
-    if (other.hasSBnode()) {
-      sBnode = other.sBnode;
-    }
+    sBnode = other.sBnode;
     if (other.hasSLiteral()) {
       getMutableSLiteral().mergeFrom(other.sLiteral);
     }
@@ -1447,9 +1379,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
     if (other.hasPIri()) {
       getMutablePIri().mergeFrom(other.pIri);
     }
-    if (other.hasPBnode()) {
-      pBnode = other.pBnode;
-    }
+    pBnode = other.pBnode;
     if (other.hasPLiteral()) {
       getMutablePLiteral().mergeFrom(other.pLiteral);
     }
@@ -1459,9 +1389,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
     if (other.hasOIri()) {
       getMutableOIri().mergeFrom(other.oIri);
     }
-    if (other.hasOBnode()) {
-      oBnode = other.oBnode;
-    }
+    oBnode = other.oBnode;
     if (other.hasOLiteral()) {
       getMutableOLiteral().mergeFrom(other.oLiteral);
     }
@@ -1471,9 +1399,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
     if (other.hasGIri()) {
       getMutableGIri().mergeFrom(other.gIri);
     }
-    if (other.hasGBnode()) {
-      gBnode = other.gBnode;
-    }
+    gBnode = other.gBnode;
     if (other.hasGDefaultGraph()) {
       getMutableGDefaultGraph().mergeFrom(other.gDefaultGraph);
     }
@@ -1552,19 +1478,19 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
     RdfQuad other = (RdfQuad) o;
     return bitField0_ == other.bitField0_
       && (!hasSIri() || sIri.equals(other.sIri))
-      && (!hasSBnode() || sBnode.equals(other.sBnode))
+      && sBnode.equals(other.sBnode)
       && (!hasSLiteral() || sLiteral.equals(other.sLiteral))
       && (!hasSTripleTerm() || sTripleTerm.equals(other.sTripleTerm))
       && (!hasPIri() || pIri.equals(other.pIri))
-      && (!hasPBnode() || pBnode.equals(other.pBnode))
+      && pBnode.equals(other.pBnode)
       && (!hasPLiteral() || pLiteral.equals(other.pLiteral))
       && (!hasPTripleTerm() || pTripleTerm.equals(other.pTripleTerm))
       && (!hasOIri() || oIri.equals(other.oIri))
-      && (!hasOBnode() || oBnode.equals(other.oBnode))
+      && oBnode.equals(other.oBnode)
       && (!hasOLiteral() || oLiteral.equals(other.oLiteral))
       && (!hasOTripleTerm() || oTripleTerm.equals(other.oTripleTerm))
       && (!hasGIri() || gIri.equals(other.gIri))
-      && (!hasGBnode() || gBnode.equals(other.gBnode))
+      && gBnode.equals(other.gBnode)
       && (!hasGDefaultGraph() || gDefaultGraph.equals(other.gDefaultGraph))
       && (!hasGLiteral() || gLiteral.equals(other.gLiteral));
   }

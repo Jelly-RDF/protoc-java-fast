@@ -13,8 +13,6 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> implements Cloneable {
-  private static final long serialVersionUID = 0L;
-
   /**
    * <code>optional string stream_name = 1;</code>
    */
@@ -78,18 +76,9 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
 
   /**
    * <code>optional string stream_name = 1;</code>
-   * @return whether the streamName field is set
-   */
-  public boolean hasStreamName() {
-    return (bitField0_ & 0x00000001) != 0;
-  }
-
-  /**
-   * <code>optional string stream_name = 1;</code>
    * @return this
    */
   public RdfStreamOptions clearStreamName() {
-    bitField0_ &= ~0x00000001;
     if (streamName != null) {
       streamName = "";
     }
@@ -111,18 +100,8 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions setStreamName(final String value) {
-    initStreamName();
-    bitField0_ |= 0x00000001;
     streamName = value;
     return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.PhysicalStreamType physical_type = 2;</code>
-   * @return whether the physicalType field is set
-   */
-  public boolean hasPhysicalType() {
-    return (bitField0_ & 0x00000002) != 0;
   }
 
   /**
@@ -130,7 +109,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions clearPhysicalType() {
-    bitField0_ &= ~0x00000002;
     physicalType = 0;
     return this;
   }
@@ -174,17 +152,8 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions setPhysicalType(final PhysicalStreamType value) {
-    bitField0_ |= 0x00000002;
     physicalType = value.getNumber();
     return this;
-  }
-
-  /**
-   * <code>optional bool generalized_statements = 3;</code>
-   * @return whether the generalizedStatements field is set
-   */
-  public boolean hasGeneralizedStatements() {
-    return (bitField0_ & 0x00000004) != 0;
   }
 
   /**
@@ -192,7 +161,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions clearGeneralizedStatements() {
-    bitField0_ &= ~0x00000004;
     generalizedStatements = false;
     return this;
   }
@@ -211,17 +179,8 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions setGeneralizedStatements(final boolean value) {
-    bitField0_ |= 0x00000004;
     generalizedStatements = value;
     return this;
-  }
-
-  /**
-   * <code>optional bool rdf_star = 4;</code>
-   * @return whether the rdfStar field is set
-   */
-  public boolean hasRdfStar() {
-    return (bitField0_ & 0x00000008) != 0;
   }
 
   /**
@@ -229,7 +188,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions clearRdfStar() {
-    bitField0_ &= ~0x00000008;
     rdfStar = false;
     return this;
   }
@@ -248,17 +206,8 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions setRdfStar(final boolean value) {
-    bitField0_ |= 0x00000008;
     rdfStar = value;
     return this;
-  }
-
-  /**
-   * <code>optional uint32 max_name_table_size = 9;</code>
-   * @return whether the maxNameTableSize field is set
-   */
-  public boolean hasMaxNameTableSize() {
-    return (bitField0_ & 0x00000010) != 0;
   }
 
   /**
@@ -266,7 +215,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions clearMaxNameTableSize() {
-    bitField0_ &= ~0x00000010;
     maxNameTableSize = 0;
     return this;
   }
@@ -285,17 +233,8 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions setMaxNameTableSize(final int value) {
-    bitField0_ |= 0x00000010;
     maxNameTableSize = value;
     return this;
-  }
-
-  /**
-   * <code>optional uint32 max_prefix_table_size = 10;</code>
-   * @return whether the maxPrefixTableSize field is set
-   */
-  public boolean hasMaxPrefixTableSize() {
-    return (bitField0_ & 0x00000020) != 0;
   }
 
   /**
@@ -303,7 +242,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions clearMaxPrefixTableSize() {
-    bitField0_ &= ~0x00000020;
     maxPrefixTableSize = 0;
     return this;
   }
@@ -322,17 +260,8 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions setMaxPrefixTableSize(final int value) {
-    bitField0_ |= 0x00000020;
     maxPrefixTableSize = value;
     return this;
-  }
-
-  /**
-   * <code>optional uint32 max_datatype_table_size = 11;</code>
-   * @return whether the maxDatatypeTableSize field is set
-   */
-  public boolean hasMaxDatatypeTableSize() {
-    return (bitField0_ & 0x00000040) != 0;
   }
 
   /**
@@ -340,7 +269,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions clearMaxDatatypeTableSize() {
-    bitField0_ &= ~0x00000040;
     maxDatatypeTableSize = 0;
     return this;
   }
@@ -359,17 +287,8 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions setMaxDatatypeTableSize(final int value) {
-    bitField0_ |= 0x00000040;
     maxDatatypeTableSize = value;
     return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.LogicalStreamType logical_type = 14;</code>
-   * @return whether the logicalType field is set
-   */
-  public boolean hasLogicalType() {
-    return (bitField0_ & 0x00000080) != 0;
   }
 
   /**
@@ -377,7 +296,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions clearLogicalType() {
-    bitField0_ &= ~0x00000080;
     logicalType = 0;
     return this;
   }
@@ -421,17 +339,8 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions setLogicalType(final LogicalStreamType value) {
-    bitField0_ |= 0x00000080;
     logicalType = value.getNumber();
     return this;
-  }
-
-  /**
-   * <code>optional uint32 version = 15;</code>
-   * @return whether the version field is set
-   */
-  public boolean hasVersion() {
-    return (bitField0_ & 0x00000100) != 0;
   }
 
   /**
@@ -439,7 +348,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions clearVersion() {
-    bitField0_ &= ~0x00000100;
     version = 0;
     return this;
   }
@@ -458,7 +366,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return this
    */
   public RdfStreamOptions setVersion(final int value) {
-    bitField0_ |= 0x00000100;
     version = value;
     return this;
   }
@@ -468,12 +375,7 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
     cachedSize = other.cachedSize;
     if ((bitField0_ | other.bitField0_) != 0) {
       bitField0_ = other.bitField0_;
-      if (other.hasStreamName()) {
-        initStreamName();
-        streamName = other.streamName;
-      } else {
-        clearStreamName();
-      }
+      streamName = other.streamName;
       physicalType = other.physicalType;
       generalizedStatements = other.generalizedStatements;
       rdfStar = other.rdfStar;
@@ -492,33 +394,15 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
       return this;
     }
     cachedSize = -1;
-    if (other.hasStreamName()) {
-      streamName = other.streamName;
-    }
-    if (other.hasPhysicalType()) {
-      setPhysicalTypeValue(other.physicalType);
-    }
-    if (other.hasGeneralizedStatements()) {
-      setGeneralizedStatements(other.generalizedStatements);
-    }
-    if (other.hasRdfStar()) {
-      setRdfStar(other.rdfStar);
-    }
-    if (other.hasMaxNameTableSize()) {
-      setMaxNameTableSize(other.maxNameTableSize);
-    }
-    if (other.hasMaxPrefixTableSize()) {
-      setMaxPrefixTableSize(other.maxPrefixTableSize);
-    }
-    if (other.hasMaxDatatypeTableSize()) {
-      setMaxDatatypeTableSize(other.maxDatatypeTableSize);
-    }
-    if (other.hasLogicalType()) {
-      setLogicalTypeValue(other.logicalType);
-    }
-    if (other.hasVersion()) {
-      setVersion(other.version);
-    }
+    streamName = other.streamName;
+    setPhysicalTypeValue(other.physicalType);
+    setGeneralizedStatements(other.generalizedStatements);
+    setRdfStar(other.rdfStar);
+    setMaxNameTableSize(other.maxNameTableSize);
+    setMaxPrefixTableSize(other.maxPrefixTableSize);
+    setMaxDatatypeTableSize(other.maxDatatypeTableSize);
+    setLogicalTypeValue(other.logicalType);
+    setVersion(other.version);
     return this;
   }
 
@@ -553,15 +437,15 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
     }
     RdfStreamOptions other = (RdfStreamOptions) o;
     return bitField0_ == other.bitField0_
-      && (!hasStreamName() || streamName.equals(other.streamName))
-      && (!hasPhysicalType() || physicalType == other.physicalType)
-      && (!hasGeneralizedStatements() || generalizedStatements == other.generalizedStatements)
-      && (!hasRdfStar() || rdfStar == other.rdfStar)
-      && (!hasMaxNameTableSize() || maxNameTableSize == other.maxNameTableSize)
-      && (!hasMaxPrefixTableSize() || maxPrefixTableSize == other.maxPrefixTableSize)
-      && (!hasMaxDatatypeTableSize() || maxDatatypeTableSize == other.maxDatatypeTableSize)
-      && (!hasLogicalType() || logicalType == other.logicalType)
-      && (!hasVersion() || version == other.version);
+      && streamName.equals(other.streamName)
+      && physicalType == other.physicalType
+      && generalizedStatements == other.generalizedStatements
+      && rdfStar == other.rdfStar
+      && maxNameTableSize == other.maxNameTableSize
+      && maxPrefixTableSize == other.maxPrefixTableSize
+      && maxDatatypeTableSize == other.maxDatatypeTableSize
+      && logicalType == other.logicalType
+      && version == other.version;
   }
 
   @Override

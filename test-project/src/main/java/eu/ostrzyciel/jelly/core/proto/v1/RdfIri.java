@@ -13,8 +13,6 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
-  private static final long serialVersionUID = 0L;
-
   /**
    * <code>optional uint32 prefix_id = 1;</code>
    */
@@ -37,18 +35,9 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
 
   /**
    * <code>optional uint32 prefix_id = 1;</code>
-   * @return whether the prefixId field is set
-   */
-  public boolean hasPrefixId() {
-    return (bitField0_ & 0x00000001) != 0;
-  }
-
-  /**
-   * <code>optional uint32 prefix_id = 1;</code>
    * @return this
    */
   public RdfIri clearPrefixId() {
-    bitField0_ &= ~0x00000001;
     prefixId = 0;
     return this;
   }
@@ -67,17 +56,8 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
    * @return this
    */
   public RdfIri setPrefixId(final int value) {
-    bitField0_ |= 0x00000001;
     prefixId = value;
     return this;
-  }
-
-  /**
-   * <code>optional uint32 name_id = 2;</code>
-   * @return whether the nameId field is set
-   */
-  public boolean hasNameId() {
-    return (bitField0_ & 0x00000002) != 0;
   }
 
   /**
@@ -85,7 +65,6 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
    * @return this
    */
   public RdfIri clearNameId() {
-    bitField0_ &= ~0x00000002;
     nameId = 0;
     return this;
   }
@@ -104,7 +83,6 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
    * @return this
    */
   public RdfIri setNameId(final int value) {
-    bitField0_ |= 0x00000002;
     nameId = value;
     return this;
   }
@@ -126,12 +104,8 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
       return this;
     }
     cachedSize = -1;
-    if (other.hasPrefixId()) {
-      setPrefixId(other.prefixId);
-    }
-    if (other.hasNameId()) {
-      setNameId(other.nameId);
-    }
+    setPrefixId(other.prefixId);
+    setNameId(other.nameId);
     return this;
   }
 
@@ -157,8 +131,8 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
     }
     RdfIri other = (RdfIri) o;
     return bitField0_ == other.bitField0_
-      && (!hasPrefixId() || prefixId == other.prefixId)
-      && (!hasNameId() || nameId == other.nameId);
+      && prefixId == other.prefixId
+      && nameId == other.nameId;
   }
 
   @Override

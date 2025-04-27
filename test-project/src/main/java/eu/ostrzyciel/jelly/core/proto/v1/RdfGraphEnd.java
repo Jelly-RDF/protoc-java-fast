@@ -13,8 +13,6 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfGraphEnd extends ProtoMessage<RdfGraphEnd> implements Cloneable {
-  private static final long serialVersionUID = 0L;
-
   private RdfGraphEnd() {
   }
 

@@ -154,25 +154,12 @@ object RequestInfo:
     val nestedTypes = descriptor.getNestedTypeList.stream.map((desc: DescriptorProtos.DescriptorProto) => new RequestInfo.MessageInfo(parentFile, typeId, typeName, true, desc)).collect(Collectors.toList)
     val nestedEnums = descriptor.getEnumTypeList.stream.map((desc: DescriptorProtos.EnumDescriptorProto) => new RequestInfo.EnumInfo(parentFile, typeId, typeName, true, desc)).collect(Collectors.toList)
     val oneOfCount: Int = descriptor.getOneofDeclCount
-    val syntheticIndices: java.util.Set[Integer] = getSyntheticOneOfIndices
     for (i <- 0 until oneOfCount) {
-      oneOfs.add(new RequestInfo.OneOfInfo(parentFile, this, typeName, descriptor.getOneofDecl(i), syntheticIndices.contains(i), i))
+      oneOfs.add(new RequestInfo.OneOfInfo(
+        parentFile, this, typeName, descriptor.getOneofDecl(i), i
+      ))
     }
     val numBitFields = BitField.getNumberOfFields(fields.size)
-
-    private def getSyntheticOneOfIndices = {
-      // Filter synthetic OneOfs for single-fields (proto3 explicit optionals)
-      // see https://github.com/protocolbuffers/protobuf/blob/d36a64116f19ce59acf3af49e66cadef4c2fb2df/src/google/protobuf/descriptor.proto#L219-L240
-      // TODO: implement https://github.com/protocolbuffers/protobuf/blob/f75fd051d68136ce366c464cea4f3074158cd141/docs/implementing_proto3_presence.md#api-changes
-      val syntheticIndices = new java.util.HashSet[Integer]
-      descriptor.getFieldList.stream
-        .filter(_.hasProto3Optional)
-        .filter(_.getProto3Optional)
-        .filter(_.hasOneofIndex)
-        .mapToInt(_.getOneofIndex)
-        .forEach(syntheticIndices.add)
-      syntheticIndices
-    }
 
     def hasRequiredFieldsInHierarchy: Boolean = parentFile.parentRequest.typeRegistry.hasRequiredFieldsInHierarchy(typeName)
   }
@@ -218,7 +205,7 @@ object RequestInfo:
     val packedTag = FieldUtil.makePackedTag(descriptor)
     val number = descriptor.getNumber
     val fieldName = NamingUtil.filterKeyword(lowerName)
-    val defValue: String = FieldUtil.getDefaultValue(descriptor)
+    val defValue: String = FieldUtil.getEmptyDefaultValue(descriptor.getType)
     val defaultValue = if (isEnum) NamingUtil.filterKeyword(defValue) else defValue
     val repeatedStoreType = RuntimeClasses.getRepeatedStoreType(descriptor.getType)
     val methodAnnotations = if (isDeprecated)
@@ -280,32 +267,17 @@ object RequestInfo:
         case _ => false
       }
 
-    def isPresenceEnabled: Boolean = {
+    def isPresenceEnabled: Boolean =
       // Checks whether field presence is enabled for this field. See
       // https://github.com/protocolbuffers/protobuf/blob/main/docs/implementing_proto3_presence.md
-      val syntax = parentTypeInfo.parentFile.descriptor.getSyntax
-      syntax match {
-        case "proto3" =>
-          // proto3 initially did not have field presence for primitives. This eventually
-          // turned out to be a mistake, but they couldn't change the default behavior anymore
-          // and added explicit support for opting in to proto2-like field presence. IMO presence
-          // should always be the default, but if we ever officially support proto3, disabling
-          // field presence should:
-          //
-          // * not generate a has method
-          // * not modify bit fields
-          // * serialize and compute size when the field value is not zero
-          //
-          // Note that the code is completely compatible as is. The only difference is that a
-          // zero value may end up being serialized, and that a has method may not return true
-          // if the received value was an omitted zero.
-          (descriptor.hasProto3Optional && descriptor.getProto3Optional) || isMessageOrGroup || isRepeated
-        case _ => true
-        case "proto2" =>
-          // In proto2 everything uses presence by default
-          true
-      }
-    }
+      //
+      // Disabling field presence should:
+      // * not generate a has method
+      // * not modify bit fields
+      // * serialize and compute size when the field value is not zero
+      //
+      // We only support proto3.
+      isMessageOrGroup || isRepeated
 
     def pluginOptions: PluginOptions = parentFile.parentRequest.pluginOptions
 
@@ -341,9 +313,6 @@ object RequestInfo:
         case FieldDescriptorProto.Type.TYPE_MESSAGE => false
         case FieldDescriptorProto.Type.TYPE_BYTES => false
         case _ => true
-      
-
-    def hasDefaultValue: Boolean = descriptor.hasDefaultValue
 
     def isDeprecated: Boolean = descriptor.getOptions.hasDeprecated && descriptor.getOptions.getDeprecated
 
@@ -455,8 +424,7 @@ object RequestInfo:
     val parentFile: RequestInfo.FileInfo, 
     val parentTypeInfo: RequestInfo.MessageInfo, 
     val parentType: ClassName,
-    val descriptor: DescriptorProtos.OneofDescriptorProto, 
-    val synthetic: Boolean, 
+    val descriptor: DescriptorProtos.OneofDescriptorProto,
     val oneOfIndex: Int
   ) {
     val upperName = NamingUtil.toUpperCamel(descriptor.getName)
