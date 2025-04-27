@@ -61,11 +61,9 @@ class PluginOptions(request: PluginProtos.CodeGeneratorRequest):
   val replacePackageFunction = parseReplacePackage(map.get("replace_package"))
   val expectedInputOrder = PluginOptions.FieldSerializationOrder.parseInputOrder(map.getOrDefault("input_order", "quickbuf"))
   val outputOrder = PluginOptions.FieldSerializationOrder.parseInputOrder(map.getOrDefault("output_order", "quickbuf"))
-  val storeUnknownFieldsEnabled = parseBoolean(map.getOrDefault("store_unknown_fields", "false"))
   val allocationStrategy = PluginOptions.AllocationStrategy.parseFromString(map.getOrDefault("allocation", "lazy"))
   val extensionSupport = PluginOptions.ExtensionSupport.parseFromString(map.getOrDefault("extensions", "disabled"))
-  val enforceHasChecksEnabled = parseBoolean(map.getOrDefault("enforce_has_checks", "false"))
-  val tryGetAccessorsEnabled = parseBoolean(map.getOrDefault("java8_optional", "false"))
+  // TODO: fix
   val generateDescriptors = parseBoolean(map.getOrDefault("gen_descriptors", "false"))
 
   def parseReplacePackage(replaceOption: String): String => String =

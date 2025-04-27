@@ -98,7 +98,6 @@ class FieldGenerator(val info: FieldInfo):
   m.put("protoUtil", RuntimeClasses.ProtoUtil)
   // Common configuration-dependent code blocks
   val clearOtherOneOfs = generateClearOtherOneOfs
-  val enforceHasCheck = generateEnforceHasCheck
   val ensureFieldNotNull = lazyFieldInit
 
   def generateMemberFields(t: TypeSpec.Builder): Unit = {
@@ -214,16 +213,14 @@ class FieldGenerator(val info: FieldInfo):
     else if (info.isBytes)
       method.addStatement(named("$field:N = input.readBytes()"))
         .addStatement(named("$setHas:L"))
-    else if (info.isPrimitive) method.addStatement(named("$field:N = input.read$capitalizedType:L()")).addStatement(named("$setHas:L"))
+    else if (info.isPrimitive)
+      method.addStatement(named("$field:N = input.read$capitalizedType:L()"))
+        .addStatement(named("$setHas:L"))
     else if (info.isEnum) {
-      method.addStatement("final int value = input.readInt32()").beginControlFlow("if ($T.forNumber(value) != null)", typeName).addStatement(named("$field:N = value")).addStatement(named("$setHas:L"))
-      // NOTE:
-      //  Google's Protobuf-Java selectively moves repeated enum values that it does not know.
-      //  This is problematic when going through a routing node as it may change the order of the
-      //  data by sorting it as known values followed by unknown values. Even though this is
-      //  the specified behavior, I don't think that this is desired and would rather have users
-      //  deal with potential null values.
-      if (info.storeUnknownFieldsEnabled) method.nextControlFlow("else").addStatement("input.skipEnum(tag, value, $N)", RuntimeClasses.unknownBytesField)
+      method.addStatement("final int value = input.readInt32()")
+        .beginControlFlow("if ($T.forNumber(value) != null)", typeName)
+        .addStatement(named("$field:N = value"))
+        .addStatement(named("$setHas:L"))
       method.endControlFlow
     }
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
@@ -325,7 +322,6 @@ class FieldGenerator(val info: FieldInfo):
     generateClearMethod(t)
     generateGetMethods(t)
     if (info.isEnum) generateExtraEnumAccessors(t)
-    if (info.isTryGetAccessorEnabled) generateTryGetMethod(t)
     generateSetMethods(t)
 
   def generateInitializedMethod(t: TypeSpec.Builder): Unit =
@@ -474,7 +470,6 @@ class FieldGenerator(val info: FieldInfo):
       ))
       .addModifiers(Modifier.PUBLIC)
       .returns(classOf[Int])
-      .addCode(enforceHasCheck)
       .addCode(ensureFieldNotNull)
       .addStatement(named("return $field:N"))
       .build
@@ -499,28 +494,10 @@ class FieldGenerator(val info: FieldInfo):
     )
   }
 
-  def generateTryGetMethod(t: TypeSpec.Builder): Unit = {
-    val tryGet = MethodSpec.methodBuilder(info.tryGetName)
-      .addJavadoc(Javadoc.forMessageField(info)
-        .add("\n@return the value of $L if it is set, or empty if not", info.fieldName)
-        .build
-      )
-      .addAnnotations(info.methodAnnotations)
-      .addModifiers(Modifier.PUBLIC)
-      .returns(info.getOptionalReturnType)
-    tryGet.beginControlFlow(named("if ($hasMethod:N())"))
-      .addStatement(named("return $optional:T.of($getMethod:N())"))
-      .nextControlFlow("else")
-      .addStatement(named("return $optional:T.empty()"))
-      .endControlFlow
-    t.addMethod(tryGet.build)
-  }
-
   def generateGetMethods(t: TypeSpec.Builder): Unit =
     val getter = MethodSpec.methodBuilder(info.getterName)
       .addAnnotations(info.methodAnnotations)
       .addModifiers(Modifier.PUBLIC)
-      .addCode(enforceHasCheck)
       .addCode(ensureFieldNotNull)
     if (info.isRepeated)
       getter.returns(storeType).addStatement(named("return $field:N"))
@@ -584,17 +561,6 @@ class FieldGenerator(val info: FieldInfo):
   private def generateClearOtherOneOfs: CodeBlock =
     if (!info.hasOtherOneOfFields) return FieldGenerator.EMPTY_BLOCK
     CodeBlock.builder.addStatement("$N()", info.getClearOtherOneOfName).build
-
-  private def generateEnforceHasCheck: CodeBlock =
-    if (!info.isEnforceHasCheckEnabled) return FieldGenerator.EMPTY_BLOCK
-    CodeBlock.builder.beginControlFlow("if (!$N())", info.hazzerName)
-      .addStatement(
-        "throw new $T($S)",
-        classOf[IllegalStateException],
-        "Field is not set. Check has state before accessing."
-      )
-      .endControlFlow
-      .build
 
   private def named(format: String, args: AnyRef*) =
     CodeBlock.builder.addNamed(format, m).build

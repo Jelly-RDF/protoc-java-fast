@@ -34,26 +34,11 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
     public abstract MessageType copyFrom(MessageType other);
 
     /**
-     * Sets all fields and data to their default values. Does not
-     * get rid of memory that was allocated.
+     * Sets all fields and data to their default values.
      *
      * @return this
      */
     public abstract MessageType clear();
-
-    /**
-     * Clears all has state so that the message would serialize empty,
-     * but does not set field default values and does not get rid of
-     * memory that was allocated for repeated types.
-     * <p>
-     * Use this if you use this message for serialization purposes or
-     * if you do not require default values for unset fields.
-     *
-     * @return this
-     */
-    public MessageType clearQuick() {
-        return clear();
-    }
 
     /**
      * @return true if none of the fields in this message are set
@@ -336,35 +321,6 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
      */
     @Override
     public abstract MessageType clone();
-
-    /**
-     * @return the full path to all missing required fields in the message
-     */
-    public List<String> getMissingFields() {
-        List<String> results = new ArrayList<String>();
-        getMissingFields("", results);
-        return results;
-    }
-
-    /**
-     * Adds the full path to all missing required fields in the message
-     */
-    protected void getMissingFields(String prefix, List<String> results) {
-    }
-
-    protected static void getMissingFields(String prefix, String fieldName, ProtoMessage<?> field, List<String> results) {
-        if (!field.isInitialized()) {
-            field.getMissingFields(prefix + fieldName + ".", results);
-        }
-    }
-
-//    protected static void getMissingFields(String prefix, String fieldName, RepeatedMessage<?> field, List<String> results) {
-//        for (int i = 0; i < field.length; i++) {
-//            if (!field.content[i].isInitialized()) {
-//                field.content[i].getMissingFields(prefix + fieldName + "[" + i + "].", results);
-//            }
-//        }
-//    }
 
     @SuppressWarnings("unchecked")
     private MessageType getThis() {

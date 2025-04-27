@@ -106,8 +106,6 @@ object RequestInfo:
     val options = parentFile.parentRequest.pluginOptions
     val expectedInputOrder = options.expectedInputOrder
     val outputOrder = options.outputOrder
-    val storeUnknownFieldsEnabled = options.storeUnknownFieldsEnabled
-    val enforceHasChecksEnabled = options.enforceHasChecksEnabled
     // Extensions in embedded mode: treat extension fields the same as normal
     // fields and embed them directly into the message.
     var fieldList: java.util.List[DescriptorProtos.FieldDescriptorProto] = descriptor.getFieldList
@@ -186,7 +184,6 @@ object RequestInfo:
     val descriptor: DescriptorProtos.FieldDescriptorProto,
     val bitIndex: Int
   ) {
-    val storeUnknownFieldsEnabled = parentTypeInfo.storeUnknownFieldsEnabled
     val fieldId: String = parentTypeInfo.typeId + "." + descriptor.getName
     val sourceLocation = parentFile.getSourceLocation(fieldId)
     val hasBit = BitField.hasBit(bitIndex)
@@ -282,10 +279,6 @@ object RequestInfo:
         case AllocationStrategy.Eager => false
         case _ => false
       }
-
-    def isEnforceHasCheckEnabled: Boolean = pluginOptions.enforceHasChecksEnabled
-
-    def isTryGetAccessorEnabled: Boolean = pluginOptions.tryGetAccessorsEnabled
 
     def isPresenceEnabled: Boolean = {
       // Checks whether field presence is enabled for this field. See

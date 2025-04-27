@@ -6,6 +6,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 import java.io.FileOutputStream
+import scala.jdk.CollectionConverters.*
 import scala.util.Using
 
 class FastJavaPluginSpec extends AnyWordSpec, Matchers:
@@ -14,9 +15,18 @@ class FastJavaPluginSpec extends AnyWordSpec, Matchers:
       val is = getClass.getResourceAsStream("/rdf_descriptor.pb")
       val request = CodeGeneratorRequest.parseFrom(is)
       val response = FastJavaPlugin.handleRequest(request)
-      val path = "test-project/src/main/java/eu/ostrzyciel/jelly/core/proto/v1/Rdf.java"
-      Using.resource(FileOutputStream(path)) { fos =>
-        fos.write(response.getFile(0).getContentBytes.toByteArray)
+      val basePath = "test-project/src/main/java/"
+      // Delete all files in the directory
+      val dir = new java.io.File(basePath + "eu/ostrzyciel/jelly/core/proto/v1/")
+      if (dir.exists && dir.isDirectory) {
+        dir.listFiles().foreach(_.delete())
+      }
+      // Save the generated files
+      for (file <- response.getFileList.asScala) {
+        val fileName = basePath + file.getName
+        Using.resource(FileOutputStream(fileName)) { fos =>
+          fos.write(file.getContentBytes.toByteArray)
+        }
       }
     }
   }

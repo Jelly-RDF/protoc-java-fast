@@ -7,6 +7,9 @@ package eu.ostrzyciel.jelly.core.proto.v1.patch;
 // RDF Patch spec: https://afs.github.io/rdf-delta/rdf-patch.html
 // Jelly-Patch spec: https://w3id.org/jelly/1.1.0/specification/patch
 
+option optimize_for = SPEED;
+option java_multiple_files = true;
+
 import "rdf.proto";
 
 message RdfPatchTransactionStart {

@@ -69,7 +69,6 @@ class MessageGenerator(val info: MessageInfo):
     // Member state
     BitField.generateMemberFields(t, numBitFields)
     fields.forEach(_.generateMemberFields(t))
-    generateUnknownByteMembers(t)
     // OneOf Accessors
     info.oneOfs.stream
       .filter(info => !info.synthetic)
@@ -101,23 +100,6 @@ class MessageGenerator(val info: MessageInfo):
     if (info.parentFile.parentRequest.pluginOptions.generateDescriptors) generateDescriptors(t)
     t.build
 
-  private def generateUnknownByteMembers(t: TypeSpec.Builder): Unit =
-    if (!info.storeUnknownFieldsEnabled) return
-    t.addField(FieldSpec.builder(RuntimeClasses.BytesType, "unknownBytes")
-      .addJavadoc(named("Stores unknown fields to enable message routing without a full definition."))
-      .addModifiers(Modifier.PRIVATE, Modifier.FINAL)
-      .initializer("$T.newEmptyInstance()", RuntimeClasses.BytesType)
-      .build
-    )
-    t.addMethod(MethodSpec.methodBuilder("getUnknownBytes")
-      .addJavadoc(Javadoc.inherit)
-      .addAnnotation(classOf[Override])
-      .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
-      .returns(RuntimeClasses.BytesType)
-      .addStatement("return unknownBytes")
-      .build
-    )
-
   private def generateClear(t: TypeSpec.Builder): Unit =
     t.addMethod(generateClearCode("clear"))
 
@@ -143,7 +125,6 @@ class MessageGenerator(val info: MessageInfo):
     clear.addStatement("cachedSize = -1")
     BitField.generateClearCode(clear, numBitFields)
     fields.forEach(_.generateClearCode(clear))
-    if (info.storeUnknownFieldsEnabled) clear.addStatement(named("$unknownBytes:N.clear()"))
     clear.addStatement("return this")
     clear.build
 
@@ -236,9 +217,7 @@ class MessageGenerator(val info: MessageInfo):
     // zero means invalid tag / end of data
     mergeFrom.beginControlFlow("case 0:").addStatement("return this").endControlFlow
     // default case -> skip field
-    val ifSkipField = if (info.storeUnknownFieldsEnabled)
-      named("if (!input.skipField(tag, $unknownBytes:N))")
-    else named("if (!input.skipField(tag))")
+    val ifSkipField = named("if (!input.skipField(tag))")
     mergeFrom.beginControlFlow("default:").beginControlFlow(ifSkipField).addStatement("return this")
     mergeFrom.endControlFlow.addStatement(named("tag = input.readTag()")).addStatement("break").endControlFlow
     // Generate missing non-packed cases for packable fields for compatibility reasons
@@ -284,11 +263,6 @@ class MessageGenerator(val info: MessageInfo):
         writeTo.endControlFlow
       }
     })
-    if (info.storeUnknownFieldsEnabled)
-      writeTo.addCode(named("if ($unknownBytes:N.length() > 0)"))
-        .beginControlFlow("")
-        .addStatement(named("output.writeRawBytes($unknownBytes:N)"))
-        .endControlFlow
     if (needsInitializationChecks)
       writeTo.nextControlFlow("catch ($T nestedFail)", RuntimeClasses.UninitializedMessageException)
         .addStatement("throw rethrowFromParent(nestedFail)")
@@ -320,8 +294,6 @@ class MessageGenerator(val info: MessageInfo):
         computeSerializedSize.endControlFlow
       }
     })
-    if (info.storeUnknownFieldsEnabled)
-      computeSerializedSize.addStatement(named("size += $unknownBytes:N.length()"))
     computeSerializedSize.addStatement("return size")
     if (needsInitializationChecks) computeSerializedSize
       .nextControlFlow("catch ($T nestedFail)", RuntimeClasses.UninitializedMessageException)
@@ -347,8 +319,6 @@ class MessageGenerator(val info: MessageInfo):
         .forEach(_.generateCopyFromCode(copyFrom))
       copyFrom.endControlFlow
     }
-    if (info.storeUnknownFieldsEnabled)
-      copyFrom.addStatement(named("$unknownBytes:N.copyFrom(other.$unknownBytes:N)"))
     copyFrom.addStatement("return this")
     t.addMethod(copyFrom.build)
 
@@ -365,10 +335,6 @@ class MessageGenerator(val info: MessageInfo):
       field.generateMergeFromMessageCode(mergeFrom)
       mergeFrom.endControlFlow
     })
-    if (info.storeUnknownFieldsEnabled)
-      mergeFrom.beginControlFlow("$L", named("if (other.$unknownBytes:N.length() > 0)"))
-        .addStatement(named("$unknownBytes:N.addAll(other.$unknownBytes:N)"))
-        .endControlFlow
     mergeFrom.addStatement("return this")
     t.addMethod(mergeFrom.build)
 

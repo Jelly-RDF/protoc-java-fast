@@ -6,6 +6,9 @@ package eu.ostrzyciel.jelly.core.proto.v1;
 // https://w3id.org/jelly/1.1.1/specification/serialization
 // Protocol version: 1.1.1
 
+option optimize_for = SPEED;
+option java_multiple_files = true;
+
 // RDF IRIs
 // The IRIs are reconstructed by the consumer using the prefix and name
 // lookup tables.
