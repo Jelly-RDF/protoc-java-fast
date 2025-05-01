@@ -47,38 +47,16 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
    * @return this
    */
   public RdfStreamFrame clearRows() {
-    if (rows != null) {
-      rows.clear();
-    }
+    rows.clear();
     return this;
   }
 
   /**
    * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamRow rows = 1;</code>
    *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableRows()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * @return value for this field
    */
   public List<RdfStreamRow> getRows() {
-    initRows();
-    return rows;
-  }
-
-  /**
-   * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamRow rows = 1;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public List<RdfStreamRow> getMutableRows() {
-    initRows();
     return rows;
   }
 
@@ -104,38 +82,16 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
    * @return this
    */
   public RdfStreamFrame clearMetadata() {
-    if (metadata != null) {
-      metadata.clear();
-    }
+    metadata.clear();
     return this;
   }
 
   /**
    * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamFrame.MetadataEntry metadata = 15;</code>
    *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableMetadata()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * @return value for this field
    */
   public List<MetadataEntry> getMetadata() {
-    initMetadata();
-    return metadata;
-  }
-
-  /**
-   * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamFrame.MetadataEntry metadata = 15;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public List<MetadataEntry> getMutableMetadata() {
-    initMetadata();
     return metadata;
   }
 
@@ -163,20 +119,16 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
   @Override
   public RdfStreamFrame mergeFrom(final RdfStreamFrame other) {
     cachedSize = -1;
-    getMutableRows().addAll(other.rows);
-    getMutableMetadata().addAll(other.metadata);
+    getRows().addAll(other.rows);
+    getMetadata().addAll(other.metadata);
     return this;
   }
 
   @Override
   public RdfStreamFrame clear() {
     cachedSize = -1;
-    if (rows != null) {
-      rows.clear();
-    }
-    if (metadata != null) {
-      metadata.clear();
-    }
+    rows.clear();
+    metadata.clear();
     return this;
   }
 
@@ -195,23 +147,31 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    for (final var _field : rows) {
-      output.writeRawByte((byte) 10);
-      output.writeUInt32NoTag(_field.getCachedSize());
-      _field.writeTo(output);
+    if (rows != null) {
+      for (final var _field : rows) {
+        output.writeRawByte((byte) 10);
+        output.writeUInt32NoTag(_field.getCachedSize());
+        _field.writeTo(output);
+      }
     }
-    for (final var _field : metadata) {
-      output.writeRawByte((byte) 122);
-      output.writeUInt32NoTag(_field.getCachedSize());
-      _field.writeTo(output);
+    if (metadata != null) {
+      for (final var _field : metadata) {
+        output.writeRawByte((byte) 122);
+        output.writeUInt32NoTag(_field.getCachedSize());
+        _field.writeTo(output);
+      }
     }
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    size += rows.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(rows);
-    size += metadata.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(metadata);
+    if (rows != null) {
+      size += rows.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(rows);
+    }
+    if (metadata != null) {
+      size += metadata.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(metadata);
+    }
     return size;
   }
 
@@ -279,12 +239,12 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
     /**
      * <code>optional string key = 1;</code>
      */
-    private String key = null;
+    private String key = "";
 
     /**
      * <code>optional bytes value = 2;</code>
      */
-    private ByteString value_ = null;
+    private ByteString value_ = ByteString.EMPTY;
 
     private MetadataEntry() {
     }
@@ -296,20 +256,12 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
       return new MetadataEntry();
     }
 
-    private void initKey() {
-      if (key == null) {
-        key = "";
-      }
-    }
-
     /**
      * <code>optional string key = 1;</code>
      * @return this
      */
     public MetadataEntry clearKey() {
-      if (key != null) {
-        key = "";
-      }
+      key = "";
       return this;
     }
 
@@ -318,7 +270,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
      * @return the key
      */
     public String getKey() {
-      initKey();
       return key;
     }
 
@@ -332,49 +283,21 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
       return this;
     }
 
-    private void initValue() {
-      if (value_ == null) {
-        value_ = ByteString.EMPTY;
-      }
-    }
-
     /**
      * <code>optional bytes value = 2;</code>
      * @return this
      */
     public MetadataEntry clearValue() {
-      if (value_ != null) {
-        value_ = ByteString.EMPTY;
-      }
+      value_ = ByteString.EMPTY;
       return this;
     }
 
     /**
      * <code>optional bytes value = 2;</code>
      *
-     * This method returns the internal storage object without modifying any has state.
-     * The returned object should not be modified and be treated as read-only.
-     *
-     * Use {@link #getMutableValue()} if you want to modify it.
-     *
-     * @return internal storage object for reading
+     * @return value for this field
      */
     public ByteString getValue() {
-      initValue();
-      return value_;
-    }
-
-    /**
-     * <code>optional bytes value = 2;</code>
-     *
-     * This method returns the internal storage object and sets the corresponding
-     * has state. The returned object will become part of this message and its
-     * contents may be modified as long as the has state is not cleared.
-     *
-     * @return internal storage object for modifications
-     */
-    public ByteString getMutableValue() {
-      initValue();
       return value_;
     }
 
@@ -407,12 +330,8 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
     @Override
     public MetadataEntry clear() {
       cachedSize = -1;
-      if (key != null) {
-        key = "";
-      }
-      if (value_ != null) {
-        value_ = ByteString.EMPTY;
-      }
+      key = "";
+      value_ = ByteString.EMPTY;
       return this;
     }
 
@@ -431,17 +350,25 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
     @Override
     public void writeTo(final CodedOutputStream output) throws IOException {
-      output.writeRawByte((byte) 10);
-      output.writeStringNoTag(key);
-      output.writeRawByte((byte) 18);
-      output.writeBytesNoTag(value_);
+      if (!key.isEmpty()) {
+        output.writeRawByte((byte) 10);
+        output.writeStringNoTag(key);
+      }
+      if (value_.size() > 0) {
+        output.writeRawByte((byte) 18);
+        output.writeBytesNoTag(value_);
+      }
     }
 
     @Override
     protected int computeSerializedSize() {
       int size = 0;
-      size += 1 + CodedOutputStream.computeStringSizeNoTag(key);
-      size += 1 + CodedOutputStream.computeBytesSizeNoTag(value_);
+      if (!key.isEmpty()) {
+        size += 1 + CodedOutputStream.computeStringSizeNoTag(key);
+      }
+      if (value_.size() > 0) {
+        size += 1 + CodedOutputStream.computeBytesSizeNoTag(value_);
+      }
       return size;
     }
 
@@ -454,7 +381,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
         switch (tag) {
           case 10: {
             // key
-            initKey();
             key = input.readStringRequireUtf8();
             tag = input.readTag();
             if (tag != 18) {
@@ -463,7 +389,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
           }
           case 18: {
             // value_
-            initValue();
             value_ = input.readBytes();
             tag = input.readTag();
             if (tag != 0) {

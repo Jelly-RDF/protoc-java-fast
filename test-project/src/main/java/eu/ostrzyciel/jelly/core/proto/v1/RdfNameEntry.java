@@ -21,7 +21,7 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
   /**
    * <code>optional string value = 2;</code>
    */
-  private String value_ = null;
+  private String value_ = "";
 
   private RdfNameEntry() {
   }
@@ -60,20 +60,12 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
     return this;
   }
 
-  private void initValue() {
-    if (value_ == null) {
-      value_ = "";
-    }
-  }
-
   /**
    * <code>optional string value = 2;</code>
    * @return this
    */
   public RdfNameEntry clearValue() {
-    if (value_ != null) {
-      value_ = "";
-    }
+    value_ = "";
     return this;
   }
 
@@ -82,7 +74,6 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
    * @return the value_
    */
   public String getValue() {
-    initValue();
     return value_;
   }
 
@@ -116,9 +107,7 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
   public RdfNameEntry clear() {
     cachedSize = -1;
     id = 0;
-    if (value_ != null) {
-      value_ = "";
-    }
+    value_ = "";
     return this;
   }
 
@@ -137,17 +126,25 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    output.writeRawByte((byte) 8);
-    output.writeUInt32NoTag(id);
-    output.writeRawByte((byte) 18);
-    output.writeStringNoTag(value_);
+    if (id != 0) {
+      output.writeRawByte((byte) 8);
+      output.writeUInt32NoTag(id);
+    }
+    if (!value_.isEmpty()) {
+      output.writeRawByte((byte) 18);
+      output.writeStringNoTag(value_);
+    }
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(id);
-    size += 1 + CodedOutputStream.computeStringSizeNoTag(value_);
+    if (id != 0) {
+      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(id);
+    }
+    if (!value_.isEmpty()) {
+      size += 1 + CodedOutputStream.computeStringSizeNoTag(value_);
+    }
     return size;
   }
 
@@ -168,7 +165,6 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
         }
         case 18: {
           // value_
-          initValue();
           value_ = input.readStringRequireUtf8();
           tag = input.readTag();
           if (tag != 0) {

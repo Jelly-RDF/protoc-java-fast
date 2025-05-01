@@ -52,7 +52,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   public boolean hasSubject() {
-    return subject != null;
+    return subjectNumber != 0;
   }
 
   /**
@@ -143,7 +143,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   public boolean hasPredicate() {
-    return predicate != null;
+    return predicateNumber != 0;
   }
 
   /**
@@ -234,7 +234,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   public boolean hasObject() {
-    return object != null;
+    return objectNumber != 0;
   }
 
   /**
@@ -325,7 +325,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   public boolean hasGraph() {
-    return graph != null;
+    return graphNumber != 0;
   }
 
   /**
@@ -474,11 +474,228 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
+    switch (subjectNumber) {
+      case 1: {
+        final var sIri = getSIri();
+        output.writeRawByte((byte) 10);
+        output.writeUInt32NoTag(sIri.getCachedSize());
+        sIri.writeTo(output);
+        break;
+      }
+      case 2: {
+        final var sBnode = getSBnode();
+        output.writeRawByte((byte) 18);
+        output.writeStringNoTag(sBnode);
+        break;
+      }
+      case 3: {
+        final var sLiteral = getSLiteral();
+        output.writeRawByte((byte) 26);
+        output.writeUInt32NoTag(sLiteral.getCachedSize());
+        sLiteral.writeTo(output);
+        break;
+      }
+      case 4: {
+        final var sTripleTerm = getSTripleTerm();
+        output.writeRawByte((byte) 34);
+        output.writeUInt32NoTag(sTripleTerm.getCachedSize());
+        sTripleTerm.writeTo(output);
+        break;
+      }
+    }
+    switch (predicateNumber) {
+      case 5: {
+        final var pIri = getPIri();
+        output.writeRawByte((byte) 42);
+        output.writeUInt32NoTag(pIri.getCachedSize());
+        pIri.writeTo(output);
+        break;
+      }
+      case 6: {
+        final var pBnode = getPBnode();
+        output.writeRawByte((byte) 50);
+        output.writeStringNoTag(pBnode);
+        break;
+      }
+      case 7: {
+        final var pLiteral = getPLiteral();
+        output.writeRawByte((byte) 58);
+        output.writeUInt32NoTag(pLiteral.getCachedSize());
+        pLiteral.writeTo(output);
+        break;
+      }
+      case 8: {
+        final var pTripleTerm = getPTripleTerm();
+        output.writeRawByte((byte) 66);
+        output.writeUInt32NoTag(pTripleTerm.getCachedSize());
+        pTripleTerm.writeTo(output);
+        break;
+      }
+    }
+    switch (objectNumber) {
+      case 9: {
+        final var oIri = getOIri();
+        output.writeRawByte((byte) 74);
+        output.writeUInt32NoTag(oIri.getCachedSize());
+        oIri.writeTo(output);
+        break;
+      }
+      case 10: {
+        final var oBnode = getOBnode();
+        output.writeRawByte((byte) 82);
+        output.writeStringNoTag(oBnode);
+        break;
+      }
+      case 11: {
+        final var oLiteral = getOLiteral();
+        output.writeRawByte((byte) 90);
+        output.writeUInt32NoTag(oLiteral.getCachedSize());
+        oLiteral.writeTo(output);
+        break;
+      }
+      case 12: {
+        final var oTripleTerm = getOTripleTerm();
+        output.writeRawByte((byte) 98);
+        output.writeUInt32NoTag(oTripleTerm.getCachedSize());
+        oTripleTerm.writeTo(output);
+        break;
+      }
+    }
+    switch (graphNumber) {
+      case 13: {
+        final var gIri = getGIri();
+        output.writeRawByte((byte) 106);
+        output.writeUInt32NoTag(gIri.getCachedSize());
+        gIri.writeTo(output);
+        break;
+      }
+      case 14: {
+        final var gBnode = getGBnode();
+        output.writeRawByte((byte) 114);
+        output.writeStringNoTag(gBnode);
+        break;
+      }
+      case 15: {
+        final var gDefaultGraph = getGDefaultGraph();
+        output.writeRawByte((byte) 122);
+        output.writeUInt32NoTag(gDefaultGraph.getCachedSize());
+        gDefaultGraph.writeTo(output);
+        break;
+      }
+      case 16: {
+        final var gLiteral = getGLiteral();
+        output.writeRawByte((byte) 130);
+        output.writeRawByte((byte) 1);
+        output.writeUInt32NoTag(gLiteral.getCachedSize());
+        gLiteral.writeTo(output);
+        break;
+      }
+    }
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
+    switch (subjectNumber) {
+      case 1: {
+        final var sIri = getSIri();
+        final int dataSize = sIri.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 2: {
+        final var sBnode = getSBnode();
+        size += 1 + CodedOutputStream.computeStringSizeNoTag(sBnode);
+        break;
+      }
+      case 3: {
+        final var sLiteral = getSLiteral();
+        final int dataSize = sLiteral.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 4: {
+        final var sTripleTerm = getSTripleTerm();
+        final int dataSize = sTripleTerm.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+    }
+    switch (predicateNumber) {
+      case 5: {
+        final var pIri = getPIri();
+        final int dataSize = pIri.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 6: {
+        final var pBnode = getPBnode();
+        size += 1 + CodedOutputStream.computeStringSizeNoTag(pBnode);
+        break;
+      }
+      case 7: {
+        final var pLiteral = getPLiteral();
+        final int dataSize = pLiteral.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 8: {
+        final var pTripleTerm = getPTripleTerm();
+        final int dataSize = pTripleTerm.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+    }
+    switch (objectNumber) {
+      case 9: {
+        final var oIri = getOIri();
+        final int dataSize = oIri.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 10: {
+        final var oBnode = getOBnode();
+        size += 1 + CodedOutputStream.computeStringSizeNoTag(oBnode);
+        break;
+      }
+      case 11: {
+        final var oLiteral = getOLiteral();
+        final int dataSize = oLiteral.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 12: {
+        final var oTripleTerm = getOTripleTerm();
+        final int dataSize = oTripleTerm.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+    }
+    switch (graphNumber) {
+      case 13: {
+        final var gIri = getGIri();
+        final int dataSize = gIri.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 14: {
+        final var gBnode = getGBnode();
+        size += 1 + CodedOutputStream.computeStringSizeNoTag(gBnode);
+        break;
+      }
+      case 15: {
+        final var gDefaultGraph = getGDefaultGraph();
+        final int dataSize = gDefaultGraph.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 16: {
+        final var gLiteral = getGLiteral();
+        final int dataSize = gLiteral.getSerializedSize();
+        size += 2 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+    }
     return size;
   }
 
@@ -489,6 +706,230 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
     int tag = input.readTag();
     while (true) {
       switch (tag) {
+        case 10: {
+          // sIri
+          final RdfIri sIri;
+          if (subjectNumber == 1) {
+            sIri = getSIri();
+          }
+          else {
+            sIri = RdfIri.newInstance();
+            setSIri(sIri);
+          }
+          ProtoMessage.mergeDelimitedFrom(sIri, input);
+          tag = input.readTag();
+          if (tag != 42) {
+            break;
+          }
+        }
+        case 42: {
+          // pIri
+          final RdfIri pIri;
+          if (predicateNumber == 5) {
+            pIri = getPIri();
+          }
+          else {
+            pIri = RdfIri.newInstance();
+            setPIri(pIri);
+          }
+          ProtoMessage.mergeDelimitedFrom(pIri, input);
+          tag = input.readTag();
+          if (tag != 74) {
+            break;
+          }
+        }
+        case 74: {
+          // oIri
+          final RdfIri oIri;
+          if (objectNumber == 9) {
+            oIri = getOIri();
+          }
+          else {
+            oIri = RdfIri.newInstance();
+            setOIri(oIri);
+          }
+          ProtoMessage.mergeDelimitedFrom(oIri, input);
+          tag = input.readTag();
+          if (tag != 106) {
+            break;
+          }
+        }
+        case 106: {
+          // gIri
+          final RdfIri gIri;
+          if (graphNumber == 13) {
+            gIri = getGIri();
+          }
+          else {
+            gIri = RdfIri.newInstance();
+            setGIri(gIri);
+          }
+          ProtoMessage.mergeDelimitedFrom(gIri, input);
+          tag = input.readTag();
+          if (tag != 18) {
+            break;
+          }
+        }
+        case 18: {
+          // sBnode
+          setSBnode(input.readStringRequireUtf8());
+          tag = input.readTag();
+          if (tag != 50) {
+            break;
+          }
+        }
+        case 50: {
+          // pBnode
+          setPBnode(input.readStringRequireUtf8());
+          tag = input.readTag();
+          if (tag != 82) {
+            break;
+          }
+        }
+        case 82: {
+          // oBnode
+          setOBnode(input.readStringRequireUtf8());
+          tag = input.readTag();
+          if (tag != 114) {
+            break;
+          }
+        }
+        case 114: {
+          // gBnode
+          setGBnode(input.readStringRequireUtf8());
+          tag = input.readTag();
+          if (tag != 26) {
+            break;
+          }
+        }
+        case 26: {
+          // sLiteral
+          final RdfLiteral sLiteral;
+          if (subjectNumber == 3) {
+            sLiteral = getSLiteral();
+          }
+          else {
+            sLiteral = RdfLiteral.newInstance();
+            setSLiteral(sLiteral);
+          }
+          ProtoMessage.mergeDelimitedFrom(sLiteral, input);
+          tag = input.readTag();
+          if (tag != 58) {
+            break;
+          }
+        }
+        case 58: {
+          // pLiteral
+          final RdfLiteral pLiteral;
+          if (predicateNumber == 7) {
+            pLiteral = getPLiteral();
+          }
+          else {
+            pLiteral = RdfLiteral.newInstance();
+            setPLiteral(pLiteral);
+          }
+          ProtoMessage.mergeDelimitedFrom(pLiteral, input);
+          tag = input.readTag();
+          if (tag != 90) {
+            break;
+          }
+        }
+        case 90: {
+          // oLiteral
+          final RdfLiteral oLiteral;
+          if (objectNumber == 11) {
+            oLiteral = getOLiteral();
+          }
+          else {
+            oLiteral = RdfLiteral.newInstance();
+            setOLiteral(oLiteral);
+          }
+          ProtoMessage.mergeDelimitedFrom(oLiteral, input);
+          tag = input.readTag();
+          if (tag != 122) {
+            break;
+          }
+        }
+        case 122: {
+          // gDefaultGraph
+          final RdfDefaultGraph gDefaultGraph;
+          if (graphNumber == 15) {
+            gDefaultGraph = getGDefaultGraph();
+          }
+          else {
+            gDefaultGraph = RdfDefaultGraph.newInstance();
+            setGDefaultGraph(gDefaultGraph);
+          }
+          ProtoMessage.mergeDelimitedFrom(gDefaultGraph, input);
+          tag = input.readTag();
+          if (tag != 34) {
+            break;
+          }
+        }
+        case 34: {
+          // sTripleTerm
+          final RdfTriple sTripleTerm;
+          if (subjectNumber == 4) {
+            sTripleTerm = getSTripleTerm();
+          }
+          else {
+            sTripleTerm = RdfTriple.newInstance();
+            setSTripleTerm(sTripleTerm);
+          }
+          ProtoMessage.mergeDelimitedFrom(sTripleTerm, input);
+          tag = input.readTag();
+          if (tag != 66) {
+            break;
+          }
+        }
+        case 66: {
+          // pTripleTerm
+          final RdfTriple pTripleTerm;
+          if (predicateNumber == 8) {
+            pTripleTerm = getPTripleTerm();
+          }
+          else {
+            pTripleTerm = RdfTriple.newInstance();
+            setPTripleTerm(pTripleTerm);
+          }
+          ProtoMessage.mergeDelimitedFrom(pTripleTerm, input);
+          tag = input.readTag();
+          if (tag != 98) {
+            break;
+          }
+        }
+        case 98: {
+          // oTripleTerm
+          final RdfTriple oTripleTerm;
+          if (objectNumber == 12) {
+            oTripleTerm = getOTripleTerm();
+          }
+          else {
+            oTripleTerm = RdfTriple.newInstance();
+            setOTripleTerm(oTripleTerm);
+          }
+          ProtoMessage.mergeDelimitedFrom(oTripleTerm, input);
+          tag = input.readTag();
+          if (tag != 130) {
+            break;
+          }
+        }
+        case 130: {
+          // gLiteral
+          final RdfLiteral gLiteral;
+          if (graphNumber == 16) {
+            gLiteral = getGLiteral();
+          }
+          else {
+            gLiteral = RdfLiteral.newInstance();
+            setGLiteral(gLiteral);
+          }
+          ProtoMessage.mergeDelimitedFrom(gLiteral, input);
+          tag = input.readTag();
+          if (tag != 0) {
+            break;
+          }
+        }
         case 0: {
           return this;
         }

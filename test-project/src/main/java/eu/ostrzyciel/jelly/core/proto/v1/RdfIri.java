@@ -126,17 +126,25 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    output.writeRawByte((byte) 8);
-    output.writeUInt32NoTag(prefixId);
-    output.writeRawByte((byte) 16);
-    output.writeUInt32NoTag(nameId);
+    if (prefixId != 0) {
+      output.writeRawByte((byte) 8);
+      output.writeUInt32NoTag(prefixId);
+    }
+    if (nameId != 0) {
+      output.writeRawByte((byte) 16);
+      output.writeUInt32NoTag(nameId);
+    }
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(prefixId);
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(nameId);
+    if (prefixId != 0) {
+      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(prefixId);
+    }
+    if (nameId != 0) {
+      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(nameId);
+    }
     return size;
   }
 

@@ -188,7 +188,6 @@ object RequestInfo:
     val setterName = "set" + upperName
     val getterName = "get" + upperName
     val tryGetName = "tryGet" + upperName
-    val mutableGetterName = "getMutable" + upperName
     val adderName = "add" + upperName
     val clearName = "clear" + upperName
     val lazyInitName = "init" + upperName

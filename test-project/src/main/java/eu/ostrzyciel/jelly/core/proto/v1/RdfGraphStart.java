@@ -31,7 +31,7 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   }
 
   public boolean hasGraph() {
-    return graph != null;
+    return graphNumber != 0;
   }
 
   /**
@@ -159,11 +159,65 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
+    switch (graphNumber) {
+      case 1: {
+        final var gIri = getGIri();
+        output.writeRawByte((byte) 10);
+        output.writeUInt32NoTag(gIri.getCachedSize());
+        gIri.writeTo(output);
+        break;
+      }
+      case 2: {
+        final var gBnode = getGBnode();
+        output.writeRawByte((byte) 18);
+        output.writeStringNoTag(gBnode);
+        break;
+      }
+      case 3: {
+        final var gDefaultGraph = getGDefaultGraph();
+        output.writeRawByte((byte) 26);
+        output.writeUInt32NoTag(gDefaultGraph.getCachedSize());
+        gDefaultGraph.writeTo(output);
+        break;
+      }
+      case 4: {
+        final var gLiteral = getGLiteral();
+        output.writeRawByte((byte) 34);
+        output.writeUInt32NoTag(gLiteral.getCachedSize());
+        gLiteral.writeTo(output);
+        break;
+      }
+    }
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
+    switch (graphNumber) {
+      case 1: {
+        final var gIri = getGIri();
+        final int dataSize = gIri.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 2: {
+        final var gBnode = getGBnode();
+        size += 1 + CodedOutputStream.computeStringSizeNoTag(gBnode);
+        break;
+      }
+      case 3: {
+        final var gDefaultGraph = getGDefaultGraph();
+        final int dataSize = gDefaultGraph.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 4: {
+        final var gLiteral = getGLiteral();
+        final int dataSize = gLiteral.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+    }
     return size;
   }
 
@@ -174,6 +228,62 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
     int tag = input.readTag();
     while (true) {
       switch (tag) {
+        case 10: {
+          // gIri
+          final RdfIri gIri;
+          if (graphNumber == 1) {
+            gIri = getGIri();
+          }
+          else {
+            gIri = RdfIri.newInstance();
+            setGIri(gIri);
+          }
+          ProtoMessage.mergeDelimitedFrom(gIri, input);
+          tag = input.readTag();
+          if (tag != 18) {
+            break;
+          }
+        }
+        case 18: {
+          // gBnode
+          setGBnode(input.readStringRequireUtf8());
+          tag = input.readTag();
+          if (tag != 26) {
+            break;
+          }
+        }
+        case 26: {
+          // gDefaultGraph
+          final RdfDefaultGraph gDefaultGraph;
+          if (graphNumber == 3) {
+            gDefaultGraph = getGDefaultGraph();
+          }
+          else {
+            gDefaultGraph = RdfDefaultGraph.newInstance();
+            setGDefaultGraph(gDefaultGraph);
+          }
+          ProtoMessage.mergeDelimitedFrom(gDefaultGraph, input);
+          tag = input.readTag();
+          if (tag != 34) {
+            break;
+          }
+        }
+        case 34: {
+          // gLiteral
+          final RdfLiteral gLiteral;
+          if (graphNumber == 4) {
+            gLiteral = getGLiteral();
+          }
+          else {
+            gLiteral = RdfLiteral.newInstance();
+            setGLiteral(gLiteral);
+          }
+          ProtoMessage.mergeDelimitedFrom(gLiteral, input);
+          tag = input.readTag();
+          if (tag != 0) {
+            break;
+          }
+        }
         case 0: {
           return this;
         }

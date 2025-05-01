@@ -2,7 +2,6 @@ package eu.neverblink.protoc.java.gen
 
 import com.palantir.javapoet.*
 import eu.neverblink.protoc.java.gen.PluginOptions.FieldSerializationOrder
-import eu.neverblink.protoc.java.gen.PluginOptions.FieldSerializationOrder.*
 import eu.neverblink.protoc.java.gen.RequestInfo.MessageInfo
 
 import java.io.IOException
@@ -14,10 +13,13 @@ import javax.lang.model.element.Modifier
  * @since 07 Aug 2019
  */
 class MessageGenerator(val info: MessageInfo):
-  final val fields = info.fields
-    .filterNot(_.descriptor.hasOneofIndex)
+  final val allFields = info.fields
     .map(new FieldGenerator(_))
     .toSeq
+
+  // Most of the time, we are only interested in non-oneof fields
+  final val fields = allFields
+    .filterNot(_.info.descriptor.hasOneofIndex)
 
   final val m = new java.util.HashMap[String, AnyRef]
   m.put("abstractMessage", RuntimeClasses.AbstractMessage)
@@ -152,7 +154,12 @@ class MessageGenerator(val info: MessageInfo):
     // backwards compatibility. However, any production proto file should already be using the packed
     // option whenever possible, so we don't need to optimize the non-packed case.
     val enableFallthroughOptimization = info.expectedInputOrder ne FieldSerializationOrder.None
-    val sortedFields = getFieldSortedByExpectedInputOrder
+    // Interleave the oneof fields. In Jelly-RDF, this optimizes for the case where s, p, o, g are
+    // all RdfIri messages.
+    val sortedFields = fields.sortBy(_.info.number) ++
+      oneOfGenerators.flatMap(oneOf => oneOf.fieldGenerators.zipWithIndex)
+      .sortBy(_._2)
+      .map(_._1)
     if (enableFallthroughOptimization) {
       mergeFrom.addComment("Enabled Fall-Through Optimization (" + info.expectedInputOrder + ")")
       mergeFrom.addAnnotation(AnnotationSpec
@@ -165,8 +172,9 @@ class MessageGenerator(val info: MessageInfo):
       .beginControlFlow("while (true)")
       .beginControlFlow("switch (tag)")
     // Add fields by the expected order and type
-    for (i <- 0 until sortedFields.size) {
+    for (i <- sortedFields.indices) {
       val field = sortedFields(i)
+      val maybeOneOf = oneOfGenerators.find(_.fields.contains(field.info))
       // Assume all packable fields are written packed. Add non-packed cases to the end.
       var readTag = true
       if (field.info.isPackable) {
@@ -177,7 +185,9 @@ class MessageGenerator(val info: MessageInfo):
       else {
         mergeFrom.beginControlFlow("case $L:", field.info.tag)
         mergeFrom.addComment("$L", field.info.fieldName)
-        readTag = field.generateMergingCode(mergeFrom)
+        readTag = maybeOneOf match
+          case Some(oneOf) => oneOf.generateMergingCode(mergeFrom, field)
+          case None => field.generateMergingCode(mergeFrom)
       }
       if (readTag) mergeFrom.addCode(named("tag = input.readTag();\n"))
       if (enableFallthroughOptimization) {
@@ -224,17 +234,13 @@ class MessageGenerator(val info: MessageInfo):
       .addParameter(RuntimeClasses.CodedOutputStream, "output", Modifier.FINAL)
       .addException(classOf[IOException])
     getFieldSortedByOutputOrder.foreach(f => {
-      if (f.info.isRequired) {
-        // no need to check has state again
-        f.generateSerializationCode(writeTo)
-      }
-      else {
-        // TODO: implement
-        // writeTo.beginControlFlow("if ($L)", f.info.hasBit)
-        f.generateSerializationCode(writeTo)
-        // writeTo.endControlFlow
-      }
+      val checker = CodeBlock.builder().add("if (")
+      f.generateHasChecker(checker)
+      writeTo.beginControlFlow(checker.add(")").build())
+      f.generateSerializationCode(writeTo)
+      writeTo.endControlFlow
     })
+    oneOfGenerators.foreach(_.generateWriteToCode(writeTo))
     t.addMethod(writeTo.build)
 
   private def generateComputeSerializedSize(t: TypeSpec.Builder): Unit =
@@ -246,17 +252,13 @@ class MessageGenerator(val info: MessageInfo):
     // Check all required fields at once
     computeSerializedSize.addStatement("int size = 0")
     fields.foreach(f => {
-      if (f.info.isRequired) {
-        // no need to check has state again
-        f.generateComputeSerializedSizeCode(computeSerializedSize)
-      }
-      else {
-        // TODO: implement
-        // computeSerializedSize.beginControlFlow("if ($L)", f.info.hasBit)
-        f.generateComputeSerializedSizeCode(computeSerializedSize)
-        // computeSerializedSize.endControlFlow
-      }
+      val checker = CodeBlock.builder().add("if (")
+      f.generateHasChecker(checker)
+      computeSerializedSize.beginControlFlow(checker.add(")").build())
+      f.generateComputeSerializedSizeCode(computeSerializedSize)
+      computeSerializedSize.endControlFlow
     })
+    oneOfGenerators.foreach(_.generateComputeSerializedSizeCode(computeSerializedSize))
     computeSerializedSize.addStatement("return size")
     t.addMethod(computeSerializedSize.build)
 
@@ -349,13 +351,6 @@ class MessageGenerator(val info: MessageInfo):
       .addStatement("return $T.$N", descriptorClass, fieldName)
       .build
     )
-
-  private def getFieldSortedByExpectedInputOrder: Seq[FieldGenerator] =
-    info.expectedInputOrder match
-      case AscendingNumber => fields.sortBy(_.info.number)
-      case Quickbuf => // keep existing order
-      case FieldSerializationOrder.None => // no optimization
-    fields.toSeq
 
   private def getFieldSortedByOutputOrder: Seq[FieldGenerator] =
     // Sorts output the same way as protobuf. This is always slower,

@@ -16,7 +16,7 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   /**
    * <code>optional string lex = 1;</code>
    */
-  private String lex = null;
+  private String lex = "";
 
   /**
    * <code>oneof literalKind { ... }</code>
@@ -36,7 +36,7 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   }
 
   public boolean hasLiteralKind() {
-    return literalKind != null;
+    return literalKindNumber != 0;
   }
 
   /**
@@ -94,20 +94,12 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
     return (int) literalKind;
   }
 
-  private void initLex() {
-    if (lex == null) {
-      lex = "";
-    }
-  }
-
   /**
    * <code>optional string lex = 1;</code>
    * @return this
    */
   public RdfLiteral clearLex() {
-    if (lex != null) {
-      lex = "";
-    }
+    lex = "";
     return this;
   }
 
@@ -116,7 +108,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
    * @return the lex
    */
   public String getLex() {
-    initLex();
     return lex;
   }
 
@@ -151,9 +142,7 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   @Override
   public RdfLiteral clear() {
     cachedSize = -1;
-    if (lex != null) {
-      lex = "";
-    }
+    lex = "";
     this.literalKind = null;
     this.literalKindNumber = 0;
     return this;
@@ -174,14 +163,44 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    output.writeRawByte((byte) 10);
-    output.writeStringNoTag(lex);
+    if (!lex.isEmpty()) {
+      output.writeRawByte((byte) 10);
+      output.writeStringNoTag(lex);
+    }
+    switch (literalKindNumber) {
+      case 2: {
+        final var langtag = getLangtag();
+        output.writeRawByte((byte) 18);
+        output.writeStringNoTag(langtag);
+        break;
+      }
+      case 3: {
+        final var datatype = getDatatype();
+        output.writeRawByte((byte) 24);
+        output.writeUInt32NoTag(datatype);
+        break;
+      }
+    }
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    size += 1 + CodedOutputStream.computeStringSizeNoTag(lex);
+    if (!lex.isEmpty()) {
+      size += 1 + CodedOutputStream.computeStringSizeNoTag(lex);
+    }
+    switch (literalKindNumber) {
+      case 2: {
+        final var langtag = getLangtag();
+        size += 1 + CodedOutputStream.computeStringSizeNoTag(langtag);
+        break;
+      }
+      case 3: {
+        final var datatype = getDatatype();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(datatype);
+        break;
+      }
+    }
     return size;
   }
 
@@ -194,8 +213,23 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
       switch (tag) {
         case 10: {
           // lex
-          initLex();
           lex = input.readStringRequireUtf8();
+          tag = input.readTag();
+          if (tag != 18) {
+            break;
+          }
+        }
+        case 18: {
+          // langtag
+          setLangtag(input.readStringRequireUtf8());
+          tag = input.readTag();
+          if (tag != 24) {
+            break;
+          }
+        }
+        case 24: {
+          // datatype
+          setDatatype(input.readUInt32());
           tag = input.readTag();
           if (tag != 0) {
             break;

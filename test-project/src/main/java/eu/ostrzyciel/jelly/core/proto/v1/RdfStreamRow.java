@@ -31,7 +31,7 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   }
 
   public boolean hasRow() {
-    return row != null;
+    return rowNumber != 0;
   }
 
   /**
@@ -239,11 +239,132 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
+    switch (rowNumber) {
+      case 1: {
+        final var options = getOptions();
+        output.writeRawByte((byte) 10);
+        output.writeUInt32NoTag(options.getCachedSize());
+        options.writeTo(output);
+        break;
+      }
+      case 2: {
+        final var triple = getTriple();
+        output.writeRawByte((byte) 18);
+        output.writeUInt32NoTag(triple.getCachedSize());
+        triple.writeTo(output);
+        break;
+      }
+      case 3: {
+        final var quad = getQuad();
+        output.writeRawByte((byte) 26);
+        output.writeUInt32NoTag(quad.getCachedSize());
+        quad.writeTo(output);
+        break;
+      }
+      case 4: {
+        final var graphStart = getGraphStart();
+        output.writeRawByte((byte) 34);
+        output.writeUInt32NoTag(graphStart.getCachedSize());
+        graphStart.writeTo(output);
+        break;
+      }
+      case 5: {
+        final var graphEnd = getGraphEnd();
+        output.writeRawByte((byte) 42);
+        output.writeUInt32NoTag(graphEnd.getCachedSize());
+        graphEnd.writeTo(output);
+        break;
+      }
+      case 6: {
+        final var namespace = getNamespace();
+        output.writeRawByte((byte) 50);
+        output.writeUInt32NoTag(namespace.getCachedSize());
+        namespace.writeTo(output);
+        break;
+      }
+      case 9: {
+        final var name = getName();
+        output.writeRawByte((byte) 74);
+        output.writeUInt32NoTag(name.getCachedSize());
+        name.writeTo(output);
+        break;
+      }
+      case 10: {
+        final var prefix = getPrefix();
+        output.writeRawByte((byte) 82);
+        output.writeUInt32NoTag(prefix.getCachedSize());
+        prefix.writeTo(output);
+        break;
+      }
+      case 11: {
+        final var datatype = getDatatype();
+        output.writeRawByte((byte) 90);
+        output.writeUInt32NoTag(datatype.getCachedSize());
+        datatype.writeTo(output);
+        break;
+      }
+    }
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
+    switch (rowNumber) {
+      case 1: {
+        final var options = getOptions();
+        final int dataSize = options.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 2: {
+        final var triple = getTriple();
+        final int dataSize = triple.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 3: {
+        final var quad = getQuad();
+        final int dataSize = quad.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 4: {
+        final var graphStart = getGraphStart();
+        final int dataSize = graphStart.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 5: {
+        final var graphEnd = getGraphEnd();
+        final int dataSize = graphEnd.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 6: {
+        final var namespace = getNamespace();
+        final int dataSize = namespace.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 9: {
+        final var name = getName();
+        final int dataSize = name.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 10: {
+        final var prefix = getPrefix();
+        final int dataSize = prefix.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+      case 11: {
+        final var datatype = getDatatype();
+        final int dataSize = datatype.getSerializedSize();
+        size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+        break;
+      }
+    }
     return size;
   }
 
@@ -254,6 +375,150 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
     int tag = input.readTag();
     while (true) {
       switch (tag) {
+        case 10: {
+          // options
+          final RdfStreamOptions options;
+          if (rowNumber == 1) {
+            options = getOptions();
+          }
+          else {
+            options = RdfStreamOptions.newInstance();
+            setOptions(options);
+          }
+          ProtoMessage.mergeDelimitedFrom(options, input);
+          tag = input.readTag();
+          if (tag != 18) {
+            break;
+          }
+        }
+        case 18: {
+          // triple
+          final RdfTriple triple;
+          if (rowNumber == 2) {
+            triple = getTriple();
+          }
+          else {
+            triple = RdfTriple.newInstance();
+            setTriple(triple);
+          }
+          ProtoMessage.mergeDelimitedFrom(triple, input);
+          tag = input.readTag();
+          if (tag != 26) {
+            break;
+          }
+        }
+        case 26: {
+          // quad
+          final RdfQuad quad;
+          if (rowNumber == 3) {
+            quad = getQuad();
+          }
+          else {
+            quad = RdfQuad.newInstance();
+            setQuad(quad);
+          }
+          ProtoMessage.mergeDelimitedFrom(quad, input);
+          tag = input.readTag();
+          if (tag != 34) {
+            break;
+          }
+        }
+        case 34: {
+          // graphStart
+          final RdfGraphStart graphStart;
+          if (rowNumber == 4) {
+            graphStart = getGraphStart();
+          }
+          else {
+            graphStart = RdfGraphStart.newInstance();
+            setGraphStart(graphStart);
+          }
+          ProtoMessage.mergeDelimitedFrom(graphStart, input);
+          tag = input.readTag();
+          if (tag != 42) {
+            break;
+          }
+        }
+        case 42: {
+          // graphEnd
+          final RdfGraphEnd graphEnd;
+          if (rowNumber == 5) {
+            graphEnd = getGraphEnd();
+          }
+          else {
+            graphEnd = RdfGraphEnd.newInstance();
+            setGraphEnd(graphEnd);
+          }
+          ProtoMessage.mergeDelimitedFrom(graphEnd, input);
+          tag = input.readTag();
+          if (tag != 50) {
+            break;
+          }
+        }
+        case 50: {
+          // namespace
+          final RdfNamespaceDeclaration namespace;
+          if (rowNumber == 6) {
+            namespace = getNamespace();
+          }
+          else {
+            namespace = RdfNamespaceDeclaration.newInstance();
+            setNamespace(namespace);
+          }
+          ProtoMessage.mergeDelimitedFrom(namespace, input);
+          tag = input.readTag();
+          if (tag != 74) {
+            break;
+          }
+        }
+        case 74: {
+          // name
+          final RdfNameEntry name;
+          if (rowNumber == 9) {
+            name = getName();
+          }
+          else {
+            name = RdfNameEntry.newInstance();
+            setName(name);
+          }
+          ProtoMessage.mergeDelimitedFrom(name, input);
+          tag = input.readTag();
+          if (tag != 82) {
+            break;
+          }
+        }
+        case 82: {
+          // prefix
+          final RdfPrefixEntry prefix;
+          if (rowNumber == 10) {
+            prefix = getPrefix();
+          }
+          else {
+            prefix = RdfPrefixEntry.newInstance();
+            setPrefix(prefix);
+          }
+          ProtoMessage.mergeDelimitedFrom(prefix, input);
+          tag = input.readTag();
+          if (tag != 90) {
+            break;
+          }
+        }
+        case 90: {
+          // datatype
+          final RdfDatatypeEntry datatype;
+          if (rowNumber == 11) {
+            datatype = getDatatype();
+          }
+          else {
+            datatype = RdfDatatypeEntry.newInstance();
+            setDatatype(datatype);
+          }
+          ProtoMessage.mergeDelimitedFrom(datatype, input);
+          tag = input.readTag();
+          if (tag != 0) {
+            break;
+          }
+        }
         case 0: {
           return this;
         }

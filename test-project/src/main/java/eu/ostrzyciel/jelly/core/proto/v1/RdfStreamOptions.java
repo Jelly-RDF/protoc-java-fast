@@ -16,7 +16,7 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
   /**
    * <code>optional string stream_name = 1;</code>
    */
-  private String streamName = null;
+  private String streamName = "";
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.PhysicalStreamType physical_type = 2;</code>
@@ -68,20 +68,12 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
     return new RdfStreamOptions();
   }
 
-  private void initStreamName() {
-    if (streamName == null) {
-      streamName = "";
-    }
-  }
-
   /**
    * <code>optional string stream_name = 1;</code>
    * @return this
    */
   public RdfStreamOptions clearStreamName() {
-    if (streamName != null) {
-      streamName = "";
-    }
+    streamName = "";
     return this;
   }
 
@@ -90,7 +82,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    * @return the streamName
    */
   public String getStreamName() {
-    initStreamName();
     return streamName;
   }
 
@@ -401,9 +392,7 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
   @Override
   public RdfStreamOptions clear() {
     cachedSize = -1;
-    if (streamName != null) {
-      streamName = "";
-    }
+    streamName = "";
     physicalType = 0;
     generalizedStatements = false;
     rdfStar = false;
@@ -437,38 +426,74 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    output.writeRawByte((byte) 10);
-    output.writeStringNoTag(streamName);
-    output.writeRawByte((byte) 16);
-    output.writeEnumNoTag(physicalType);
-    output.writeRawByte((byte) 24);
-    output.writeBoolNoTag(generalizedStatements);
-    output.writeRawByte((byte) 32);
-    output.writeBoolNoTag(rdfStar);
-    output.writeRawByte((byte) 72);
-    output.writeUInt32NoTag(maxNameTableSize);
-    output.writeRawByte((byte) 80);
-    output.writeUInt32NoTag(maxPrefixTableSize);
-    output.writeRawByte((byte) 88);
-    output.writeUInt32NoTag(maxDatatypeTableSize);
-    output.writeRawByte((byte) 112);
-    output.writeEnumNoTag(logicalType);
-    output.writeRawByte((byte) 120);
-    output.writeUInt32NoTag(version);
+    if (!streamName.isEmpty()) {
+      output.writeRawByte((byte) 10);
+      output.writeStringNoTag(streamName);
+    }
+    if (physicalType != 0) {
+      output.writeRawByte((byte) 16);
+      output.writeEnumNoTag(physicalType);
+    }
+    if (generalizedStatements != false) {
+      output.writeRawByte((byte) 24);
+      output.writeBoolNoTag(generalizedStatements);
+    }
+    if (rdfStar != false) {
+      output.writeRawByte((byte) 32);
+      output.writeBoolNoTag(rdfStar);
+    }
+    if (maxNameTableSize != 0) {
+      output.writeRawByte((byte) 72);
+      output.writeUInt32NoTag(maxNameTableSize);
+    }
+    if (maxPrefixTableSize != 0) {
+      output.writeRawByte((byte) 80);
+      output.writeUInt32NoTag(maxPrefixTableSize);
+    }
+    if (maxDatatypeTableSize != 0) {
+      output.writeRawByte((byte) 88);
+      output.writeUInt32NoTag(maxDatatypeTableSize);
+    }
+    if (logicalType != 0) {
+      output.writeRawByte((byte) 112);
+      output.writeEnumNoTag(logicalType);
+    }
+    if (version != 0) {
+      output.writeRawByte((byte) 120);
+      output.writeUInt32NoTag(version);
+    }
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    size += 1 + CodedOutputStream.computeStringSizeNoTag(streamName);
-    size += 1 + CodedOutputStream.computeEnumSizeNoTag(physicalType);
-    size += 2;
-    size += 2;
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxNameTableSize);
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxPrefixTableSize);
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxDatatypeTableSize);
-    size += 1 + CodedOutputStream.computeEnumSizeNoTag(logicalType);
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(version);
+    if (!streamName.isEmpty()) {
+      size += 1 + CodedOutputStream.computeStringSizeNoTag(streamName);
+    }
+    if (physicalType != 0) {
+      size += 1 + CodedOutputStream.computeEnumSizeNoTag(physicalType);
+    }
+    if (generalizedStatements != false) {
+      size += 2;
+    }
+    if (rdfStar != false) {
+      size += 2;
+    }
+    if (maxNameTableSize != 0) {
+      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxNameTableSize);
+    }
+    if (maxPrefixTableSize != 0) {
+      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxPrefixTableSize);
+    }
+    if (maxDatatypeTableSize != 0) {
+      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(maxDatatypeTableSize);
+    }
+    if (logicalType != 0) {
+      size += 1 + CodedOutputStream.computeEnumSizeNoTag(logicalType);
+    }
+    if (version != 0) {
+      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(version);
+    }
     return size;
   }
 
@@ -481,7 +506,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
       switch (tag) {
         case 10: {
           // streamName
-          initStreamName();
           streamName = input.readStringRequireUtf8();
           tag = input.readTag();
           if (tag != 16) {

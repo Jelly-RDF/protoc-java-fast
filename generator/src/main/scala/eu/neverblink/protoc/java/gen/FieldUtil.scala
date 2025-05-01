@@ -198,11 +198,11 @@ object FieldUtil:
     case TYPE_INT32 => "0"
     case TYPE_UINT32 => "0"
     case TYPE_BOOL => "false"
-    case TYPE_STRING => ""
-    case TYPE_ENUM => ""
-    case TYPE_GROUP => ""
-    case TYPE_MESSAGE => ""
-    case TYPE_BYTES => ""
+    case TYPE_STRING => "\"\""
+    case TYPE_ENUM => "UNSPECIFIED"
+    case TYPE_GROUP => "null"
+    case TYPE_MESSAGE => "null"
+    case TYPE_BYTES => "???" // huh?
     case _ => ""
 
   /**

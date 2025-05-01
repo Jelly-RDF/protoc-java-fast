@@ -12,6 +12,7 @@ import javax.lang.model.element.Modifier
  */
 class OneOfGenerator(val info: OneOfInfo):
   val fields = info.getFields
+  val fieldGenerators = fields.map(FieldGenerator(_))
 
   def generateMemberFields(t: TypeSpec.Builder): Unit =
     val field = FieldSpec.builder(RuntimeClasses.ObjectType, info.fieldName)
@@ -102,3 +103,53 @@ class OneOfGenerator(val info: OneOfInfo):
   def generateClearCode(method: MethodSpec.Builder): Unit =
     method.addStatement("this.$N = null", info.fieldName)
     method.addStatement("this.$N = 0", info.numberFieldName)
+
+  def generateWriteToCode(method: MethodSpec.Builder): Unit =
+    method.beginControlFlow("switch ($N)", info.numberFieldName)
+    for f <- fieldGenerators do
+      method.beginControlFlow("case $L:", f.info.descriptor.getNumber)
+      method.addStatement("final var $N = $N()", f.info.fieldName, f.info.getterName)
+      f.generateSerializationCode(method)
+      method.addStatement("break")
+      method.endControlFlow
+    method.endControlFlow
+
+  def generateComputeSerializedSizeCode(method: MethodSpec.Builder): Unit =
+    method.beginControlFlow("switch ($N)", info.numberFieldName)
+    for f <- fieldGenerators do
+      method.beginControlFlow("case $L:", f.info.descriptor.getNumber)
+      method.addStatement("final var $N = $N()", f.info.fieldName, f.info.getterName)
+      f.generateComputeSerializedSizeCode(method)
+      method.addStatement("break")
+      method.endControlFlow
+    method.endControlFlow
+
+  /**
+   * @return true if the tag needs to be read
+   */
+  def generateMergingCode(method: MethodSpec.Builder, field: FieldGenerator): Boolean =
+    if field.info.isMessage then
+      // If the field is already set to the same kind of message, we merge it.
+      // Otherwise, we create a new instance of the message and merge it.
+      method
+        .addStatement("final $T $N", field.info.getTypeName, field.info.fieldName)
+        .beginControlFlow("if ($N == $L)", info.numberFieldName, field.info.descriptor.getNumber)
+        .addStatement("$N = $N()", field.info.fieldName, field.info.getterName)
+        .endControlFlow
+        .beginControlFlow("else")
+        .addStatement("$N = $T.newInstance()", field.info.fieldName, field.info.getTypeName)
+        .addStatement("$N($N)", field.info.setterName, field.info.fieldName)
+        .endControlFlow
+        .addStatement("ProtoMessage.mergeDelimitedFrom($N, input)", field.info.fieldName)
+    else if field.info.isString then
+      method.addStatement("$N(input.readStringRequireUtf8())", field.info.setterName)
+    else if field.info.isPrimitive then
+      method.addStatement(
+        "$N(input.read$L())",
+        field.info.setterName,
+        FieldUtil.getCapitalizedType(field.info.descriptor.getType)
+      )
+    else
+      throw new IllegalStateException("Unhandled field type: " + field.info.getTypeName)
+    true
+

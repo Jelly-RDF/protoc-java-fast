@@ -16,7 +16,7 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
   /**
    * <code>optional string name = 1;</code>
    */
-  private String name = null;
+  private String name = "";
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri value = 2;</code>
@@ -33,20 +33,12 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
     return new RdfNamespaceDeclaration();
   }
 
-  private void initName() {
-    if (name == null) {
-      name = "";
-    }
-  }
-
   /**
    * <code>optional string name = 1;</code>
    * @return this
    */
   public RdfNamespaceDeclaration clearName() {
-    if (name != null) {
-      name = "";
-    }
+    name = "";
     return this;
   }
 
@@ -55,7 +47,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
    * @return the name
    */
   public String getName() {
-    initName();
     return name;
   }
 
@@ -80,38 +71,16 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
    * @return this
    */
   public RdfNamespaceDeclaration clearValue() {
-    if (value_ != null) {
-      value_.clear();
-    }
+    value_ = null;
     return this;
   }
 
   /**
    * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri value = 2;</code>
    *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableValue()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * @return value for this field
    */
   public RdfIri getValue() {
-    initValue();
-    return value_;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri value = 2;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfIri getMutableValue() {
-    initValue();
     return value_;
   }
 
@@ -139,19 +108,15 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
   public RdfNamespaceDeclaration mergeFrom(final RdfNamespaceDeclaration other) {
     cachedSize = -1;
     name = other.name;
-    getMutableValue().mergeFrom(other.value_);
+    getValue().mergeFrom(other.value_);
     return this;
   }
 
   @Override
   public RdfNamespaceDeclaration clear() {
     cachedSize = -1;
-    if (name != null) {
-      name = "";
-    }
-    if (value_ != null) {
-      value_.clear();
-    }
+    name = "";
+    value_ = null;
     return this;
   }
 
@@ -170,19 +135,27 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    output.writeRawByte((byte) 10);
-    output.writeStringNoTag(name);
-    output.writeRawByte((byte) 18);
-    output.writeUInt32NoTag(value_.getCachedSize());
-    value_.writeTo(output);
+    if (!name.isEmpty()) {
+      output.writeRawByte((byte) 10);
+      output.writeStringNoTag(name);
+    }
+    if (value_ != null) {
+      output.writeRawByte((byte) 18);
+      output.writeUInt32NoTag(value_.getCachedSize());
+      value_.writeTo(output);
+    }
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    size += 1 + CodedOutputStream.computeStringSizeNoTag(name);
-    final int dataSize = value_.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    if (!name.isEmpty()) {
+      size += 1 + CodedOutputStream.computeStringSizeNoTag(name);
+    }
+    if (value_ != null) {
+      final int dataSize = value_.getSerializedSize();
+      size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
+    }
     return size;
   }
 
@@ -195,7 +168,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
       switch (tag) {
         case 10: {
           // name
-          initName();
           name = input.readStringRequireUtf8();
           tag = input.readTag();
           if (tag != 18) {
