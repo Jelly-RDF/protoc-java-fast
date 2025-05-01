@@ -84,6 +84,7 @@ class MessageGenerator(val info: MessageInfo):
     generateMergeFrom(t)
     generateClone(t)
     // Static utilities
+    oneOfGenerators.foreach(_.generateConstants(t))
     generateParseFrom(t)
     generateMessageFactory(t)
     // Descriptors

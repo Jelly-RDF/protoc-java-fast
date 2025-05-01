@@ -153,3 +153,9 @@ class OneOfGenerator(val info: OneOfInfo):
       throw new IllegalStateException("Unhandled field type: " + field.info.getTypeName)
     true
 
+  def generateConstants(t: TypeSpec.Builder): Unit =
+    for field <- fields do
+      val constant = FieldSpec.builder(TypeName.BYTE, NamingUtil.getConstantName(field.fieldName))
+        .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
+        .initializer("$L", field.descriptor.getNumber)
+      t.addField(constant.build)

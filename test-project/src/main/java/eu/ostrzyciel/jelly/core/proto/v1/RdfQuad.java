@@ -13,6 +13,38 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
+  public static final byte S_IRI = 1;
+
+  public static final byte S_BNODE = 2;
+
+  public static final byte S_LITERAL = 3;
+
+  public static final byte S_TRIPLE_TERM = 4;
+
+  public static final byte P_IRI = 5;
+
+  public static final byte P_BNODE = 6;
+
+  public static final byte P_LITERAL = 7;
+
+  public static final byte P_TRIPLE_TERM = 8;
+
+  public static final byte O_IRI = 9;
+
+  public static final byte O_BNODE = 10;
+
+  public static final byte O_LITERAL = 11;
+
+  public static final byte O_TRIPLE_TERM = 12;
+
+  public static final byte G_IRI = 13;
+
+  public static final byte G_BNODE = 14;
+
+  public static final byte G_DEFAULT_GRAPH = 15;
+
+  public static final byte G_LITERAL = 16;
+
   /**
    * <code>oneof subject { ... }</code>
    */

@@ -13,6 +13,24 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cloneable {
+  public static final byte OPTIONS = 1;
+
+  public static final byte TRIPLE = 2;
+
+  public static final byte QUAD = 3;
+
+  public static final byte GRAPH_START = 4;
+
+  public static final byte GRAPH_END = 5;
+
+  public static final byte NAMESPACE = 6;
+
+  public static final byte NAME = 9;
+
+  public static final byte PREFIX = 10;
+
+  public static final byte DATATYPE = 11;
+
   /**
    * <code>oneof row { ... }</code>
    */

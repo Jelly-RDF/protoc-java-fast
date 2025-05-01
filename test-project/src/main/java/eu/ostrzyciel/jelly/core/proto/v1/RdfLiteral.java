@@ -13,6 +13,10 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Cloneable {
+  public static final byte LANGTAG = 2;
+
+  public static final byte DATATYPE = 3;
+
   /**
    * <code>optional string lex = 1;</code>
    */

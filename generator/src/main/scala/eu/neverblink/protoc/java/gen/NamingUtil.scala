@@ -89,6 +89,21 @@ object NamingUtil:
       else cap_next_letter = true
     }
     result.toString
+    
+  def getConstantName(camelCase: String): String =
+    // convert camelCase to UPPER_UNDERSCORE
+    val result = new StringBuilder(camelCase.length)
+    for (i <- 0 until camelCase.length) {
+      val c = camelCase.charAt(i)
+      if ('a' <= c && c <= 'z') result.append(Character.toUpperCase(c))
+      else if ('A' <= c && c <= 'Z') {
+        if (i > 0) result.append('_')
+        result.append(c)
+      }
+      else if ('0' <= c && c <= '9') result.append(c)
+      else result.append('_')
+    }
+    result.toString
 
   def filterKeyword(name: String): String = 
     if (keywordSet.contains(name)) name + "_" else name

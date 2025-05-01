@@ -111,6 +111,14 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
     protected abstract int computeSerializedSize();
 
     /**
+     * Resets the cached size. This must be called when a field is modified after being already
+     * serialized.
+     */
+    public void resetCachedSize() {
+        cachedSize = -1;
+    }
+
+    /**
      * Serializes the message and writes it to {@code output}.
      *
      * @param output the output to receive the serialized form.

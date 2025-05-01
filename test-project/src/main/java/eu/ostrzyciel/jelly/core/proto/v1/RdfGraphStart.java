@@ -13,6 +13,14 @@ import java.io.IOException;
  */
 @SuppressWarnings("hiding")
 public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements Cloneable {
+  public static final byte G_IRI = 1;
+
+  public static final byte G_BNODE = 2;
+
+  public static final byte G_DEFAULT_GRAPH = 3;
+
+  public static final byte G_LITERAL = 4;
+
   /**
    * <code>oneof graph { ... }</code>
    */
