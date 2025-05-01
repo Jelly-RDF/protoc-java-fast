@@ -14,49 +14,11 @@ import java.io.IOException;
 @SuppressWarnings("hiding")
 public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cloneable {
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamOptions options = 1;</code>
+   * <code>oneof row { ... }</code>
    */
-  private RdfStreamOptions options = null;
+  private Object row = null;
 
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple triple = 2;</code>
-   */
-  private RdfTriple triple = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfQuad quad = 3;</code>
-   */
-  private RdfQuad quad = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphStart graph_start = 4;</code>
-   */
-  private RdfGraphStart graphStart = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphEnd graph_end = 5;</code>
-   */
-  private RdfGraphEnd graphEnd = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNamespaceDeclaration namespace = 6;</code>
-   */
-  private RdfNamespaceDeclaration namespace = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNameEntry name = 9;</code>
-   */
-  private RdfNameEntry name = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfPrefixEntry prefix = 10;</code>
-   */
-  private RdfPrefixEntry prefix = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDatatypeEntry datatype = 11;</code>
-   */
-  private RdfDatatypeEntry datatype = null;
+  private byte rowNumber = 0;
 
   private RdfStreamRow() {
   }
@@ -69,729 +31,197 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   }
 
   public boolean hasRow() {
-    return true;
-  }
-
-  public RdfStreamRow clearRow() {
-    if (hasRow()) {
-      clearOptions();
-      clearTriple();
-      clearQuad();
-      clearGraphStart();
-      clearGraphEnd();
-      clearNamespace();
-      clearName();
-      clearPrefix();
-      clearDatatype();
-    }
-    return this;
-  }
-
-  private void clearRowOtherOptions() {
-    clearTriple();
-    clearQuad();
-    clearGraphStart();
-    clearGraphEnd();
-    clearNamespace();
-    clearName();
-    clearPrefix();
-    clearDatatype();
-  }
-
-  private void clearRowOtherTriple() {
-    clearOptions();
-    clearQuad();
-    clearGraphStart();
-    clearGraphEnd();
-    clearNamespace();
-    clearName();
-    clearPrefix();
-    clearDatatype();
-  }
-
-  private void clearRowOtherQuad() {
-    clearOptions();
-    clearTriple();
-    clearGraphStart();
-    clearGraphEnd();
-    clearNamespace();
-    clearName();
-    clearPrefix();
-    clearDatatype();
-  }
-
-  private void clearRowOtherGraphStart() {
-    clearOptions();
-    clearTriple();
-    clearQuad();
-    clearGraphEnd();
-    clearNamespace();
-    clearName();
-    clearPrefix();
-    clearDatatype();
-  }
-
-  private void clearRowOtherGraphEnd() {
-    clearOptions();
-    clearTriple();
-    clearQuad();
-    clearGraphStart();
-    clearNamespace();
-    clearName();
-    clearPrefix();
-    clearDatatype();
-  }
-
-  private void clearRowOtherNamespace() {
-    clearOptions();
-    clearTriple();
-    clearQuad();
-    clearGraphStart();
-    clearGraphEnd();
-    clearName();
-    clearPrefix();
-    clearDatatype();
-  }
-
-  private void clearRowOtherName() {
-    clearOptions();
-    clearTriple();
-    clearQuad();
-    clearGraphStart();
-    clearGraphEnd();
-    clearNamespace();
-    clearPrefix();
-    clearDatatype();
-  }
-
-  private void clearRowOtherPrefix() {
-    clearOptions();
-    clearTriple();
-    clearQuad();
-    clearGraphStart();
-    clearGraphEnd();
-    clearNamespace();
-    clearName();
-    clearDatatype();
-  }
-
-  private void clearRowOtherDatatype() {
-    clearOptions();
-    clearTriple();
-    clearQuad();
-    clearGraphStart();
-    clearGraphEnd();
-    clearNamespace();
-    clearName();
-    clearPrefix();
-  }
-
-  private void initOptions() {
-    if (options == null) {
-      options = RdfStreamOptions.newInstance();
-    }
+    return row != null;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamOptions options = 1;</code>
-   * @return this
+   * Low-level setter for the <code>row</code> oneof field.
+   * Use with care, as it will not check the type of the value.
    */
-  public RdfStreamRow clearOptions() {
-    if (options != null) {
-      options.clear();
-    }
-    return this;
+  public void setRow(Object row, byte number) {
+    this.row = row;
+    this.rowNumber = number;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamOptions options = 1;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableOptions()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Sets the <code>row</code> oneof field to options.
+   */
+  public void setOptions(RdfStreamOptions options) {
+    this.row = options;
+    this.rowNumber = 1;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to triple.
+   */
+  public void setTriple(RdfTriple triple) {
+    this.row = triple;
+    this.rowNumber = 2;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to quad.
+   */
+  public void setQuad(RdfQuad quad) {
+    this.row = quad;
+    this.rowNumber = 3;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to graphStart.
+   */
+  public void setGraphStart(RdfGraphStart graphStart) {
+    this.row = graphStart;
+    this.rowNumber = 4;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to graphEnd.
+   */
+  public void setGraphEnd(RdfGraphEnd graphEnd) {
+    this.row = graphEnd;
+    this.rowNumber = 5;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to namespace.
+   */
+  public void setNamespace(RdfNamespaceDeclaration namespace) {
+    this.row = namespace;
+    this.rowNumber = 6;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to name.
+   */
+  public void setName(RdfNameEntry name) {
+    this.row = name;
+    this.rowNumber = 9;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to prefix.
+   */
+  public void setPrefix(RdfPrefixEntry prefix) {
+    this.row = prefix;
+    this.rowNumber = 10;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to datatype.
+   */
+  public void setDatatype(RdfDatatypeEntry datatype) {
+    this.row = datatype;
+    this.rowNumber = 11;
+  }
+
+  /**
+   * Returns the <code>row</code> oneof field.
+   */
+  public Object getRow() {
+    return row;
+  }
+
+  /**
+   * Returns the set field number of the <code>row</code> oneof field.
+   */
+  public byte getRowFieldNumber() {
+    return rowNumber;
+  }
+
+  /**
+   * Returns the <code>row</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfStreamOptions getOptions() {
-    initOptions();
-    return options;
+    return (RdfStreamOptions) row;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamOptions options = 1;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfStreamOptions getMutableOptions() {
-    clearRowOtherOptions();
-    initOptions();
-    return options;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamOptions options = 1;</code>
-   * @param value the options to set
-   * @return this
-   */
-  public RdfStreamRow setOptions(final RdfStreamOptions value) {
-    clearRowOtherOptions();
-    initOptions();
-    options.copyFrom(value);
-    return this;
-  }
-
-  private void initTriple() {
-    if (triple == null) {
-      triple = RdfTriple.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple triple = 2;</code>
-   * @return this
-   */
-  public RdfStreamRow clearTriple() {
-    if (triple != null) {
-      triple.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple triple = 2;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableTriple()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>row</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfTriple getTriple() {
-    initTriple();
-    return triple;
+    return (RdfTriple) row;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple triple = 2;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfTriple getMutableTriple() {
-    clearRowOtherTriple();
-    initTriple();
-    return triple;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple triple = 2;</code>
-   * @param value the triple to set
-   * @return this
-   */
-  public RdfStreamRow setTriple(final RdfTriple value) {
-    clearRowOtherTriple();
-    initTriple();
-    triple.copyFrom(value);
-    return this;
-  }
-
-  private void initQuad() {
-    if (quad == null) {
-      quad = RdfQuad.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfQuad quad = 3;</code>
-   * @return this
-   */
-  public RdfStreamRow clearQuad() {
-    if (quad != null) {
-      quad.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfQuad quad = 3;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableQuad()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>row</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfQuad getQuad() {
-    initQuad();
-    return quad;
+    return (RdfQuad) row;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfQuad quad = 3;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfQuad getMutableQuad() {
-    clearRowOtherQuad();
-    initQuad();
-    return quad;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfQuad quad = 3;</code>
-   * @param value the quad to set
-   * @return this
-   */
-  public RdfStreamRow setQuad(final RdfQuad value) {
-    clearRowOtherQuad();
-    initQuad();
-    quad.copyFrom(value);
-    return this;
-  }
-
-  private void initGraphStart() {
-    if (graphStart == null) {
-      graphStart = RdfGraphStart.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphStart graph_start = 4;</code>
-   * @return this
-   */
-  public RdfStreamRow clearGraphStart() {
-    if (graphStart != null) {
-      graphStart.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphStart graph_start = 4;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableGraphStart()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>row</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfGraphStart getGraphStart() {
-    initGraphStart();
-    return graphStart;
+    return (RdfGraphStart) row;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphStart graph_start = 4;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfGraphStart getMutableGraphStart() {
-    clearRowOtherGraphStart();
-    initGraphStart();
-    return graphStart;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphStart graph_start = 4;</code>
-   * @param value the graphStart to set
-   * @return this
-   */
-  public RdfStreamRow setGraphStart(final RdfGraphStart value) {
-    clearRowOtherGraphStart();
-    initGraphStart();
-    graphStart.copyFrom(value);
-    return this;
-  }
-
-  private void initGraphEnd() {
-    if (graphEnd == null) {
-      graphEnd = RdfGraphEnd.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphEnd graph_end = 5;</code>
-   * @return this
-   */
-  public RdfStreamRow clearGraphEnd() {
-    if (graphEnd != null) {
-      graphEnd.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphEnd graph_end = 5;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableGraphEnd()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>row</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfGraphEnd getGraphEnd() {
-    initGraphEnd();
-    return graphEnd;
+    return (RdfGraphEnd) row;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphEnd graph_end = 5;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfGraphEnd getMutableGraphEnd() {
-    clearRowOtherGraphEnd();
-    initGraphEnd();
-    return graphEnd;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfGraphEnd graph_end = 5;</code>
-   * @param value the graphEnd to set
-   * @return this
-   */
-  public RdfStreamRow setGraphEnd(final RdfGraphEnd value) {
-    clearRowOtherGraphEnd();
-    initGraphEnd();
-    graphEnd.copyFrom(value);
-    return this;
-  }
-
-  private void initNamespace() {
-    if (namespace == null) {
-      namespace = RdfNamespaceDeclaration.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNamespaceDeclaration namespace = 6;</code>
-   * @return this
-   */
-  public RdfStreamRow clearNamespace() {
-    if (namespace != null) {
-      namespace.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNamespaceDeclaration namespace = 6;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableNamespace()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>row</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfNamespaceDeclaration getNamespace() {
-    initNamespace();
-    return namespace;
+    return (RdfNamespaceDeclaration) row;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNamespaceDeclaration namespace = 6;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfNamespaceDeclaration getMutableNamespace() {
-    clearRowOtherNamespace();
-    initNamespace();
-    return namespace;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNamespaceDeclaration namespace = 6;</code>
-   * @param value the namespace to set
-   * @return this
-   */
-  public RdfStreamRow setNamespace(final RdfNamespaceDeclaration value) {
-    clearRowOtherNamespace();
-    initNamespace();
-    namespace.copyFrom(value);
-    return this;
-  }
-
-  private void initName() {
-    if (name == null) {
-      name = RdfNameEntry.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNameEntry name = 9;</code>
-   * @return this
-   */
-  public RdfStreamRow clearName() {
-    if (name != null) {
-      name.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNameEntry name = 9;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableName()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>row</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfNameEntry getName() {
-    initName();
-    return name;
+    return (RdfNameEntry) row;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNameEntry name = 9;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfNameEntry getMutableName() {
-    clearRowOtherName();
-    initName();
-    return name;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfNameEntry name = 9;</code>
-   * @param value the name to set
-   * @return this
-   */
-  public RdfStreamRow setName(final RdfNameEntry value) {
-    clearRowOtherName();
-    initName();
-    name.copyFrom(value);
-    return this;
-  }
-
-  private void initPrefix() {
-    if (prefix == null) {
-      prefix = RdfPrefixEntry.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfPrefixEntry prefix = 10;</code>
-   * @return this
-   */
-  public RdfStreamRow clearPrefix() {
-    if (prefix != null) {
-      prefix.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfPrefixEntry prefix = 10;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutablePrefix()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>row</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfPrefixEntry getPrefix() {
-    initPrefix();
-    return prefix;
+    return (RdfPrefixEntry) row;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfPrefixEntry prefix = 10;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfPrefixEntry getMutablePrefix() {
-    clearRowOtherPrefix();
-    initPrefix();
-    return prefix;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfPrefixEntry prefix = 10;</code>
-   * @param value the prefix to set
-   * @return this
-   */
-  public RdfStreamRow setPrefix(final RdfPrefixEntry value) {
-    clearRowOtherPrefix();
-    initPrefix();
-    prefix.copyFrom(value);
-    return this;
-  }
-
-  private void initDatatype() {
-    if (datatype == null) {
-      datatype = RdfDatatypeEntry.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDatatypeEntry datatype = 11;</code>
-   * @return this
-   */
-  public RdfStreamRow clearDatatype() {
-    if (datatype != null) {
-      datatype.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDatatypeEntry datatype = 11;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableDatatype()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>row</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfDatatypeEntry getDatatype() {
-    initDatatype();
-    return datatype;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDatatypeEntry datatype = 11;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfDatatypeEntry getMutableDatatype() {
-    clearRowOtherDatatype();
-    initDatatype();
-    return datatype;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDatatypeEntry datatype = 11;</code>
-   * @param value the datatype to set
-   * @return this
-   */
-  public RdfStreamRow setDatatype(final RdfDatatypeEntry value) {
-    clearRowOtherDatatype();
-    initDatatype();
-    datatype.copyFrom(value);
-    return this;
+    return (RdfDatatypeEntry) row;
   }
 
   @Override
   public RdfStreamRow copyFrom(final RdfStreamRow other) {
     cachedSize = other.cachedSize;
-    initOptions();
-    options.copyFrom(other.options);
-    initTriple();
-    triple.copyFrom(other.triple);
-    initQuad();
-    quad.copyFrom(other.quad);
-    initGraphStart();
-    graphStart.copyFrom(other.graphStart);
-    initGraphEnd();
-    graphEnd.copyFrom(other.graphEnd);
-    initNamespace();
-    namespace.copyFrom(other.namespace);
-    initName();
-    name.copyFrom(other.name);
-    initPrefix();
-    prefix.copyFrom(other.prefix);
-    initDatatype();
-    datatype.copyFrom(other.datatype);
+    this.row = other.row;
+    this.rowNumber = other.rowNumber;
     return this;
   }
 
   @Override
   public RdfStreamRow mergeFrom(final RdfStreamRow other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
-    getMutableOptions().mergeFrom(other.options);
-    getMutableTriple().mergeFrom(other.triple);
-    getMutableQuad().mergeFrom(other.quad);
-    getMutableGraphStart().mergeFrom(other.graphStart);
-    getMutableGraphEnd().mergeFrom(other.graphEnd);
-    getMutableNamespace().mergeFrom(other.namespace);
-    getMutableName().mergeFrom(other.name);
-    getMutablePrefix().mergeFrom(other.prefix);
-    getMutableDatatype().mergeFrom(other.datatype);
+    this.row = other.row;
+    this.rowNumber = other.rowNumber;
     return this;
   }
 
   @Override
   public RdfStreamRow clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
-    if (options != null) {
-      options.clear();
-    }
-    if (triple != null) {
-      triple.clear();
-    }
-    if (quad != null) {
-      quad.clear();
-    }
-    if (graphStart != null) {
-      graphStart.clear();
-    }
-    if (graphEnd != null) {
-      graphEnd.clear();
-    }
-    if (namespace != null) {
-      namespace.clear();
-    }
-    if (name != null) {
-      name.clear();
-    }
-    if (prefix != null) {
-      prefix.clear();
-    }
-    if (datatype != null) {
-      datatype.clear();
-    }
+    this.row = null;
+    this.rowNumber = 0;
     return this;
   }
 
@@ -804,69 +234,16 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
       return false;
     }
     RdfStreamRow other = (RdfStreamRow) o;
-    return options.equals(other.options)
-      && triple.equals(other.triple)
-      && quad.equals(other.quad)
-      && graphStart.equals(other.graphStart)
-      && graphEnd.equals(other.graphEnd)
-      && namespace.equals(other.namespace)
-      && name.equals(other.name)
-      && prefix.equals(other.prefix)
-      && datatype.equals(other.datatype);
+    return rowNumber == other.rowNumber && (rowNumber == 0 || row.equals(other.row));
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    output.writeRawByte((byte) 10);
-    output.writeUInt32NoTag(options.getCachedSize());
-    options.writeTo(output);
-    output.writeRawByte((byte) 18);
-    output.writeUInt32NoTag(triple.getCachedSize());
-    triple.writeTo(output);
-    output.writeRawByte((byte) 26);
-    output.writeUInt32NoTag(quad.getCachedSize());
-    quad.writeTo(output);
-    output.writeRawByte((byte) 34);
-    output.writeUInt32NoTag(graphStart.getCachedSize());
-    graphStart.writeTo(output);
-    output.writeRawByte((byte) 42);
-    output.writeUInt32NoTag(graphEnd.getCachedSize());
-    graphEnd.writeTo(output);
-    output.writeRawByte((byte) 50);
-    output.writeUInt32NoTag(namespace.getCachedSize());
-    namespace.writeTo(output);
-    output.writeRawByte((byte) 74);
-    output.writeUInt32NoTag(name.getCachedSize());
-    name.writeTo(output);
-    output.writeRawByte((byte) 82);
-    output.writeUInt32NoTag(prefix.getCachedSize());
-    prefix.writeTo(output);
-    output.writeRawByte((byte) 90);
-    output.writeUInt32NoTag(datatype.getCachedSize());
-    datatype.writeTo(output);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    final int dataSize = options.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = triple.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = quad.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = graphStart.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = graphEnd.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = namespace.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = name.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = prefix.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = datatype.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
     return size;
   }
 
@@ -877,96 +254,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
     int tag = input.readTag();
     while (true) {
       switch (tag) {
-        case 10: {
-          // options
-          clearRowOtherOptions();
-          initOptions();
-          ProtoMessage.mergeDelimitedFrom(options, input);
-          tag = input.readTag();
-          if (tag != 18) {
-            break;
-          }
-        }
-        case 18: {
-          // triple
-          clearRowOtherTriple();
-          initTriple();
-          ProtoMessage.mergeDelimitedFrom(triple, input);
-          tag = input.readTag();
-          if (tag != 26) {
-            break;
-          }
-        }
-        case 26: {
-          // quad
-          clearRowOtherQuad();
-          initQuad();
-          ProtoMessage.mergeDelimitedFrom(quad, input);
-          tag = input.readTag();
-          if (tag != 34) {
-            break;
-          }
-        }
-        case 34: {
-          // graphStart
-          clearRowOtherGraphStart();
-          initGraphStart();
-          ProtoMessage.mergeDelimitedFrom(graphStart, input);
-          tag = input.readTag();
-          if (tag != 42) {
-            break;
-          }
-        }
-        case 42: {
-          // graphEnd
-          clearRowOtherGraphEnd();
-          initGraphEnd();
-          ProtoMessage.mergeDelimitedFrom(graphEnd, input);
-          tag = input.readTag();
-          if (tag != 50) {
-            break;
-          }
-        }
-        case 50: {
-          // namespace
-          clearRowOtherNamespace();
-          initNamespace();
-          ProtoMessage.mergeDelimitedFrom(namespace, input);
-          tag = input.readTag();
-          if (tag != 74) {
-            break;
-          }
-        }
-        case 74: {
-          // name
-          clearRowOtherName();
-          initName();
-          ProtoMessage.mergeDelimitedFrom(name, input);
-          tag = input.readTag();
-          if (tag != 82) {
-            break;
-          }
-        }
-        case 82: {
-          // prefix
-          clearRowOtherPrefix();
-          initPrefix();
-          ProtoMessage.mergeDelimitedFrom(prefix, input);
-          tag = input.readTag();
-          if (tag != 90) {
-            break;
-          }
-        }
-        case 90: {
-          // datatype
-          clearRowOtherDatatype();
-          initDatatype();
-          ProtoMessage.mergeDelimitedFrom(datatype, input);
-          tag = input.readTag();
-          if (tag != 0) {
-            break;
-          }
-        }
         case 0: {
           return this;
         }

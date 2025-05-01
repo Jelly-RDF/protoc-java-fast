@@ -31,18 +31,12 @@ public final class RdfDefaultGraph extends ProtoMessage<RdfDefaultGraph> impleme
 
   @Override
   public RdfDefaultGraph mergeFrom(final RdfDefaultGraph other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     return this;
   }
 
   @Override
   public RdfDefaultGraph clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     return this;
   }

@@ -90,10 +90,9 @@ class FieldGenerator(val info: FieldInfo):
   m.put("protoSink", RuntimeClasses.CodedOutputStream)
   m.put("protoUtil", RuntimeClasses.ProtoUtil)
   // Common configuration-dependent code blocks
-  val clearOtherOneOfs = generateClearOtherOneOfs
   val ensureFieldNotNull = lazyFieldInit
 
-  def generateMemberFields(t: TypeSpec.Builder): Unit = {
+  def generateMemberFields(t: TypeSpec.Builder): Unit =
     val field = FieldSpec.builder(storeType, info.fieldName)
       .addJavadoc(Javadoc.forMessageField(info).build)
       .addModifiers(Modifier.PRIVATE)
@@ -103,7 +102,6 @@ class FieldGenerator(val info: FieldInfo):
     else if (info.isPrimitive || info.isEnum) { }
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
     t.addField(field.build)
-  }
 
   private def initializer =
     val initializer = CodeBlock.builder
@@ -167,7 +165,7 @@ class FieldGenerator(val info: FieldInfo):
    * @return true if the tag needs to be read
    */
   def generateMergingCode(method: MethodSpec.Builder): Boolean =
-    method.addCode(clearOtherOneOfs).addCode(ensureFieldNotNull)
+    method.addCode(ensureFieldNotNull)
     if (info.isRepeated && info.isMessageOrGroup) {
       method.addStatement(
           "tag = $T.readRepeatedMessage($N, $T.getFactory(), input, tag)",
@@ -199,7 +197,7 @@ class FieldGenerator(val info: FieldInfo):
    */
   def generateMergingCodeFromPacked(method: MethodSpec.Builder): Boolean =
     if (!info.isPackable) throw new IllegalStateException("not a packable type: " + info.descriptor)
-    method.addCode(clearOtherOneOfs).addCode(ensureFieldNotNull)
+    method.addCode(ensureFieldNotNull)
     if (info.isFixedWidth) method.addStatement(named("input.readPacked$capitalizedType:L($field:N)"))
     else method.addStatement(named("input.readPacked$capitalizedType:L($field:N, tag)"))
     true
@@ -319,7 +317,6 @@ class FieldGenerator(val info: FieldInfo):
         .addModifiers(Modifier.PUBLIC)
         .addParameter(RuntimeClasses.BytesType, "values", Modifier.FINAL)
         .returns(info.parentType)
-        .addCode(clearOtherOneOfs)
         .addStatement(named("$field:N = values"))
         .addStatement(named("return this"))
       t.addMethod(setBytes.build)
@@ -334,7 +331,6 @@ class FieldGenerator(val info: FieldInfo):
         .addModifiers(Modifier.PUBLIC)
         .addParameter(info.getInputParameterType, "value", Modifier.FINAL)
         .returns(info.parentType)
-        .addCode(clearOtherOneOfs)
         .addCode(ensureFieldNotNull)
         .addStatement(named("$field:N.add(value)"))
         .addStatement(named("return this"))
@@ -351,7 +347,6 @@ class FieldGenerator(val info: FieldInfo):
         .addModifiers(Modifier.PUBLIC)
         .returns(info.parentType)
         .addParameter(info.getInputParameterType, "value", Modifier.FINAL)
-        .addCode(clearOtherOneOfs)
         .addCode(ensureFieldNotNull)
         .addStatement(named("$field:N.copyFrom(value)"))
         .addStatement(named("return this"))
@@ -368,7 +363,6 @@ class FieldGenerator(val info: FieldInfo):
         .addModifiers(Modifier.PUBLIC)
         .returns(info.parentType)
         .addParameter(RuntimeClasses.StringType, "value", Modifier.FINAL)
-        .addCode(clearOtherOneOfs)
         .addStatement(named("$field:N = value"))
         .addStatement(named("return this"))
         .build
@@ -385,7 +379,6 @@ class FieldGenerator(val info: FieldInfo):
         .addModifiers(Modifier.PUBLIC)
         .addParameter(info.getTypeName, "value", Modifier.FINAL)
         .returns(info.parentType)
-        .addCode(clearOtherOneOfs)
         .addNamedCode("" + "$field:N = $valueOrNumber:L;\n" + "return this;\n", m)
         .build
       t.addMethod(setter)
@@ -474,7 +467,6 @@ class FieldGenerator(val info: FieldInfo):
         .addAnnotations(info.methodAnnotations)
         .addModifiers(Modifier.PUBLIC)
         .returns(storeType)
-        .addCode(clearOtherOneOfs)
         .addCode(ensureFieldNotNull)
         .addStatement(named("return $field:N"))
         .build
@@ -495,10 +487,6 @@ class FieldGenerator(val info: FieldInfo):
     generateClearCode(method)
     method.addStatement("return this")
     t.addMethod(method.build)
-
-  private def generateClearOtherOneOfs: CodeBlock =
-    if (!info.hasOtherOneOfFields) return FieldGenerator.EMPTY_BLOCK
-    CodeBlock.builder.addStatement("$N()", info.getClearOtherOneOfName).build
 
   private def named(format: String, args: AnyRef*) =
     CodeBlock.builder.addNamed(format, m).build

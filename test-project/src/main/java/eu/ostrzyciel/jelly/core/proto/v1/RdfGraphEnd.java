@@ -31,18 +31,12 @@ public final class RdfGraphEnd extends ProtoMessage<RdfGraphEnd> implements Clon
 
   @Override
   public RdfGraphEnd mergeFrom(final RdfGraphEnd other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     return this;
   }
 
   @Override
   public RdfGraphEnd clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     return this;
   }

@@ -162,9 +162,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
   @Override
   public RdfStreamFrame mergeFrom(final RdfStreamFrame other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     getMutableRows().addAll(other.rows);
     getMutableMetadata().addAll(other.metadata);
@@ -173,9 +170,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
   @Override
   public RdfStreamFrame clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     if (rows != null) {
       rows.clear();
@@ -404,9 +398,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
     @Override
     public MetadataEntry mergeFrom(final MetadataEntry other) {
-      if (other.isEmpty()) {
-        return this;
-      }
       cachedSize = -1;
       key = other.key;
       value_ = other.value_;
@@ -415,9 +406,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
     @Override
     public MetadataEntry clear() {
-      if (isEmpty()) {
-        return this;
-      }
       cachedSize = -1;
       if (key != null) {
         key = "";

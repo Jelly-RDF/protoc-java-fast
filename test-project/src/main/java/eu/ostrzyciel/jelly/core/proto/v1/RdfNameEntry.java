@@ -106,9 +106,6 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
 
   @Override
   public RdfNameEntry mergeFrom(final RdfNameEntry other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     setId(other.id);
     value_ = other.value_;
@@ -117,9 +114,6 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
 
   @Override
   public RdfNameEntry clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     id = 0;
     if (value_ != null) {

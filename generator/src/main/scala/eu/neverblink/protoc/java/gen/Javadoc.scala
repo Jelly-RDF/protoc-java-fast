@@ -35,6 +35,10 @@ object Javadoc:
     }
     block.toBuilder
 
+  def forOneOfField(info: RequestInfo.OneOfInfo): CodeBlock.Builder =
+    CodeBlock.builder
+      .add("<code>oneof $L { ... }</code>", info.descriptor.getName)
+
   def forEnum(info: RequestInfo.EnumInfo): CodeBlock = forType("enum", info)
 
   def forEnumValue(info: RequestInfo.EnumValueInfo): CodeBlock =

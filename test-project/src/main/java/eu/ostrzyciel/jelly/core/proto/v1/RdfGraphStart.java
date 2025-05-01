@@ -14,24 +14,11 @@ import java.io.IOException;
 @SuppressWarnings("hiding")
 public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements Cloneable {
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 1;</code>
+   * <code>oneof graph { ... }</code>
    */
-  private RdfIri gIri = null;
+  private Object graph = null;
 
-  /**
-   * <code>optional string g_bnode = 2;</code>
-   */
-  private String gBnode = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 3;</code>
-   */
-  private RdfDefaultGraph gDefaultGraph = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 4;</code>
-   */
-  private RdfLiteral gLiteral = null;
+  private byte graphNumber = 0;
 
   private RdfGraphStart() {
   }
@@ -44,301 +31,117 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   }
 
   public boolean hasGraph() {
-    return true;
-  }
-
-  public RdfGraphStart clearGraph() {
-    if (hasGraph()) {
-      clearGIri();
-      clearGBnode();
-      clearGDefaultGraph();
-      clearGLiteral();
-    }
-    return this;
-  }
-
-  private void clearGraphOtherGIri() {
-    clearGBnode();
-    clearGDefaultGraph();
-    clearGLiteral();
-  }
-
-  private void clearGraphOtherGBnode() {
-    clearGIri();
-    clearGDefaultGraph();
-    clearGLiteral();
-  }
-
-  private void clearGraphOtherGDefaultGraph() {
-    clearGIri();
-    clearGBnode();
-    clearGLiteral();
-  }
-
-  private void clearGraphOtherGLiteral() {
-    clearGIri();
-    clearGBnode();
-    clearGDefaultGraph();
-  }
-
-  private void initGIri() {
-    if (gIri == null) {
-      gIri = RdfIri.newInstance();
-    }
+    return graph != null;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 1;</code>
-   * @return this
+   * Low-level setter for the <code>graph</code> oneof field.
+   * Use with care, as it will not check the type of the value.
    */
-  public RdfGraphStart clearGIri() {
-    if (gIri != null) {
-      gIri.clear();
-    }
-    return this;
+  public void setGraph(Object graph, byte number) {
+    this.graph = graph;
+    this.graphNumber = number;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 1;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableGIri()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Sets the <code>graph</code> oneof field to gIri.
+   */
+  public void setGIri(RdfIri gIri) {
+    this.graph = gIri;
+    this.graphNumber = 1;
+  }
+
+  /**
+   * Sets the <code>graph</code> oneof field to gBnode.
+   */
+  public void setGBnode(String gBnode) {
+    this.graph = gBnode;
+    this.graphNumber = 2;
+  }
+
+  /**
+   * Sets the <code>graph</code> oneof field to gDefaultGraph.
+   */
+  public void setGDefaultGraph(RdfDefaultGraph gDefaultGraph) {
+    this.graph = gDefaultGraph;
+    this.graphNumber = 3;
+  }
+
+  /**
+   * Sets the <code>graph</code> oneof field to gLiteral.
+   */
+  public void setGLiteral(RdfLiteral gLiteral) {
+    this.graph = gLiteral;
+    this.graphNumber = 4;
+  }
+
+  /**
+   * Returns the <code>graph</code> oneof field.
+   */
+  public Object getGraph() {
+    return graph;
+  }
+
+  /**
+   * Returns the set field number of the <code>graph</code> oneof field.
+   */
+  public byte getGraphFieldNumber() {
+    return graphNumber;
+  }
+
+  /**
+   * Returns the <code>graph</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfIri getGIri() {
-    initGIri();
-    return gIri;
+    return (RdfIri) graph;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 1;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfIri getMutableGIri() {
-    clearGraphOtherGIri();
-    initGIri();
-    return gIri;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 1;</code>
-   * @param value the gIri to set
-   * @return this
-   */
-  public RdfGraphStart setGIri(final RdfIri value) {
-    clearGraphOtherGIri();
-    initGIri();
-    gIri.copyFrom(value);
-    return this;
-  }
-
-  private void initGBnode() {
-    if (gBnode == null) {
-      gBnode = "";
-    }
-  }
-
-  /**
-   * <code>optional string g_bnode = 2;</code>
-   * @return this
-   */
-  public RdfGraphStart clearGBnode() {
-    if (gBnode != null) {
-      gBnode = "";
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional string g_bnode = 2;</code>
-   * @return the gBnode
+   * Returns the <code>graph</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public String getGBnode() {
-    initGBnode();
-    return gBnode;
+    return (String) graph;
   }
 
   /**
-   * <code>optional string g_bnode = 2;</code>
-   * @param value the gBnode to set
-   * @return this
-   */
-  public RdfGraphStart setGBnode(final String value) {
-    clearGraphOtherGBnode();
-    gBnode = value;
-    return this;
-  }
-
-  private void initGDefaultGraph() {
-    if (gDefaultGraph == null) {
-      gDefaultGraph = RdfDefaultGraph.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 3;</code>
-   * @return this
-   */
-  public RdfGraphStart clearGDefaultGraph() {
-    if (gDefaultGraph != null) {
-      gDefaultGraph.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 3;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableGDefaultGraph()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>graph</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfDefaultGraph getGDefaultGraph() {
-    initGDefaultGraph();
-    return gDefaultGraph;
+    return (RdfDefaultGraph) graph;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 3;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfDefaultGraph getMutableGDefaultGraph() {
-    clearGraphOtherGDefaultGraph();
-    initGDefaultGraph();
-    return gDefaultGraph;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 3;</code>
-   * @param value the gDefaultGraph to set
-   * @return this
-   */
-  public RdfGraphStart setGDefaultGraph(final RdfDefaultGraph value) {
-    clearGraphOtherGDefaultGraph();
-    initGDefaultGraph();
-    gDefaultGraph.copyFrom(value);
-    return this;
-  }
-
-  private void initGLiteral() {
-    if (gLiteral == null) {
-      gLiteral = RdfLiteral.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 4;</code>
-   * @return this
-   */
-  public RdfGraphStart clearGLiteral() {
-    if (gLiteral != null) {
-      gLiteral.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 4;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableGLiteral()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>graph</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfLiteral getGLiteral() {
-    initGLiteral();
-    return gLiteral;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 4;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfLiteral getMutableGLiteral() {
-    clearGraphOtherGLiteral();
-    initGLiteral();
-    return gLiteral;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 4;</code>
-   * @param value the gLiteral to set
-   * @return this
-   */
-  public RdfGraphStart setGLiteral(final RdfLiteral value) {
-    clearGraphOtherGLiteral();
-    initGLiteral();
-    gLiteral.copyFrom(value);
-    return this;
+    return (RdfLiteral) graph;
   }
 
   @Override
   public RdfGraphStart copyFrom(final RdfGraphStart other) {
     cachedSize = other.cachedSize;
-    initGIri();
-    gIri.copyFrom(other.gIri);
-    gBnode = other.gBnode;
-    initGDefaultGraph();
-    gDefaultGraph.copyFrom(other.gDefaultGraph);
-    initGLiteral();
-    gLiteral.copyFrom(other.gLiteral);
+    this.graph = other.graph;
+    this.graphNumber = other.graphNumber;
     return this;
   }
 
   @Override
   public RdfGraphStart mergeFrom(final RdfGraphStart other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
-    getMutableGIri().mergeFrom(other.gIri);
-    gBnode = other.gBnode;
-    getMutableGDefaultGraph().mergeFrom(other.gDefaultGraph);
-    getMutableGLiteral().mergeFrom(other.gLiteral);
+    this.graph = other.graph;
+    this.graphNumber = other.graphNumber;
     return this;
   }
 
   @Override
   public RdfGraphStart clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
-    if (gIri != null) {
-      gIri.clear();
-    }
-    if (gBnode != null) {
-      gBnode = "";
-    }
-    if (gDefaultGraph != null) {
-      gDefaultGraph.clear();
-    }
-    if (gLiteral != null) {
-      gLiteral.clear();
-    }
+    this.graph = null;
+    this.graphNumber = 0;
     return this;
   }
 
@@ -351,37 +154,16 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
       return false;
     }
     RdfGraphStart other = (RdfGraphStart) o;
-    return gIri.equals(other.gIri)
-      && gBnode.equals(other.gBnode)
-      && gDefaultGraph.equals(other.gDefaultGraph)
-      && gLiteral.equals(other.gLiteral);
+    return graphNumber == other.graphNumber && (graphNumber == 0 || graph.equals(other.graph));
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    output.writeRawByte((byte) 10);
-    output.writeUInt32NoTag(gIri.getCachedSize());
-    gIri.writeTo(output);
-    output.writeRawByte((byte) 18);
-    output.writeStringNoTag(gBnode);
-    output.writeRawByte((byte) 26);
-    output.writeUInt32NoTag(gDefaultGraph.getCachedSize());
-    gDefaultGraph.writeTo(output);
-    output.writeRawByte((byte) 34);
-    output.writeUInt32NoTag(gLiteral.getCachedSize());
-    gLiteral.writeTo(output);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    final int dataSize = gIri.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    size += 1 + CodedOutputStream.computeStringSizeNoTag(gBnode);
-    final int dataSize = gDefaultGraph.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = gLiteral.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
     return size;
   }
 
@@ -392,46 +174,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
     int tag = input.readTag();
     while (true) {
       switch (tag) {
-        case 10: {
-          // gIri
-          clearGraphOtherGIri();
-          initGIri();
-          ProtoMessage.mergeDelimitedFrom(gIri, input);
-          tag = input.readTag();
-          if (tag != 18) {
-            break;
-          }
-        }
-        case 18: {
-          // gBnode
-          clearGraphOtherGBnode();
-          initGBnode();
-          gBnode = input.readStringRequireUtf8();
-          tag = input.readTag();
-          if (tag != 26) {
-            break;
-          }
-        }
-        case 26: {
-          // gDefaultGraph
-          clearGraphOtherGDefaultGraph();
-          initGDefaultGraph();
-          ProtoMessage.mergeDelimitedFrom(gDefaultGraph, input);
-          tag = input.readTag();
-          if (tag != 34) {
-            break;
-          }
-        }
-        case 34: {
-          // gLiteral
-          clearGraphOtherGLiteral();
-          initGLiteral();
-          ProtoMessage.mergeDelimitedFrom(gLiteral, input);
-          tag = input.readTag();
-          if (tag != 0) {
-            break;
-          }
-        }
         case 0: {
           return this;
         }

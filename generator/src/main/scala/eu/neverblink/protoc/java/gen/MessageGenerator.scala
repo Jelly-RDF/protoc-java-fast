@@ -2,28 +2,29 @@ package eu.neverblink.protoc.java.gen
 
 import com.palantir.javapoet.*
 import eu.neverblink.protoc.java.gen.PluginOptions.FieldSerializationOrder
-import eu.neverblink.protoc.java.gen.PluginOptions.FieldSerializationOrder.{AscendingNumber, Quickbuf}
-import eu.neverblink.protoc.java.gen.RequestInfo.{FieldInfo, MessageInfo}
+import eu.neverblink.protoc.java.gen.PluginOptions.FieldSerializationOrder.*
+import eu.neverblink.protoc.java.gen.RequestInfo.MessageInfo
 
 import java.io.IOException
 import java.util.function.Consumer
-import java.util.stream.Collectors
 import javax.lang.model.element.Modifier
-import scala.jdk.CollectionConverters.*
 
 /**
  * @author Florian Enner
  * @since 07 Aug 2019
  */
 class MessageGenerator(val info: MessageInfo):
+  final val fields = info.fields
+    .filterNot(_.descriptor.hasOneofIndex)
+    .map(new FieldGenerator(_))
+    .toSeq
 
-  final val fields = new java.util.ArrayList[FieldGenerator]
   final val m = new java.util.HashMap[String, AnyRef]
-  
-  info.fields.forEach(f => fields.add(new FieldGenerator(f)))
   m.put("abstractMessage", RuntimeClasses.AbstractMessage)
   m.put("unknownBytes", RuntimeClasses.unknownBytesField)
   m.put("unknownBytesKey", RuntimeClasses.unknownBytesFieldName)
+
+  private val oneOfGenerators = info.oneOfs.map(new OneOfGenerator(_))
 
   def generate: TypeSpec =
     val t = TypeSpec.classBuilder(info.typeName)
@@ -66,13 +67,12 @@ class MessageGenerator(val info: MessageInfo):
     // Constructor
     t.addMethod(MethodSpec.constructorBuilder.addModifiers(Modifier.PRIVATE).build)
     // Member state
-    fields.forEach(_.generateMemberFields(t))
-    // OneOf Accessors
-    info.oneOfs.stream
-      .map(new OneOfGenerator(_))
-      .forEach(_.generateMemberMethods(t))
+    fields.foreach(_.generateMemberFields(t))
+    // OneOf fields and methods
+    oneOfGenerators.foreach(_.generateMemberFields(t))
+    oneOfGenerators.foreach(_.generateMemberMethods(t))
     // Fields accessors
-    fields.forEach(_.generateMemberMethods(t))
+    fields.foreach(_.generateMemberMethods(t))
     generateCopyFrom(t)
     generateMergeFromMessage(t)
     generateClear(t)
@@ -97,12 +97,10 @@ class MessageGenerator(val info: MessageInfo):
       .addAnnotation(classOf[Override])
       .addModifiers(Modifier.PUBLIC)
       .returns(info.typeName)
-    // no fields set -> no need to clear (e.g. unused nested messages)
-    // NOTE: always make sure that the constructor creates conditions that clears everything
-    clear.beginControlFlow("if (isEmpty())").addStatement("return this").endControlFlow
     // clear has state
     clear.addStatement("cachedSize = -1")
-    fields.forEach(_.generateClearCode(clear))
+    fields.foreach(_.generateClearCode(clear))
+    oneOfGenerators.foreach(_.generateClearCode(clear))
     clear.addStatement("return this")
     clear.build
 
@@ -123,10 +121,15 @@ class MessageGenerator(val info: MessageInfo):
     // Check whether all of the same fields are set
     if (info.fieldCount > 0) {
       equals.addCode("return $>")
-      for ((field, i) <- fields.asScala.zipWithIndex) {
+      var i = 0
+      for field <- fields do
         if i > 0 then equals.addCode("\n&& ")
         field.generateEqualsStatement(equals)
-      }
+        i += 1
+      for oneOf <- oneOfGenerators do
+        if i > 0 then equals.addCode("\n&& ")
+        oneOf.generateEqualsStatement(equals)
+        i += 1
       equals.addCode(";$<\n")
     }
     else equals.addCode("return true;\n")
@@ -163,7 +166,7 @@ class MessageGenerator(val info: MessageInfo):
       .beginControlFlow("switch (tag)")
     // Add fields by the expected order and type
     for (i <- 0 until sortedFields.size) {
-      val field = sortedFields.get(i)
+      val field = sortedFields(i)
       // Assume all packable fields are written packed. Add non-packed cases to the end.
       var readTag = true
       if (field.info.isPackable) {
@@ -180,7 +183,7 @@ class MessageGenerator(val info: MessageInfo):
       if (enableFallthroughOptimization) {
         // try falling to 0 (exit) at last field
         val nextCase = if (i == sortedFields.size - 1) 0
-        else getPackedTagOrTag(sortedFields.get(i + 1))
+        else getPackedTagOrTag(sortedFields(i + 1))
         mergeFrom.beginControlFlow("if (tag != $L)", nextCase)
         mergeFrom.addStatement("break")
         mergeFrom.endControlFlow
@@ -195,7 +198,7 @@ class MessageGenerator(val info: MessageInfo):
     mergeFrom.beginControlFlow("default:").beginControlFlow(ifSkipField).addStatement("return this")
     mergeFrom.endControlFlow.addStatement(named("tag = input.readTag()")).addStatement("break").endControlFlow
     // Generate missing non-packed cases for packable fields for compatibility reasons
-    for (field <- sortedFields.asScala) {
+    for (field <- sortedFields) {
       if (field.info.isPackable) {
         mergeFrom.beginControlFlow("case $L:", field.info.tag)
         mergeFrom.addComment("$L [packed=false]", field.info.fieldName)
@@ -220,7 +223,7 @@ class MessageGenerator(val info: MessageInfo):
       .returns(classOf[Unit])
       .addParameter(RuntimeClasses.CodedOutputStream, "output", Modifier.FINAL)
       .addException(classOf[IOException])
-    getFieldSortedByOutputOrder.forEach(f => {
+    getFieldSortedByOutputOrder.foreach(f => {
       if (f.info.isRequired) {
         // no need to check has state again
         f.generateSerializationCode(writeTo)
@@ -242,7 +245,7 @@ class MessageGenerator(val info: MessageInfo):
       .returns(classOf[Int])
     // Check all required fields at once
     computeSerializedSize.addStatement("int size = 0")
-    fields.forEach(f => {
+    fields.foreach(f => {
       if (f.info.isRequired) {
         // no need to check has state again
         f.generateComputeSerializedSizeCode(computeSerializedSize)
@@ -265,7 +268,8 @@ class MessageGenerator(val info: MessageInfo):
       .addModifiers(Modifier.PUBLIC)
       .returns(info.typeName)
     copyFrom.addStatement("cachedSize = other.cachedSize")
-    fields.stream.forEach(_.generateCopyFromCode(copyFrom))
+    fields.foreach(_.generateCopyFromCode(copyFrom))
+    oneOfGenerators.foreach(_.generateCopyFromCode(copyFrom))
     copyFrom.addStatement("return this")
     t.addMethod(copyFrom.build)
 
@@ -275,11 +279,9 @@ class MessageGenerator(val info: MessageInfo):
       .addAnnotation(classOf[Override])
       .addParameter(info.typeName, "other", Modifier.FINAL)
       .addModifiers(Modifier.PUBLIC).returns(info.typeName)
-    mergeFrom.beginControlFlow("if (other.isEmpty())").addStatement("return this").endControlFlow
     mergeFrom.addStatement("cachedSize = -1")
-    fields.forEach(field => {
-      field.generateMergeFromMessageCode(mergeFrom)
-    })
+    fields.foreach(_.generateMergeFromMessageCode(mergeFrom))
+    oneOfGenerators.foreach(_.generateMergeFromMessageCode(mergeFrom))
     mergeFrom.addStatement("return this")
     t.addMethod(mergeFrom.build)
 
@@ -348,25 +350,19 @@ class MessageGenerator(val info: MessageInfo):
       .build
     )
 
-  private def getFieldSortedByExpectedInputOrder: java.util.List[FieldGenerator] =
+  private def getFieldSortedByExpectedInputOrder: Seq[FieldGenerator] =
     info.expectedInputOrder match
-      case AscendingNumber =>
-        val sortedFields = new java.util.ArrayList(fields)
-        sortedFields.sort(FieldUtil.AscendingNumberSorter)
-        return sortedFields
+      case AscendingNumber => fields.sortBy(_.info.number)
       case Quickbuf => // keep existing order
       case FieldSerializationOrder.None => // no optimization
-    fields
+    fields.toSeq
 
-  private def getFieldSortedByOutputOrder: java.util.List[FieldGenerator] =
+  private def getFieldSortedByOutputOrder: Seq[FieldGenerator] =
     // Sorts output the same way as protobuf. This is always slower,
     // but it results in binary equivalence for conformance tests.
-    if (info.outputOrder eq FieldSerializationOrder.AscendingNumber) {
-      val sortedFields = new java.util.ArrayList(fields)
-      sortedFields.sort(FieldUtil.AscendingNumberSorter)
-      return sortedFields
-    }
-    fields
+    if (info.outputOrder eq FieldSerializationOrder.AscendingNumber)
+      fields.sortBy(_.info.number)
+    else fields
 
   private def named(format: String, args: AnyRef*) =
     CodeBlock.builder.addNamed(format, m).build

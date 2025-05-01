@@ -385,9 +385,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
 
   @Override
   public RdfStreamOptions mergeFrom(final RdfStreamOptions other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     streamName = other.streamName;
     setPhysicalTypeValue(other.physicalType);
@@ -403,9 +400,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
 
   @Override
   public RdfStreamOptions clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     if (streamName != null) {
       streamName = "";

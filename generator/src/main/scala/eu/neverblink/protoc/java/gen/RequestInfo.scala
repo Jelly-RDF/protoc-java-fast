@@ -99,9 +99,6 @@ object RequestInfo:
   ) extends RequestInfo.TypeInfo(
     parentFile, parentTypeId, parentType, isNested, descriptor.getName
   ) {
-    val fields = new java.util.ArrayList[RequestInfo.FieldInfo]
-    val oneOfs = new java.util.ArrayList[RequestInfo.OneOfInfo]
-
     val fieldCount = descriptor.getFieldCount
     val options = parentFile.parentRequest.pluginOptions
     val expectedInputOrder = options.expectedInputOrder
@@ -148,17 +145,20 @@ object RequestInfo:
       })
     }
     // Build map
-    for (desc <- sortedFields.asScala) {
-      fields.add(new RequestInfo.FieldInfo(parentFile, this, typeName, desc, bitIndices.get(desc)))
-    }
-    val nestedTypes = descriptor.getNestedTypeList.stream.map((desc: DescriptorProtos.DescriptorProto) => new RequestInfo.MessageInfo(parentFile, typeId, typeName, true, desc)).collect(Collectors.toList)
-    val nestedEnums = descriptor.getEnumTypeList.stream.map((desc: DescriptorProtos.EnumDescriptorProto) => new RequestInfo.EnumInfo(parentFile, typeId, typeName, true, desc)).collect(Collectors.toList)
+    val fields = for desc <- sortedFields.asScala yield
+      new RequestInfo.FieldInfo(parentFile, this, typeName, desc, bitIndices.get(desc))
+    val nestedTypes = descriptor.getNestedTypeList.stream.map(
+      (desc: DescriptorProtos.DescriptorProto) => new RequestInfo.MessageInfo(parentFile, typeId, typeName, true, desc)
+    ).collect(Collectors.toList)
+    val nestedEnums = descriptor.getEnumTypeList.stream.map(
+      (desc: DescriptorProtos.EnumDescriptorProto) => new RequestInfo.EnumInfo(parentFile, typeId, typeName, true, desc)
+    ).collect(Collectors.toList)
+
     val oneOfCount: Int = descriptor.getOneofDeclCount
-    for (i <- 0 until oneOfCount) {
-      oneOfs.add(new RequestInfo.OneOfInfo(
+    val oneOfs = for i <- 0 until oneOfCount yield
+      new RequestInfo.OneOfInfo(
         parentFile, this, typeName, descriptor.getOneofDecl(i), i
-      ))
-    }
+      )
   }
 
   class FieldInfo(
@@ -341,22 +341,6 @@ object RequestInfo:
       t match
         case name: ParameterizedTypeName => name.rawType
         case _ => t
-
-    def getClearOtherOneOfName: String = getContainingOneOf.clearName + "Other" + upperName
-
-    def hasOtherOneOfFields: Boolean = descriptor.hasOneofIndex && getContainingOneOf.getFields.size > 1
-
-    def getOtherOneOfFields: java.util.List[RequestInfo.FieldInfo] = {
-      if (!descriptor.hasOneofIndex) return Collections.emptyList
-      val index = descriptor.getOneofIndex
-      parentTypeInfo.fields.stream
-        .filter(field => field.descriptor.hasOneofIndex)
-        .filter(field => field.descriptor.getOneofIndex eq index)
-        .filter(field => field ne this)
-        .collect(Collectors.toList)
-    }
-
-    private def getContainingOneOf = parentTypeInfo.oneOfs.get(descriptor.getOneofIndex)
   }
 
   class EnumInfo(
@@ -420,14 +404,23 @@ object RequestInfo:
     val descriptor: DescriptorProtos.OneofDescriptorProto,
     val oneOfIndex: Int
   ) {
+
     val upperName = NamingUtil.toUpperCamel(descriptor.getName)
+    val fieldName = {
+      val lowerName = Character.toLowerCase(upperName.charAt(0)).toString + upperName.substring(1)
+      NamingUtil.filterKeyword(lowerName)
+    }
+    val numberFieldName = fieldName + "Number"
+    val getterName = "get" + upperName
+    val getNumberName = "get" + upperName + "FieldNumber"
+    val setterName = "set" + upperName
     val hazzerName = "has" + upperName
     val clearName = "clear" + upperName
 
-    def getFields: java.util.List[RequestInfo.FieldInfo] = parentTypeInfo.fields.stream
+    def getFields: Seq[RequestInfo.FieldInfo] = parentTypeInfo.fields
       .filter(field => field.descriptor.hasOneofIndex)
       .filter(field => field.descriptor.getOneofIndex eq oneOfIndex)
-      .collect(Collectors.toList)
+      .toSeq
   }
 
   class ExtensionRegistry {

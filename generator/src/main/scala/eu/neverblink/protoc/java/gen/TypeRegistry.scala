@@ -78,7 +78,7 @@ class TypeRegistry:
       hasRequiredMap.put(t, TypeRegistry.RequiredType.Processing)
       var hasRequired = false
       val info = messageMap.get(t)
-      for (field <- info.fields.asScala) {
+      for (field <- info.fields) {
         if (isRequiredFieldOrNeedsToBeChecked(t, field)) hasRequired = true
       }
       hasRequiredMap.put(t, if (hasRequired) TypeRegistry.RequiredType.Required

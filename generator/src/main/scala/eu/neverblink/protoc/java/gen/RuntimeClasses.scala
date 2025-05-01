@@ -20,6 +20,7 @@ object RuntimeClasses:
   val ProtoUtil = ClassName.get(API_PACKAGE, "ProtoUtil")
   val AbstractMessage = ClassName.get(API_PACKAGE, "ProtoMessage")
   val MessageFactory = ClassName.get(API_PACKAGE, "MessageFactory")
+  val ObjectType = ClassName.get(classOf[Object])
   val StringType = ClassName.get(classOf[String])
   val Utf8Decoder = ClassName.get(API_PACKAGE, "Utf8Decoder")
   val BytesType = ClassName.get(GOOGLE_PACKAGE, "ByteString")

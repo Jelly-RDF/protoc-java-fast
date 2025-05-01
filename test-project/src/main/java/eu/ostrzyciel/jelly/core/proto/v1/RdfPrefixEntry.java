@@ -106,9 +106,6 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
 
   @Override
   public RdfPrefixEntry mergeFrom(final RdfPrefixEntry other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     setId(other.id);
     value_ = other.value_;
@@ -117,9 +114,6 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
 
   @Override
   public RdfPrefixEntry clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     id = 0;
     if (value_ != null) {

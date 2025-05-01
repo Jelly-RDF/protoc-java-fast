@@ -97,9 +97,6 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
 
   @Override
   public RdfIri mergeFrom(final RdfIri other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     setPrefixId(other.prefixId);
     setNameId(other.nameId);
@@ -108,9 +105,6 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
 
   @Override
   public RdfIri clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     prefixId = 0;
     nameId = 0;

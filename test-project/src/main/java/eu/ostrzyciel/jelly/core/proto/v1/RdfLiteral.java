@@ -19,14 +19,11 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   private String lex = null;
 
   /**
-   * <code>optional string langtag = 2;</code>
+   * <code>oneof literalKind { ... }</code>
    */
-  private String langtag = null;
+  private Object literalKind = null;
 
-  /**
-   * <code>optional uint32 datatype = 3;</code>
-   */
-  private int datatype;
+  private byte literalKindNumber = 0;
 
   private RdfLiteral() {
   }
@@ -39,23 +36,62 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   }
 
   public boolean hasLiteralKind() {
-    return true;
+    return literalKind != null;
   }
 
-  public RdfLiteral clearLiteralKind() {
-    if (hasLiteralKind()) {
-      clearLangtag();
-      clearDatatype();
-    }
-    return this;
+  /**
+   * Low-level setter for the <code>literalKind</code> oneof field.
+   * Use with care, as it will not check the type of the value.
+   */
+  public void setLiteralKind(Object literalKind, byte number) {
+    this.literalKind = literalKind;
+    this.literalKindNumber = number;
   }
 
-  private void clearLiteralKindOtherLangtag() {
-    clearDatatype();
+  /**
+   * Sets the <code>literalKind</code> oneof field to langtag.
+   */
+  public void setLangtag(String langtag) {
+    this.literalKind = langtag;
+    this.literalKindNumber = 2;
   }
 
-  private void clearLiteralKindOtherDatatype() {
-    clearLangtag();
+  /**
+   * Sets the <code>literalKind</code> oneof field to datatype.
+   */
+  public void setDatatype(int datatype) {
+    this.literalKind = datatype;
+    this.literalKindNumber = 3;
+  }
+
+  /**
+   * Returns the <code>literalKind</code> oneof field.
+   */
+  public Object getLiteralKind() {
+    return literalKind;
+  }
+
+  /**
+   * Returns the set field number of the <code>literalKind</code> oneof field.
+   */
+  public byte getLiteralKindFieldNumber() {
+    return literalKindNumber;
+  }
+
+  /**
+   * Returns the <code>literalKind</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public String getLangtag() {
+    return (String) literalKind;
+  }
+
+  /**
+   * Returns the <code>literalKind</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public int getDatatype() {
+    return (int) literalKind;
   }
 
   private void initLex() {
@@ -94,105 +130,32 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
     return this;
   }
 
-  private void initLangtag() {
-    if (langtag == null) {
-      langtag = "";
-    }
-  }
-
-  /**
-   * <code>optional string langtag = 2;</code>
-   * @return this
-   */
-  public RdfLiteral clearLangtag() {
-    if (langtag != null) {
-      langtag = "";
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional string langtag = 2;</code>
-   * @return the langtag
-   */
-  public String getLangtag() {
-    initLangtag();
-    return langtag;
-  }
-
-  /**
-   * <code>optional string langtag = 2;</code>
-   * @param value the langtag to set
-   * @return this
-   */
-  public RdfLiteral setLangtag(final String value) {
-    clearLiteralKindOtherLangtag();
-    langtag = value;
-    return this;
-  }
-
-  /**
-   * <code>optional uint32 datatype = 3;</code>
-   * @return this
-   */
-  public RdfLiteral clearDatatype() {
-    datatype = 0;
-    return this;
-  }
-
-  /**
-   * <code>optional uint32 datatype = 3;</code>
-   * @return the datatype
-   */
-  public int getDatatype() {
-    return datatype;
-  }
-
-  /**
-   * <code>optional uint32 datatype = 3;</code>
-   * @param value the datatype to set
-   * @return this
-   */
-  public RdfLiteral setDatatype(final int value) {
-    clearLiteralKindOtherDatatype();
-    datatype = value;
-    return this;
-  }
-
   @Override
   public RdfLiteral copyFrom(final RdfLiteral other) {
     cachedSize = other.cachedSize;
     lex = other.lex;
-    langtag = other.langtag;
-    datatype = other.datatype;
+    this.literalKind = other.literalKind;
+    this.literalKindNumber = other.literalKindNumber;
     return this;
   }
 
   @Override
   public RdfLiteral mergeFrom(final RdfLiteral other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     lex = other.lex;
-    langtag = other.langtag;
-    setDatatype(other.datatype);
+    this.literalKind = other.literalKind;
+    this.literalKindNumber = other.literalKindNumber;
     return this;
   }
 
   @Override
   public RdfLiteral clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     if (lex != null) {
       lex = "";
     }
-    if (langtag != null) {
-      langtag = "";
-    }
-    datatype = 0;
+    this.literalKind = null;
+    this.literalKindNumber = 0;
     return this;
   }
 
@@ -206,26 +169,19 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
     }
     RdfLiteral other = (RdfLiteral) o;
     return lex.equals(other.lex)
-      && langtag.equals(other.langtag)
-      && datatype == other.datatype;
+      && literalKindNumber == other.literalKindNumber && (literalKindNumber == 0 || literalKind.equals(other.literalKind));
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
     output.writeRawByte((byte) 10);
     output.writeStringNoTag(lex);
-    output.writeRawByte((byte) 18);
-    output.writeStringNoTag(langtag);
-    output.writeRawByte((byte) 24);
-    output.writeUInt32NoTag(datatype);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
     size += 1 + CodedOutputStream.computeStringSizeNoTag(lex);
-    size += 1 + CodedOutputStream.computeStringSizeNoTag(langtag);
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(datatype);
     return size;
   }
 
@@ -240,25 +196,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
           // lex
           initLex();
           lex = input.readStringRequireUtf8();
-          tag = input.readTag();
-          if (tag != 18) {
-            break;
-          }
-        }
-        case 18: {
-          // langtag
-          clearLiteralKindOtherLangtag();
-          initLangtag();
-          langtag = input.readStringRequireUtf8();
-          tag = input.readTag();
-          if (tag != 24) {
-            break;
-          }
-        }
-        case 24: {
-          // datatype
-          clearLiteralKindOtherDatatype();
-          datatype = input.readUInt32();
           tag = input.readTag();
           if (tag != 0) {
             break;

@@ -106,9 +106,6 @@ public final class RdfDatatypeEntry extends ProtoMessage<RdfDatatypeEntry> imple
 
   @Override
   public RdfDatatypeEntry mergeFrom(final RdfDatatypeEntry other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     setId(other.id);
     value_ = other.value_;
@@ -117,9 +114,6 @@ public final class RdfDatatypeEntry extends ProtoMessage<RdfDatatypeEntry> imple
 
   @Override
   public RdfDatatypeEntry clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     id = 0;
     if (value_ != null) {

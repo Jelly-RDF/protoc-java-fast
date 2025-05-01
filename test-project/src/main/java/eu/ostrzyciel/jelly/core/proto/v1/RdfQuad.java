@@ -14,84 +14,32 @@ import java.io.IOException;
 @SuppressWarnings("hiding")
 public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri s_iri = 1;</code>
+   * <code>oneof subject { ... }</code>
    */
-  private RdfIri sIri = null;
+  private Object subject = null;
+
+  private byte subjectNumber = 0;
 
   /**
-   * <code>optional string s_bnode = 2;</code>
+   * <code>oneof predicate { ... }</code>
    */
-  private String sBnode = null;
+  private Object predicate = null;
+
+  private byte predicateNumber = 0;
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral s_literal = 3;</code>
+   * <code>oneof object { ... }</code>
    */
-  private RdfLiteral sLiteral = null;
+  private Object object = null;
+
+  private byte objectNumber = 0;
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple s_triple_term = 4;</code>
+   * <code>oneof graph { ... }</code>
    */
-  private RdfTriple sTripleTerm = null;
+  private Object graph = null;
 
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri p_iri = 5;</code>
-   */
-  private RdfIri pIri = null;
-
-  /**
-   * <code>optional string p_bnode = 6;</code>
-   */
-  private String pBnode = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral p_literal = 7;</code>
-   */
-  private RdfLiteral pLiteral = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple p_triple_term = 8;</code>
-   */
-  private RdfTriple pTripleTerm = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri o_iri = 9;</code>
-   */
-  private RdfIri oIri = null;
-
-  /**
-   * <code>optional string o_bnode = 10;</code>
-   */
-  private String oBnode = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral o_literal = 11;</code>
-   */
-  private RdfLiteral oLiteral = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple o_triple_term = 12;</code>
-   */
-  private RdfTriple oTripleTerm = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 13;</code>
-   */
-  private RdfIri gIri = null;
-
-  /**
-   * <code>optional string g_bnode = 14;</code>
-   */
-  private String gBnode = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 15;</code>
-   */
-  private RdfDefaultGraph gDefaultGraph = null;
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 16;</code>
-   */
-  private RdfLiteral gLiteral = null;
+  private byte graphNumber = 0;
 
   private RdfQuad() {
   }
@@ -104,1126 +52,408 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   public boolean hasSubject() {
-    return true;
+    return subject != null;
   }
 
-  public RdfQuad clearSubject() {
-    if (hasSubject()) {
-      clearSIri();
-      clearSBnode();
-      clearSLiteral();
-      clearSTripleTerm();
-    }
-    return this;
+  /**
+   * Low-level setter for the <code>subject</code> oneof field.
+   * Use with care, as it will not check the type of the value.
+   */
+  public void setSubject(Object subject, byte number) {
+    this.subject = subject;
+    this.subjectNumber = number;
   }
 
-  private void clearSubjectOtherSIri() {
-    clearSBnode();
-    clearSLiteral();
-    clearSTripleTerm();
+  /**
+   * Sets the <code>subject</code> oneof field to sIri.
+   */
+  public void setSIri(RdfIri sIri) {
+    this.subject = sIri;
+    this.subjectNumber = 1;
   }
 
-  private void clearSubjectOtherSBnode() {
-    clearSIri();
-    clearSLiteral();
-    clearSTripleTerm();
+  /**
+   * Sets the <code>subject</code> oneof field to sBnode.
+   */
+  public void setSBnode(String sBnode) {
+    this.subject = sBnode;
+    this.subjectNumber = 2;
   }
 
-  private void clearSubjectOtherSLiteral() {
-    clearSIri();
-    clearSBnode();
-    clearSTripleTerm();
+  /**
+   * Sets the <code>subject</code> oneof field to sLiteral.
+   */
+  public void setSLiteral(RdfLiteral sLiteral) {
+    this.subject = sLiteral;
+    this.subjectNumber = 3;
   }
 
-  private void clearSubjectOtherSTripleTerm() {
-    clearSIri();
-    clearSBnode();
-    clearSLiteral();
+  /**
+   * Sets the <code>subject</code> oneof field to sTripleTerm.
+   */
+  public void setSTripleTerm(RdfTriple sTripleTerm) {
+    this.subject = sTripleTerm;
+    this.subjectNumber = 4;
+  }
+
+  /**
+   * Returns the <code>subject</code> oneof field.
+   */
+  public Object getSubject() {
+    return subject;
+  }
+
+  /**
+   * Returns the set field number of the <code>subject</code> oneof field.
+   */
+  public byte getSubjectFieldNumber() {
+    return subjectNumber;
+  }
+
+  /**
+   * Returns the <code>subject</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public RdfIri getSIri() {
+    return (RdfIri) subject;
+  }
+
+  /**
+   * Returns the <code>subject</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public String getSBnode() {
+    return (String) subject;
+  }
+
+  /**
+   * Returns the <code>subject</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public RdfLiteral getSLiteral() {
+    return (RdfLiteral) subject;
+  }
+
+  /**
+   * Returns the <code>subject</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public RdfTriple getSTripleTerm() {
+    return (RdfTriple) subject;
   }
 
   public boolean hasPredicate() {
-    return true;
+    return predicate != null;
   }
 
-  public RdfQuad clearPredicate() {
-    if (hasPredicate()) {
-      clearPIri();
-      clearPBnode();
-      clearPLiteral();
-      clearPTripleTerm();
-    }
-    return this;
+  /**
+   * Low-level setter for the <code>predicate</code> oneof field.
+   * Use with care, as it will not check the type of the value.
+   */
+  public void setPredicate(Object predicate, byte number) {
+    this.predicate = predicate;
+    this.predicateNumber = number;
   }
 
-  private void clearPredicateOtherPIri() {
-    clearPBnode();
-    clearPLiteral();
-    clearPTripleTerm();
+  /**
+   * Sets the <code>predicate</code> oneof field to pIri.
+   */
+  public void setPIri(RdfIri pIri) {
+    this.predicate = pIri;
+    this.predicateNumber = 5;
   }
 
-  private void clearPredicateOtherPBnode() {
-    clearPIri();
-    clearPLiteral();
-    clearPTripleTerm();
+  /**
+   * Sets the <code>predicate</code> oneof field to pBnode.
+   */
+  public void setPBnode(String pBnode) {
+    this.predicate = pBnode;
+    this.predicateNumber = 6;
   }
 
-  private void clearPredicateOtherPLiteral() {
-    clearPIri();
-    clearPBnode();
-    clearPTripleTerm();
+  /**
+   * Sets the <code>predicate</code> oneof field to pLiteral.
+   */
+  public void setPLiteral(RdfLiteral pLiteral) {
+    this.predicate = pLiteral;
+    this.predicateNumber = 7;
   }
 
-  private void clearPredicateOtherPTripleTerm() {
-    clearPIri();
-    clearPBnode();
-    clearPLiteral();
+  /**
+   * Sets the <code>predicate</code> oneof field to pTripleTerm.
+   */
+  public void setPTripleTerm(RdfTriple pTripleTerm) {
+    this.predicate = pTripleTerm;
+    this.predicateNumber = 8;
+  }
+
+  /**
+   * Returns the <code>predicate</code> oneof field.
+   */
+  public Object getPredicate() {
+    return predicate;
+  }
+
+  /**
+   * Returns the set field number of the <code>predicate</code> oneof field.
+   */
+  public byte getPredicateFieldNumber() {
+    return predicateNumber;
+  }
+
+  /**
+   * Returns the <code>predicate</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public RdfIri getPIri() {
+    return (RdfIri) predicate;
+  }
+
+  /**
+   * Returns the <code>predicate</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public String getPBnode() {
+    return (String) predicate;
+  }
+
+  /**
+   * Returns the <code>predicate</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public RdfLiteral getPLiteral() {
+    return (RdfLiteral) predicate;
+  }
+
+  /**
+   * Returns the <code>predicate</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public RdfTriple getPTripleTerm() {
+    return (RdfTriple) predicate;
   }
 
   public boolean hasObject() {
-    return true;
+    return object != null;
   }
 
-  public RdfQuad clearObject() {
-    if (hasObject()) {
-      clearOIri();
-      clearOBnode();
-      clearOLiteral();
-      clearOTripleTerm();
-    }
-    return this;
+  /**
+   * Low-level setter for the <code>object</code> oneof field.
+   * Use with care, as it will not check the type of the value.
+   */
+  public void setObject(Object object, byte number) {
+    this.object = object;
+    this.objectNumber = number;
   }
 
-  private void clearObjectOtherOIri() {
-    clearOBnode();
-    clearOLiteral();
-    clearOTripleTerm();
+  /**
+   * Sets the <code>object</code> oneof field to oIri.
+   */
+  public void setOIri(RdfIri oIri) {
+    this.object = oIri;
+    this.objectNumber = 9;
   }
 
-  private void clearObjectOtherOBnode() {
-    clearOIri();
-    clearOLiteral();
-    clearOTripleTerm();
+  /**
+   * Sets the <code>object</code> oneof field to oBnode.
+   */
+  public void setOBnode(String oBnode) {
+    this.object = oBnode;
+    this.objectNumber = 10;
   }
 
-  private void clearObjectOtherOLiteral() {
-    clearOIri();
-    clearOBnode();
-    clearOTripleTerm();
+  /**
+   * Sets the <code>object</code> oneof field to oLiteral.
+   */
+  public void setOLiteral(RdfLiteral oLiteral) {
+    this.object = oLiteral;
+    this.objectNumber = 11;
   }
 
-  private void clearObjectOtherOTripleTerm() {
-    clearOIri();
-    clearOBnode();
-    clearOLiteral();
+  /**
+   * Sets the <code>object</code> oneof field to oTripleTerm.
+   */
+  public void setOTripleTerm(RdfTriple oTripleTerm) {
+    this.object = oTripleTerm;
+    this.objectNumber = 12;
+  }
+
+  /**
+   * Returns the <code>object</code> oneof field.
+   */
+  public Object getObject() {
+    return object;
+  }
+
+  /**
+   * Returns the set field number of the <code>object</code> oneof field.
+   */
+  public byte getObjectFieldNumber() {
+    return objectNumber;
+  }
+
+  /**
+   * Returns the <code>object</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public RdfIri getOIri() {
+    return (RdfIri) object;
+  }
+
+  /**
+   * Returns the <code>object</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public String getOBnode() {
+    return (String) object;
+  }
+
+  /**
+   * Returns the <code>object</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public RdfLiteral getOLiteral() {
+    return (RdfLiteral) object;
+  }
+
+  /**
+   * Returns the <code>object</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
+   */
+  public RdfTriple getOTripleTerm() {
+    return (RdfTriple) object;
   }
 
   public boolean hasGraph() {
-    return true;
-  }
-
-  public RdfQuad clearGraph() {
-    if (hasGraph()) {
-      clearGIri();
-      clearGBnode();
-      clearGDefaultGraph();
-      clearGLiteral();
-    }
-    return this;
-  }
-
-  private void clearGraphOtherGIri() {
-    clearGBnode();
-    clearGDefaultGraph();
-    clearGLiteral();
-  }
-
-  private void clearGraphOtherGBnode() {
-    clearGIri();
-    clearGDefaultGraph();
-    clearGLiteral();
-  }
-
-  private void clearGraphOtherGDefaultGraph() {
-    clearGIri();
-    clearGBnode();
-    clearGLiteral();
-  }
-
-  private void clearGraphOtherGLiteral() {
-    clearGIri();
-    clearGBnode();
-    clearGDefaultGraph();
-  }
-
-  private void initSIri() {
-    if (sIri == null) {
-      sIri = RdfIri.newInstance();
-    }
+    return graph != null;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri s_iri = 1;</code>
-   * @return this
+   * Low-level setter for the <code>graph</code> oneof field.
+   * Use with care, as it will not check the type of the value.
    */
-  public RdfQuad clearSIri() {
-    if (sIri != null) {
-      sIri.clear();
-    }
-    return this;
+  public void setGraph(Object graph, byte number) {
+    this.graph = graph;
+    this.graphNumber = number;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri s_iri = 1;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableSIri()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Sets the <code>graph</code> oneof field to gIri.
    */
-  public RdfIri getSIri() {
-    initSIri();
-    return sIri;
+  public void setGIri(RdfIri gIri) {
+    this.graph = gIri;
+    this.graphNumber = 13;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri s_iri = 1;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
+   * Sets the <code>graph</code> oneof field to gBnode.
    */
-  public RdfIri getMutableSIri() {
-    clearSubjectOtherSIri();
-    initSIri();
-    return sIri;
+  public void setGBnode(String gBnode) {
+    this.graph = gBnode;
+    this.graphNumber = 14;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri s_iri = 1;</code>
-   * @param value the sIri to set
-   * @return this
+   * Sets the <code>graph</code> oneof field to gDefaultGraph.
    */
-  public RdfQuad setSIri(final RdfIri value) {
-    clearSubjectOtherSIri();
-    initSIri();
-    sIri.copyFrom(value);
-    return this;
-  }
-
-  private void initSBnode() {
-    if (sBnode == null) {
-      sBnode = "";
-    }
+  public void setGDefaultGraph(RdfDefaultGraph gDefaultGraph) {
+    this.graph = gDefaultGraph;
+    this.graphNumber = 15;
   }
 
   /**
-   * <code>optional string s_bnode = 2;</code>
-   * @return this
+   * Sets the <code>graph</code> oneof field to gLiteral.
    */
-  public RdfQuad clearSBnode() {
-    if (sBnode != null) {
-      sBnode = "";
-    }
-    return this;
+  public void setGLiteral(RdfLiteral gLiteral) {
+    this.graph = gLiteral;
+    this.graphNumber = 16;
   }
 
   /**
-   * <code>optional string s_bnode = 2;</code>
-   * @return the sBnode
+   * Returns the <code>graph</code> oneof field.
    */
-  public String getSBnode() {
-    initSBnode();
-    return sBnode;
+  public Object getGraph() {
+    return graph;
   }
 
   /**
-   * <code>optional string s_bnode = 2;</code>
-   * @param value the sBnode to set
-   * @return this
+   * Returns the set field number of the <code>graph</code> oneof field.
    */
-  public RdfQuad setSBnode(final String value) {
-    clearSubjectOtherSBnode();
-    sBnode = value;
-    return this;
-  }
-
-  private void initSLiteral() {
-    if (sLiteral == null) {
-      sLiteral = RdfLiteral.newInstance();
-    }
+  public byte getGraphFieldNumber() {
+    return graphNumber;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral s_literal = 3;</code>
-   * @return this
-   */
-  public RdfQuad clearSLiteral() {
-    if (sLiteral != null) {
-      sLiteral.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral s_literal = 3;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableSLiteral()} if you want to modify it.
-   *
-   * @return internal storage object for reading
-   */
-  public RdfLiteral getSLiteral() {
-    initSLiteral();
-    return sLiteral;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral s_literal = 3;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfLiteral getMutableSLiteral() {
-    clearSubjectOtherSLiteral();
-    initSLiteral();
-    return sLiteral;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral s_literal = 3;</code>
-   * @param value the sLiteral to set
-   * @return this
-   */
-  public RdfQuad setSLiteral(final RdfLiteral value) {
-    clearSubjectOtherSLiteral();
-    initSLiteral();
-    sLiteral.copyFrom(value);
-    return this;
-  }
-
-  private void initSTripleTerm() {
-    if (sTripleTerm == null) {
-      sTripleTerm = RdfTriple.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple s_triple_term = 4;</code>
-   * @return this
-   */
-  public RdfQuad clearSTripleTerm() {
-    if (sTripleTerm != null) {
-      sTripleTerm.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple s_triple_term = 4;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableSTripleTerm()} if you want to modify it.
-   *
-   * @return internal storage object for reading
-   */
-  public RdfTriple getSTripleTerm() {
-    initSTripleTerm();
-    return sTripleTerm;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple s_triple_term = 4;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfTriple getMutableSTripleTerm() {
-    clearSubjectOtherSTripleTerm();
-    initSTripleTerm();
-    return sTripleTerm;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple s_triple_term = 4;</code>
-   * @param value the sTripleTerm to set
-   * @return this
-   */
-  public RdfQuad setSTripleTerm(final RdfTriple value) {
-    clearSubjectOtherSTripleTerm();
-    initSTripleTerm();
-    sTripleTerm.copyFrom(value);
-    return this;
-  }
-
-  private void initPIri() {
-    if (pIri == null) {
-      pIri = RdfIri.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri p_iri = 5;</code>
-   * @return this
-   */
-  public RdfQuad clearPIri() {
-    if (pIri != null) {
-      pIri.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri p_iri = 5;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutablePIri()} if you want to modify it.
-   *
-   * @return internal storage object for reading
-   */
-  public RdfIri getPIri() {
-    initPIri();
-    return pIri;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri p_iri = 5;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfIri getMutablePIri() {
-    clearPredicateOtherPIri();
-    initPIri();
-    return pIri;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri p_iri = 5;</code>
-   * @param value the pIri to set
-   * @return this
-   */
-  public RdfQuad setPIri(final RdfIri value) {
-    clearPredicateOtherPIri();
-    initPIri();
-    pIri.copyFrom(value);
-    return this;
-  }
-
-  private void initPBnode() {
-    if (pBnode == null) {
-      pBnode = "";
-    }
-  }
-
-  /**
-   * <code>optional string p_bnode = 6;</code>
-   * @return this
-   */
-  public RdfQuad clearPBnode() {
-    if (pBnode != null) {
-      pBnode = "";
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional string p_bnode = 6;</code>
-   * @return the pBnode
-   */
-  public String getPBnode() {
-    initPBnode();
-    return pBnode;
-  }
-
-  /**
-   * <code>optional string p_bnode = 6;</code>
-   * @param value the pBnode to set
-   * @return this
-   */
-  public RdfQuad setPBnode(final String value) {
-    clearPredicateOtherPBnode();
-    pBnode = value;
-    return this;
-  }
-
-  private void initPLiteral() {
-    if (pLiteral == null) {
-      pLiteral = RdfLiteral.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral p_literal = 7;</code>
-   * @return this
-   */
-  public RdfQuad clearPLiteral() {
-    if (pLiteral != null) {
-      pLiteral.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral p_literal = 7;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutablePLiteral()} if you want to modify it.
-   *
-   * @return internal storage object for reading
-   */
-  public RdfLiteral getPLiteral() {
-    initPLiteral();
-    return pLiteral;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral p_literal = 7;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfLiteral getMutablePLiteral() {
-    clearPredicateOtherPLiteral();
-    initPLiteral();
-    return pLiteral;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral p_literal = 7;</code>
-   * @param value the pLiteral to set
-   * @return this
-   */
-  public RdfQuad setPLiteral(final RdfLiteral value) {
-    clearPredicateOtherPLiteral();
-    initPLiteral();
-    pLiteral.copyFrom(value);
-    return this;
-  }
-
-  private void initPTripleTerm() {
-    if (pTripleTerm == null) {
-      pTripleTerm = RdfTriple.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple p_triple_term = 8;</code>
-   * @return this
-   */
-  public RdfQuad clearPTripleTerm() {
-    if (pTripleTerm != null) {
-      pTripleTerm.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple p_triple_term = 8;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutablePTripleTerm()} if you want to modify it.
-   *
-   * @return internal storage object for reading
-   */
-  public RdfTriple getPTripleTerm() {
-    initPTripleTerm();
-    return pTripleTerm;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple p_triple_term = 8;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfTriple getMutablePTripleTerm() {
-    clearPredicateOtherPTripleTerm();
-    initPTripleTerm();
-    return pTripleTerm;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple p_triple_term = 8;</code>
-   * @param value the pTripleTerm to set
-   * @return this
-   */
-  public RdfQuad setPTripleTerm(final RdfTriple value) {
-    clearPredicateOtherPTripleTerm();
-    initPTripleTerm();
-    pTripleTerm.copyFrom(value);
-    return this;
-  }
-
-  private void initOIri() {
-    if (oIri == null) {
-      oIri = RdfIri.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri o_iri = 9;</code>
-   * @return this
-   */
-  public RdfQuad clearOIri() {
-    if (oIri != null) {
-      oIri.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri o_iri = 9;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableOIri()} if you want to modify it.
-   *
-   * @return internal storage object for reading
-   */
-  public RdfIri getOIri() {
-    initOIri();
-    return oIri;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri o_iri = 9;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfIri getMutableOIri() {
-    clearObjectOtherOIri();
-    initOIri();
-    return oIri;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri o_iri = 9;</code>
-   * @param value the oIri to set
-   * @return this
-   */
-  public RdfQuad setOIri(final RdfIri value) {
-    clearObjectOtherOIri();
-    initOIri();
-    oIri.copyFrom(value);
-    return this;
-  }
-
-  private void initOBnode() {
-    if (oBnode == null) {
-      oBnode = "";
-    }
-  }
-
-  /**
-   * <code>optional string o_bnode = 10;</code>
-   * @return this
-   */
-  public RdfQuad clearOBnode() {
-    if (oBnode != null) {
-      oBnode = "";
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional string o_bnode = 10;</code>
-   * @return the oBnode
-   */
-  public String getOBnode() {
-    initOBnode();
-    return oBnode;
-  }
-
-  /**
-   * <code>optional string o_bnode = 10;</code>
-   * @param value the oBnode to set
-   * @return this
-   */
-  public RdfQuad setOBnode(final String value) {
-    clearObjectOtherOBnode();
-    oBnode = value;
-    return this;
-  }
-
-  private void initOLiteral() {
-    if (oLiteral == null) {
-      oLiteral = RdfLiteral.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral o_literal = 11;</code>
-   * @return this
-   */
-  public RdfQuad clearOLiteral() {
-    if (oLiteral != null) {
-      oLiteral.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral o_literal = 11;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableOLiteral()} if you want to modify it.
-   *
-   * @return internal storage object for reading
-   */
-  public RdfLiteral getOLiteral() {
-    initOLiteral();
-    return oLiteral;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral o_literal = 11;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfLiteral getMutableOLiteral() {
-    clearObjectOtherOLiteral();
-    initOLiteral();
-    return oLiteral;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral o_literal = 11;</code>
-   * @param value the oLiteral to set
-   * @return this
-   */
-  public RdfQuad setOLiteral(final RdfLiteral value) {
-    clearObjectOtherOLiteral();
-    initOLiteral();
-    oLiteral.copyFrom(value);
-    return this;
-  }
-
-  private void initOTripleTerm() {
-    if (oTripleTerm == null) {
-      oTripleTerm = RdfTriple.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple o_triple_term = 12;</code>
-   * @return this
-   */
-  public RdfQuad clearOTripleTerm() {
-    if (oTripleTerm != null) {
-      oTripleTerm.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple o_triple_term = 12;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableOTripleTerm()} if you want to modify it.
-   *
-   * @return internal storage object for reading
-   */
-  public RdfTriple getOTripleTerm() {
-    initOTripleTerm();
-    return oTripleTerm;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple o_triple_term = 12;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfTriple getMutableOTripleTerm() {
-    clearObjectOtherOTripleTerm();
-    initOTripleTerm();
-    return oTripleTerm;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfTriple o_triple_term = 12;</code>
-   * @param value the oTripleTerm to set
-   * @return this
-   */
-  public RdfQuad setOTripleTerm(final RdfTriple value) {
-    clearObjectOtherOTripleTerm();
-    initOTripleTerm();
-    oTripleTerm.copyFrom(value);
-    return this;
-  }
-
-  private void initGIri() {
-    if (gIri == null) {
-      gIri = RdfIri.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 13;</code>
-   * @return this
-   */
-  public RdfQuad clearGIri() {
-    if (gIri != null) {
-      gIri.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 13;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableGIri()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>graph</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfIri getGIri() {
-    initGIri();
-    return gIri;
+    return (RdfIri) graph;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 13;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfIri getMutableGIri() {
-    clearGraphOtherGIri();
-    initGIri();
-    return gIri;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri g_iri = 13;</code>
-   * @param value the gIri to set
-   * @return this
-   */
-  public RdfQuad setGIri(final RdfIri value) {
-    clearGraphOtherGIri();
-    initGIri();
-    gIri.copyFrom(value);
-    return this;
-  }
-
-  private void initGBnode() {
-    if (gBnode == null) {
-      gBnode = "";
-    }
-  }
-
-  /**
-   * <code>optional string g_bnode = 14;</code>
-   * @return this
-   */
-  public RdfQuad clearGBnode() {
-    if (gBnode != null) {
-      gBnode = "";
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional string g_bnode = 14;</code>
-   * @return the gBnode
+   * Returns the <code>graph</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public String getGBnode() {
-    initGBnode();
-    return gBnode;
+    return (String) graph;
   }
 
   /**
-   * <code>optional string g_bnode = 14;</code>
-   * @param value the gBnode to set
-   * @return this
-   */
-  public RdfQuad setGBnode(final String value) {
-    clearGraphOtherGBnode();
-    gBnode = value;
-    return this;
-  }
-
-  private void initGDefaultGraph() {
-    if (gDefaultGraph == null) {
-      gDefaultGraph = RdfDefaultGraph.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 15;</code>
-   * @return this
-   */
-  public RdfQuad clearGDefaultGraph() {
-    if (gDefaultGraph != null) {
-      gDefaultGraph.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 15;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableGDefaultGraph()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>graph</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfDefaultGraph getGDefaultGraph() {
-    initGDefaultGraph();
-    return gDefaultGraph;
+    return (RdfDefaultGraph) graph;
   }
 
   /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 15;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfDefaultGraph getMutableGDefaultGraph() {
-    clearGraphOtherGDefaultGraph();
-    initGDefaultGraph();
-    return gDefaultGraph;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfDefaultGraph g_default_graph = 15;</code>
-   * @param value the gDefaultGraph to set
-   * @return this
-   */
-  public RdfQuad setGDefaultGraph(final RdfDefaultGraph value) {
-    clearGraphOtherGDefaultGraph();
-    initGDefaultGraph();
-    gDefaultGraph.copyFrom(value);
-    return this;
-  }
-
-  private void initGLiteral() {
-    if (gLiteral == null) {
-      gLiteral = RdfLiteral.newInstance();
-    }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 16;</code>
-   * @return this
-   */
-  public RdfQuad clearGLiteral() {
-    if (gLiteral != null) {
-      gLiteral.clear();
-    }
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 16;</code>
-   *
-   * This method returns the internal storage object without modifying any has state.
-   * The returned object should not be modified and be treated as read-only.
-   *
-   * Use {@link #getMutableGLiteral()} if you want to modify it.
-   *
-   * @return internal storage object for reading
+   * Returns the <code>graph</code> oneof field.
+   * Use with care, as it will not check if the correct field numeber is actually set.
    */
   public RdfLiteral getGLiteral() {
-    initGLiteral();
-    return gLiteral;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 16;</code>
-   *
-   * This method returns the internal storage object and sets the corresponding
-   * has state. The returned object will become part of this message and its
-   * contents may be modified as long as the has state is not cleared.
-   *
-   * @return internal storage object for modifications
-   */
-  public RdfLiteral getMutableGLiteral() {
-    clearGraphOtherGLiteral();
-    initGLiteral();
-    return gLiteral;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfLiteral g_literal = 16;</code>
-   * @param value the gLiteral to set
-   * @return this
-   */
-  public RdfQuad setGLiteral(final RdfLiteral value) {
-    clearGraphOtherGLiteral();
-    initGLiteral();
-    gLiteral.copyFrom(value);
-    return this;
+    return (RdfLiteral) graph;
   }
 
   @Override
   public RdfQuad copyFrom(final RdfQuad other) {
     cachedSize = other.cachedSize;
-    initSIri();
-    sIri.copyFrom(other.sIri);
-    sBnode = other.sBnode;
-    initSLiteral();
-    sLiteral.copyFrom(other.sLiteral);
-    initSTripleTerm();
-    sTripleTerm.copyFrom(other.sTripleTerm);
-    initPIri();
-    pIri.copyFrom(other.pIri);
-    pBnode = other.pBnode;
-    initPLiteral();
-    pLiteral.copyFrom(other.pLiteral);
-    initPTripleTerm();
-    pTripleTerm.copyFrom(other.pTripleTerm);
-    initOIri();
-    oIri.copyFrom(other.oIri);
-    oBnode = other.oBnode;
-    initOLiteral();
-    oLiteral.copyFrom(other.oLiteral);
-    initOTripleTerm();
-    oTripleTerm.copyFrom(other.oTripleTerm);
-    initGIri();
-    gIri.copyFrom(other.gIri);
-    gBnode = other.gBnode;
-    initGDefaultGraph();
-    gDefaultGraph.copyFrom(other.gDefaultGraph);
-    initGLiteral();
-    gLiteral.copyFrom(other.gLiteral);
+    this.subject = other.subject;
+    this.subjectNumber = other.subjectNumber;
+    this.predicate = other.predicate;
+    this.predicateNumber = other.predicateNumber;
+    this.object = other.object;
+    this.objectNumber = other.objectNumber;
+    this.graph = other.graph;
+    this.graphNumber = other.graphNumber;
     return this;
   }
 
   @Override
   public RdfQuad mergeFrom(final RdfQuad other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
-    getMutableSIri().mergeFrom(other.sIri);
-    sBnode = other.sBnode;
-    getMutableSLiteral().mergeFrom(other.sLiteral);
-    getMutableSTripleTerm().mergeFrom(other.sTripleTerm);
-    getMutablePIri().mergeFrom(other.pIri);
-    pBnode = other.pBnode;
-    getMutablePLiteral().mergeFrom(other.pLiteral);
-    getMutablePTripleTerm().mergeFrom(other.pTripleTerm);
-    getMutableOIri().mergeFrom(other.oIri);
-    oBnode = other.oBnode;
-    getMutableOLiteral().mergeFrom(other.oLiteral);
-    getMutableOTripleTerm().mergeFrom(other.oTripleTerm);
-    getMutableGIri().mergeFrom(other.gIri);
-    gBnode = other.gBnode;
-    getMutableGDefaultGraph().mergeFrom(other.gDefaultGraph);
-    getMutableGLiteral().mergeFrom(other.gLiteral);
+    this.subject = other.subject;
+    this.subjectNumber = other.subjectNumber;
+    this.predicate = other.predicate;
+    this.predicateNumber = other.predicateNumber;
+    this.object = other.object;
+    this.objectNumber = other.objectNumber;
+    this.graph = other.graph;
+    this.graphNumber = other.graphNumber;
     return this;
   }
 
   @Override
   public RdfQuad clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
-    if (sIri != null) {
-      sIri.clear();
-    }
-    if (sBnode != null) {
-      sBnode = "";
-    }
-    if (sLiteral != null) {
-      sLiteral.clear();
-    }
-    if (sTripleTerm != null) {
-      sTripleTerm.clear();
-    }
-    if (pIri != null) {
-      pIri.clear();
-    }
-    if (pBnode != null) {
-      pBnode = "";
-    }
-    if (pLiteral != null) {
-      pLiteral.clear();
-    }
-    if (pTripleTerm != null) {
-      pTripleTerm.clear();
-    }
-    if (oIri != null) {
-      oIri.clear();
-    }
-    if (oBnode != null) {
-      oBnode = "";
-    }
-    if (oLiteral != null) {
-      oLiteral.clear();
-    }
-    if (oTripleTerm != null) {
-      oTripleTerm.clear();
-    }
-    if (gIri != null) {
-      gIri.clear();
-    }
-    if (gBnode != null) {
-      gBnode = "";
-    }
-    if (gDefaultGraph != null) {
-      gDefaultGraph.clear();
-    }
-    if (gLiteral != null) {
-      gLiteral.clear();
-    }
+    this.subject = null;
+    this.subjectNumber = 0;
+    this.predicate = null;
+    this.predicateNumber = 0;
+    this.object = null;
+    this.objectNumber = 0;
+    this.graph = null;
+    this.graphNumber = 0;
     return this;
   }
 
@@ -1236,104 +466,19 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
       return false;
     }
     RdfQuad other = (RdfQuad) o;
-    return sIri.equals(other.sIri)
-      && sBnode.equals(other.sBnode)
-      && sLiteral.equals(other.sLiteral)
-      && sTripleTerm.equals(other.sTripleTerm)
-      && pIri.equals(other.pIri)
-      && pBnode.equals(other.pBnode)
-      && pLiteral.equals(other.pLiteral)
-      && pTripleTerm.equals(other.pTripleTerm)
-      && oIri.equals(other.oIri)
-      && oBnode.equals(other.oBnode)
-      && oLiteral.equals(other.oLiteral)
-      && oTripleTerm.equals(other.oTripleTerm)
-      && gIri.equals(other.gIri)
-      && gBnode.equals(other.gBnode)
-      && gDefaultGraph.equals(other.gDefaultGraph)
-      && gLiteral.equals(other.gLiteral);
+    return subjectNumber == other.subjectNumber && (subjectNumber == 0 || subject.equals(other.subject))
+      && predicateNumber == other.predicateNumber && (predicateNumber == 0 || predicate.equals(other.predicate))
+      && objectNumber == other.objectNumber && (objectNumber == 0 || object.equals(other.object))
+      && graphNumber == other.graphNumber && (graphNumber == 0 || graph.equals(other.graph));
   }
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    output.writeRawByte((byte) 10);
-    output.writeUInt32NoTag(sIri.getCachedSize());
-    sIri.writeTo(output);
-    output.writeRawByte((byte) 18);
-    output.writeStringNoTag(sBnode);
-    output.writeRawByte((byte) 26);
-    output.writeUInt32NoTag(sLiteral.getCachedSize());
-    sLiteral.writeTo(output);
-    output.writeRawByte((byte) 34);
-    output.writeUInt32NoTag(sTripleTerm.getCachedSize());
-    sTripleTerm.writeTo(output);
-    output.writeRawByte((byte) 42);
-    output.writeUInt32NoTag(pIri.getCachedSize());
-    pIri.writeTo(output);
-    output.writeRawByte((byte) 50);
-    output.writeStringNoTag(pBnode);
-    output.writeRawByte((byte) 58);
-    output.writeUInt32NoTag(pLiteral.getCachedSize());
-    pLiteral.writeTo(output);
-    output.writeRawByte((byte) 66);
-    output.writeUInt32NoTag(pTripleTerm.getCachedSize());
-    pTripleTerm.writeTo(output);
-    output.writeRawByte((byte) 74);
-    output.writeUInt32NoTag(oIri.getCachedSize());
-    oIri.writeTo(output);
-    output.writeRawByte((byte) 82);
-    output.writeStringNoTag(oBnode);
-    output.writeRawByte((byte) 90);
-    output.writeUInt32NoTag(oLiteral.getCachedSize());
-    oLiteral.writeTo(output);
-    output.writeRawByte((byte) 98);
-    output.writeUInt32NoTag(oTripleTerm.getCachedSize());
-    oTripleTerm.writeTo(output);
-    output.writeRawByte((byte) 106);
-    output.writeUInt32NoTag(gIri.getCachedSize());
-    gIri.writeTo(output);
-    output.writeRawByte((byte) 114);
-    output.writeStringNoTag(gBnode);
-    output.writeRawByte((byte) 122);
-    output.writeUInt32NoTag(gDefaultGraph.getCachedSize());
-    gDefaultGraph.writeTo(output);
-    output.writeRawByte((byte) 130);
-    output.writeRawByte((byte) 1);
-    output.writeUInt32NoTag(gLiteral.getCachedSize());
-    gLiteral.writeTo(output);
   }
 
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    final int dataSize = sIri.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    size += 1 + CodedOutputStream.computeStringSizeNoTag(sBnode);
-    final int dataSize = sLiteral.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = sTripleTerm.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = pIri.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    size += 1 + CodedOutputStream.computeStringSizeNoTag(pBnode);
-    final int dataSize = pLiteral.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = pTripleTerm.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = oIri.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    size += 1 + CodedOutputStream.computeStringSizeNoTag(oBnode);
-    final int dataSize = oLiteral.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = oTripleTerm.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = gIri.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    size += 1 + CodedOutputStream.computeStringSizeNoTag(gBnode);
-    final int dataSize = gDefaultGraph.getSerializedSize();
-    size += 1 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
-    final int dataSize = gLiteral.getSerializedSize();
-    size += 2 + CodedOutputStream.computeUInt32SizeNoTag(dataSize) + dataSize;
     return size;
   }
 
@@ -1344,166 +489,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
     int tag = input.readTag();
     while (true) {
       switch (tag) {
-        case 10: {
-          // sIri
-          clearSubjectOtherSIri();
-          initSIri();
-          ProtoMessage.mergeDelimitedFrom(sIri, input);
-          tag = input.readTag();
-          if (tag != 18) {
-            break;
-          }
-        }
-        case 18: {
-          // sBnode
-          clearSubjectOtherSBnode();
-          initSBnode();
-          sBnode = input.readStringRequireUtf8();
-          tag = input.readTag();
-          if (tag != 26) {
-            break;
-          }
-        }
-        case 26: {
-          // sLiteral
-          clearSubjectOtherSLiteral();
-          initSLiteral();
-          ProtoMessage.mergeDelimitedFrom(sLiteral, input);
-          tag = input.readTag();
-          if (tag != 34) {
-            break;
-          }
-        }
-        case 34: {
-          // sTripleTerm
-          clearSubjectOtherSTripleTerm();
-          initSTripleTerm();
-          ProtoMessage.mergeDelimitedFrom(sTripleTerm, input);
-          tag = input.readTag();
-          if (tag != 42) {
-            break;
-          }
-        }
-        case 42: {
-          // pIri
-          clearPredicateOtherPIri();
-          initPIri();
-          ProtoMessage.mergeDelimitedFrom(pIri, input);
-          tag = input.readTag();
-          if (tag != 50) {
-            break;
-          }
-        }
-        case 50: {
-          // pBnode
-          clearPredicateOtherPBnode();
-          initPBnode();
-          pBnode = input.readStringRequireUtf8();
-          tag = input.readTag();
-          if (tag != 58) {
-            break;
-          }
-        }
-        case 58: {
-          // pLiteral
-          clearPredicateOtherPLiteral();
-          initPLiteral();
-          ProtoMessage.mergeDelimitedFrom(pLiteral, input);
-          tag = input.readTag();
-          if (tag != 66) {
-            break;
-          }
-        }
-        case 66: {
-          // pTripleTerm
-          clearPredicateOtherPTripleTerm();
-          initPTripleTerm();
-          ProtoMessage.mergeDelimitedFrom(pTripleTerm, input);
-          tag = input.readTag();
-          if (tag != 74) {
-            break;
-          }
-        }
-        case 74: {
-          // oIri
-          clearObjectOtherOIri();
-          initOIri();
-          ProtoMessage.mergeDelimitedFrom(oIri, input);
-          tag = input.readTag();
-          if (tag != 82) {
-            break;
-          }
-        }
-        case 82: {
-          // oBnode
-          clearObjectOtherOBnode();
-          initOBnode();
-          oBnode = input.readStringRequireUtf8();
-          tag = input.readTag();
-          if (tag != 90) {
-            break;
-          }
-        }
-        case 90: {
-          // oLiteral
-          clearObjectOtherOLiteral();
-          initOLiteral();
-          ProtoMessage.mergeDelimitedFrom(oLiteral, input);
-          tag = input.readTag();
-          if (tag != 98) {
-            break;
-          }
-        }
-        case 98: {
-          // oTripleTerm
-          clearObjectOtherOTripleTerm();
-          initOTripleTerm();
-          ProtoMessage.mergeDelimitedFrom(oTripleTerm, input);
-          tag = input.readTag();
-          if (tag != 106) {
-            break;
-          }
-        }
-        case 106: {
-          // gIri
-          clearGraphOtherGIri();
-          initGIri();
-          ProtoMessage.mergeDelimitedFrom(gIri, input);
-          tag = input.readTag();
-          if (tag != 114) {
-            break;
-          }
-        }
-        case 114: {
-          // gBnode
-          clearGraphOtherGBnode();
-          initGBnode();
-          gBnode = input.readStringRequireUtf8();
-          tag = input.readTag();
-          if (tag != 122) {
-            break;
-          }
-        }
-        case 122: {
-          // gDefaultGraph
-          clearGraphOtherGDefaultGraph();
-          initGDefaultGraph();
-          ProtoMessage.mergeDelimitedFrom(gDefaultGraph, input);
-          tag = input.readTag();
-          if (tag != 130) {
-            break;
-          }
-        }
-        case 130: {
-          // gLiteral
-          clearGraphOtherGLiteral();
-          initGLiteral();
-          ProtoMessage.mergeDelimitedFrom(gLiteral, input);
-          tag = input.readTag();
-          if (tag != 0) {
-            break;
-          }
-        }
         case 0: {
           return this;
         }

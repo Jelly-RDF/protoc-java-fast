@@ -137,9 +137,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
 
   @Override
   public RdfNamespaceDeclaration mergeFrom(final RdfNamespaceDeclaration other) {
-    if (other.isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     name = other.name;
     getMutableValue().mergeFrom(other.value_);
@@ -148,9 +145,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
 
   @Override
   public RdfNamespaceDeclaration clear() {
-    if (isEmpty()) {
-      return this;
-    }
     cachedSize = -1;
     if (name != null) {
       name = "";
