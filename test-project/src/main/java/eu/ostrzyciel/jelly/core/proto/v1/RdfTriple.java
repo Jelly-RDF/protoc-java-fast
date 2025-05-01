@@ -76,41 +76,46 @@ public final class RdfTriple extends ProtoMessage<RdfTriple> implements Cloneabl
    * Low-level setter for the <code>subject</code> oneof field.
    * Use with care, as it will not check the type of the value.
    */
-  public void setSubject(Object subject, byte number) {
+  public RdfTriple setSubject(Object subject, byte number) {
     this.subject = subject;
     this.subjectNumber = number;
+    return this;
   }
 
   /**
    * Sets the <code>subject</code> oneof field to sIri.
    */
-  public void setSIri(RdfIri sIri) {
+  public RdfTriple setSIri(RdfIri sIri) {
     this.subject = sIri;
     this.subjectNumber = 1;
+    return this;
   }
 
   /**
    * Sets the <code>subject</code> oneof field to sBnode.
    */
-  public void setSBnode(String sBnode) {
+  public RdfTriple setSBnode(String sBnode) {
     this.subject = sBnode;
     this.subjectNumber = 2;
+    return this;
   }
 
   /**
    * Sets the <code>subject</code> oneof field to sLiteral.
    */
-  public void setSLiteral(RdfLiteral sLiteral) {
+  public RdfTriple setSLiteral(RdfLiteral sLiteral) {
     this.subject = sLiteral;
     this.subjectNumber = 3;
+    return this;
   }
 
   /**
    * Sets the <code>subject</code> oneof field to sTripleTerm.
    */
-  public void setSTripleTerm(RdfTriple sTripleTerm) {
+  public RdfTriple setSTripleTerm(RdfTriple sTripleTerm) {
     this.subject = sTripleTerm;
     this.subjectNumber = 4;
+    return this;
   }
 
   /**
@@ -167,41 +172,46 @@ public final class RdfTriple extends ProtoMessage<RdfTriple> implements Cloneabl
    * Low-level setter for the <code>predicate</code> oneof field.
    * Use with care, as it will not check the type of the value.
    */
-  public void setPredicate(Object predicate, byte number) {
+  public RdfTriple setPredicate(Object predicate, byte number) {
     this.predicate = predicate;
     this.predicateNumber = number;
+    return this;
   }
 
   /**
    * Sets the <code>predicate</code> oneof field to pIri.
    */
-  public void setPIri(RdfIri pIri) {
+  public RdfTriple setPIri(RdfIri pIri) {
     this.predicate = pIri;
     this.predicateNumber = 5;
+    return this;
   }
 
   /**
    * Sets the <code>predicate</code> oneof field to pBnode.
    */
-  public void setPBnode(String pBnode) {
+  public RdfTriple setPBnode(String pBnode) {
     this.predicate = pBnode;
     this.predicateNumber = 6;
+    return this;
   }
 
   /**
    * Sets the <code>predicate</code> oneof field to pLiteral.
    */
-  public void setPLiteral(RdfLiteral pLiteral) {
+  public RdfTriple setPLiteral(RdfLiteral pLiteral) {
     this.predicate = pLiteral;
     this.predicateNumber = 7;
+    return this;
   }
 
   /**
    * Sets the <code>predicate</code> oneof field to pTripleTerm.
    */
-  public void setPTripleTerm(RdfTriple pTripleTerm) {
+  public RdfTriple setPTripleTerm(RdfTriple pTripleTerm) {
     this.predicate = pTripleTerm;
     this.predicateNumber = 8;
+    return this;
   }
 
   /**
@@ -258,41 +268,46 @@ public final class RdfTriple extends ProtoMessage<RdfTriple> implements Cloneabl
    * Low-level setter for the <code>object</code> oneof field.
    * Use with care, as it will not check the type of the value.
    */
-  public void setObject(Object object, byte number) {
+  public RdfTriple setObject(Object object, byte number) {
     this.object = object;
     this.objectNumber = number;
+    return this;
   }
 
   /**
    * Sets the <code>object</code> oneof field to oIri.
    */
-  public void setOIri(RdfIri oIri) {
+  public RdfTriple setOIri(RdfIri oIri) {
     this.object = oIri;
     this.objectNumber = 9;
+    return this;
   }
 
   /**
    * Sets the <code>object</code> oneof field to oBnode.
    */
-  public void setOBnode(String oBnode) {
+  public RdfTriple setOBnode(String oBnode) {
     this.object = oBnode;
     this.objectNumber = 10;
+    return this;
   }
 
   /**
    * Sets the <code>object</code> oneof field to oLiteral.
    */
-  public void setOLiteral(RdfLiteral oLiteral) {
+  public RdfTriple setOLiteral(RdfLiteral oLiteral) {
     this.object = oLiteral;
     this.objectNumber = 11;
+    return this;
   }
 
   /**
    * Sets the <code>object</code> oneof field to oTripleTerm.
    */
-  public void setOTripleTerm(RdfTriple oTripleTerm) {
+  public RdfTriple setOTripleTerm(RdfTriple oTripleTerm) {
     this.object = oTripleTerm;
     this.objectNumber = 12;
+    return this;
   }
 
   /**

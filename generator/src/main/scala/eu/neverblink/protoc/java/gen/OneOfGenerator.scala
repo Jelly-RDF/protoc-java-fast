@@ -39,10 +39,12 @@ class OneOfGenerator(val info: OneOfInfo):
         info.descriptor.getName
       )
       .addModifiers(Modifier.PUBLIC)
+      .returns(info.parentType)
       .addParameter(RuntimeClasses.ObjectType, info.fieldName)
       .addParameter(TypeName.BYTE, "number")
       .addStatement("this.$N = $N", info.fieldName, info.fieldName)
       .addStatement("this.$N = $L", info.numberFieldName, "number")
+      .addStatement("return this")
     t.addMethod(set.build)
     // Set the value -- specific methods
     for field <- fields do
@@ -51,9 +53,11 @@ class OneOfGenerator(val info: OneOfInfo):
           info.descriptor.getName, field.fieldName
         )
         .addModifiers(Modifier.PUBLIC)
+        .returns(info.parentType)
         .addParameter(field.getTypeName, field.fieldName)
         .addStatement("this.$N = $N", info.fieldName, field.fieldName)
         .addStatement("this.$N = $L", info.numberFieldName, field.descriptor.getNumber)
+        .addStatement("return this")
       t.addMethod(setField.build)
     // Get the value -- general method
     val get = MethodSpec.methodBuilder(info.getterName)

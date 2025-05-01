@@ -56,81 +56,91 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
    * Low-level setter for the <code>row</code> oneof field.
    * Use with care, as it will not check the type of the value.
    */
-  public void setRow(Object row, byte number) {
+  public RdfStreamRow setRow(Object row, byte number) {
     this.row = row;
     this.rowNumber = number;
+    return this;
   }
 
   /**
    * Sets the <code>row</code> oneof field to options.
    */
-  public void setOptions(RdfStreamOptions options) {
+  public RdfStreamRow setOptions(RdfStreamOptions options) {
     this.row = options;
     this.rowNumber = 1;
+    return this;
   }
 
   /**
    * Sets the <code>row</code> oneof field to triple.
    */
-  public void setTriple(RdfTriple triple) {
+  public RdfStreamRow setTriple(RdfTriple triple) {
     this.row = triple;
     this.rowNumber = 2;
+    return this;
   }
 
   /**
    * Sets the <code>row</code> oneof field to quad.
    */
-  public void setQuad(RdfQuad quad) {
+  public RdfStreamRow setQuad(RdfQuad quad) {
     this.row = quad;
     this.rowNumber = 3;
+    return this;
   }
 
   /**
    * Sets the <code>row</code> oneof field to graphStart.
    */
-  public void setGraphStart(RdfGraphStart graphStart) {
+  public RdfStreamRow setGraphStart(RdfGraphStart graphStart) {
     this.row = graphStart;
     this.rowNumber = 4;
+    return this;
   }
 
   /**
    * Sets the <code>row</code> oneof field to graphEnd.
    */
-  public void setGraphEnd(RdfGraphEnd graphEnd) {
+  public RdfStreamRow setGraphEnd(RdfGraphEnd graphEnd) {
     this.row = graphEnd;
     this.rowNumber = 5;
+    return this;
   }
 
   /**
    * Sets the <code>row</code> oneof field to namespace.
    */
-  public void setNamespace(RdfNamespaceDeclaration namespace) {
+  public RdfStreamRow setNamespace(RdfNamespaceDeclaration namespace) {
     this.row = namespace;
     this.rowNumber = 6;
+    return this;
   }
 
   /**
    * Sets the <code>row</code> oneof field to name.
    */
-  public void setName(RdfNameEntry name) {
+  public RdfStreamRow setName(RdfNameEntry name) {
     this.row = name;
     this.rowNumber = 9;
+    return this;
   }
 
   /**
    * Sets the <code>row</code> oneof field to prefix.
    */
-  public void setPrefix(RdfPrefixEntry prefix) {
+  public RdfStreamRow setPrefix(RdfPrefixEntry prefix) {
     this.row = prefix;
     this.rowNumber = 10;
+    return this;
   }
 
   /**
    * Sets the <code>row</code> oneof field to datatype.
    */
-  public void setDatatype(RdfDatatypeEntry datatype) {
+  public RdfStreamRow setDatatype(RdfDatatypeEntry datatype) {
     this.row = datatype;
     this.rowNumber = 11;
+    return this;
   }
 
   /**

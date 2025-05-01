@@ -46,41 +46,46 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
    * Low-level setter for the <code>graph</code> oneof field.
    * Use with care, as it will not check the type of the value.
    */
-  public void setGraph(Object graph, byte number) {
+  public RdfGraphStart setGraph(Object graph, byte number) {
     this.graph = graph;
     this.graphNumber = number;
+    return this;
   }
 
   /**
    * Sets the <code>graph</code> oneof field to gIri.
    */
-  public void setGIri(RdfIri gIri) {
+  public RdfGraphStart setGIri(RdfIri gIri) {
     this.graph = gIri;
     this.graphNumber = 1;
+    return this;
   }
 
   /**
    * Sets the <code>graph</code> oneof field to gBnode.
    */
-  public void setGBnode(String gBnode) {
+  public RdfGraphStart setGBnode(String gBnode) {
     this.graph = gBnode;
     this.graphNumber = 2;
+    return this;
   }
 
   /**
    * Sets the <code>graph</code> oneof field to gDefaultGraph.
    */
-  public void setGDefaultGraph(RdfDefaultGraph gDefaultGraph) {
+  public RdfGraphStart setGDefaultGraph(RdfDefaultGraph gDefaultGraph) {
     this.graph = gDefaultGraph;
     this.graphNumber = 3;
+    return this;
   }
 
   /**
    * Sets the <code>graph</code> oneof field to gLiteral.
    */
-  public void setGLiteral(RdfLiteral gLiteral) {
+  public RdfGraphStart setGLiteral(RdfLiteral gLiteral) {
     this.graph = gLiteral;
     this.graphNumber = 4;
+    return this;
   }
 
   /**

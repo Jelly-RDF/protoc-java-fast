@@ -47,25 +47,28 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
    * Low-level setter for the <code>literalKind</code> oneof field.
    * Use with care, as it will not check the type of the value.
    */
-  public void setLiteralKind(Object literalKind, byte number) {
+  public RdfLiteral setLiteralKind(Object literalKind, byte number) {
     this.literalKind = literalKind;
     this.literalKindNumber = number;
+    return this;
   }
 
   /**
    * Sets the <code>literalKind</code> oneof field to langtag.
    */
-  public void setLangtag(String langtag) {
+  public RdfLiteral setLangtag(String langtag) {
     this.literalKind = langtag;
     this.literalKindNumber = 2;
+    return this;
   }
 
   /**
    * Sets the <code>literalKind</code> oneof field to datatype.
    */
-  public void setDatatype(int datatype) {
+  public RdfLiteral setDatatype(int datatype) {
     this.literalKind = datatype;
     this.literalKindNumber = 3;
+    return this;
   }
 
   /**

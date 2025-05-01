@@ -91,41 +91,46 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
    * Low-level setter for the <code>subject</code> oneof field.
    * Use with care, as it will not check the type of the value.
    */
-  public void setSubject(Object subject, byte number) {
+  public RdfQuad setSubject(Object subject, byte number) {
     this.subject = subject;
     this.subjectNumber = number;
+    return this;
   }
 
   /**
    * Sets the <code>subject</code> oneof field to sIri.
    */
-  public void setSIri(RdfIri sIri) {
+  public RdfQuad setSIri(RdfIri sIri) {
     this.subject = sIri;
     this.subjectNumber = 1;
+    return this;
   }
 
   /**
    * Sets the <code>subject</code> oneof field to sBnode.
    */
-  public void setSBnode(String sBnode) {
+  public RdfQuad setSBnode(String sBnode) {
     this.subject = sBnode;
     this.subjectNumber = 2;
+    return this;
   }
 
   /**
    * Sets the <code>subject</code> oneof field to sLiteral.
    */
-  public void setSLiteral(RdfLiteral sLiteral) {
+  public RdfQuad setSLiteral(RdfLiteral sLiteral) {
     this.subject = sLiteral;
     this.subjectNumber = 3;
+    return this;
   }
 
   /**
    * Sets the <code>subject</code> oneof field to sTripleTerm.
    */
-  public void setSTripleTerm(RdfTriple sTripleTerm) {
+  public RdfQuad setSTripleTerm(RdfTriple sTripleTerm) {
     this.subject = sTripleTerm;
     this.subjectNumber = 4;
+    return this;
   }
 
   /**
@@ -182,41 +187,46 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
    * Low-level setter for the <code>predicate</code> oneof field.
    * Use with care, as it will not check the type of the value.
    */
-  public void setPredicate(Object predicate, byte number) {
+  public RdfQuad setPredicate(Object predicate, byte number) {
     this.predicate = predicate;
     this.predicateNumber = number;
+    return this;
   }
 
   /**
    * Sets the <code>predicate</code> oneof field to pIri.
    */
-  public void setPIri(RdfIri pIri) {
+  public RdfQuad setPIri(RdfIri pIri) {
     this.predicate = pIri;
     this.predicateNumber = 5;
+    return this;
   }
 
   /**
    * Sets the <code>predicate</code> oneof field to pBnode.
    */
-  public void setPBnode(String pBnode) {
+  public RdfQuad setPBnode(String pBnode) {
     this.predicate = pBnode;
     this.predicateNumber = 6;
+    return this;
   }
 
   /**
    * Sets the <code>predicate</code> oneof field to pLiteral.
    */
-  public void setPLiteral(RdfLiteral pLiteral) {
+  public RdfQuad setPLiteral(RdfLiteral pLiteral) {
     this.predicate = pLiteral;
     this.predicateNumber = 7;
+    return this;
   }
 
   /**
    * Sets the <code>predicate</code> oneof field to pTripleTerm.
    */
-  public void setPTripleTerm(RdfTriple pTripleTerm) {
+  public RdfQuad setPTripleTerm(RdfTriple pTripleTerm) {
     this.predicate = pTripleTerm;
     this.predicateNumber = 8;
+    return this;
   }
 
   /**
@@ -273,41 +283,46 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
    * Low-level setter for the <code>object</code> oneof field.
    * Use with care, as it will not check the type of the value.
    */
-  public void setObject(Object object, byte number) {
+  public RdfQuad setObject(Object object, byte number) {
     this.object = object;
     this.objectNumber = number;
+    return this;
   }
 
   /**
    * Sets the <code>object</code> oneof field to oIri.
    */
-  public void setOIri(RdfIri oIri) {
+  public RdfQuad setOIri(RdfIri oIri) {
     this.object = oIri;
     this.objectNumber = 9;
+    return this;
   }
 
   /**
    * Sets the <code>object</code> oneof field to oBnode.
    */
-  public void setOBnode(String oBnode) {
+  public RdfQuad setOBnode(String oBnode) {
     this.object = oBnode;
     this.objectNumber = 10;
+    return this;
   }
 
   /**
    * Sets the <code>object</code> oneof field to oLiteral.
    */
-  public void setOLiteral(RdfLiteral oLiteral) {
+  public RdfQuad setOLiteral(RdfLiteral oLiteral) {
     this.object = oLiteral;
     this.objectNumber = 11;
+    return this;
   }
 
   /**
    * Sets the <code>object</code> oneof field to oTripleTerm.
    */
-  public void setOTripleTerm(RdfTriple oTripleTerm) {
+  public RdfQuad setOTripleTerm(RdfTriple oTripleTerm) {
     this.object = oTripleTerm;
     this.objectNumber = 12;
+    return this;
   }
 
   /**
@@ -364,41 +379,46 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
    * Low-level setter for the <code>graph</code> oneof field.
    * Use with care, as it will not check the type of the value.
    */
-  public void setGraph(Object graph, byte number) {
+  public RdfQuad setGraph(Object graph, byte number) {
     this.graph = graph;
     this.graphNumber = number;
+    return this;
   }
 
   /**
    * Sets the <code>graph</code> oneof field to gIri.
    */
-  public void setGIri(RdfIri gIri) {
+  public RdfQuad setGIri(RdfIri gIri) {
     this.graph = gIri;
     this.graphNumber = 13;
+    return this;
   }
 
   /**
    * Sets the <code>graph</code> oneof field to gBnode.
    */
-  public void setGBnode(String gBnode) {
+  public RdfQuad setGBnode(String gBnode) {
     this.graph = gBnode;
     this.graphNumber = 14;
+    return this;
   }
 
   /**
    * Sets the <code>graph</code> oneof field to gDefaultGraph.
    */
-  public void setGDefaultGraph(RdfDefaultGraph gDefaultGraph) {
+  public RdfQuad setGDefaultGraph(RdfDefaultGraph gDefaultGraph) {
     this.graph = gDefaultGraph;
     this.graphNumber = 15;
+    return this;
   }
 
   /**
    * Sets the <code>graph</code> oneof field to gLiteral.
    */
-  public void setGLiteral(RdfLiteral gLiteral) {
+  public RdfQuad setGLiteral(RdfLiteral gLiteral) {
     this.graph = gLiteral;
     this.graphNumber = 16;
+    return this;
   }
 
   /**
