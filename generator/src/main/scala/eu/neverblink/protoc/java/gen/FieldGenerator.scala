@@ -15,6 +15,7 @@ import javax.lang.model.element.Modifier
  * and to keep track of where things are being called.
  *
  * @author Florian Enner
+ * @author Piotr Sowiński
  * @since 07 Aug 2019
  */
 object FieldGenerator:
@@ -95,9 +96,10 @@ class FieldGenerator(val info: FieldInfo):
     val field = FieldSpec.builder(storeType, info.fieldName)
       .addJavadoc(Javadoc.forMessageField(info).build)
       .addModifiers(Modifier.PRIVATE)
-    if info.isMessageOrGroup then field.initializer("null")
-    else if info.isRepeated || info.isBytes || info.isString then
+    if info.isRepeated && info.isMessage then field.addModifiers(Modifier.FINAL)
+    if info.isRepeated || info.isBytes || info.isString then
       field.initializer(initializer)
+    else if info.isMessageOrGroup then field.initializer("null")
     else if (info.isPrimitive || info.isEnum) { }
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
     t.addField(field.build)
@@ -105,7 +107,7 @@ class FieldGenerator(val info: FieldInfo):
   private def initializer =
     val initializer = CodeBlock.builder
     if (info.isRepeated && info.isMessageOrGroup)
-      initializer.add("$T.emptyList()", RuntimeClasses.Collections)
+      initializer.add("new $T<>()", RuntimeClasses.ArrayList)
     else if (info.isRepeated && info.isEnum) initializer.add("$T.newEmptyInstance($T.converter())", RuntimeClasses.RepeatedEnum, info.getTypeName)
     else if (info.isRepeated) initializer.add("$T.newEmptyInstance()", storeType)
     else if (info.isBytes) initializer.add(named("$storeType:T.EMPTY"))
@@ -132,14 +134,12 @@ class FieldGenerator(val info: FieldInfo):
     if (info.isSingularPrimitiveOrEnum || info.isString || info.isBytes)
       method.addStatement(named("$field:N = other.$field:N"))
     else if (info.isRepeated || info.isMessageOrGroup) {
-      if info.isLazyAllocationEnabled then
-        val copySnippet = if info.isRepeated then "$field:N.addAll(other.$field:N);\n"
-        else "$field:N.copyFrom(other.$field:N);\n"
-        method.addCode(named("" +
-          "$lazyInitMethod:L();\n" +
-          copySnippet
-        ))
-      else method.addStatement(named("$field:N.copyFrom(other.$field:N)"))
+      if info.isRepeated then method
+        .addStatement(named("$field:N.clear()"))
+        .addStatement(named("$field:N.addAll(other.$field:N)"))
+      else method
+        .addStatement(named("$lazyInitMethod:L()"))
+        .addStatement(named("$field:N.copyFrom(other.$field:N)"))
     }
     else throw new IllegalStateException("unhandled field: " + info.descriptor)
 
@@ -199,8 +199,9 @@ class FieldGenerator(val info: FieldInfo):
     true
 
   def generateHasChecker(code: CodeBlock.Builder): Unit =
-    if info.isMessage then code.addNamed("$field:N != null", m)
+    if info.isRepeated && info.isMessage then code.addNamed("!$field:N.isEmpty()", m)
     else if info.isRepeated then code.addNamed("$field:N.size() > 0", m)
+    else if info.isMessage then code.addNamed("$field:N != null", m)
     else if info.isEnum then code.addNamed("$field:N != 0", m)
     else if info.isString then code.addNamed("!$field:N.isEmpty()", m)
     else if info.isBytes then code.addNamed("$field:N.size() > 0", m)
@@ -292,7 +293,7 @@ class FieldGenerator(val info: FieldInfo):
     generateSetMethods(t)
 
   def generateInitializedMethod(t: TypeSpec.Builder): Unit =
-    if info.isMessage then
+    if !info.isRepeated && info.isMessage then
       t.addMethod(MethodSpec.methodBuilder(info.lazyInitName)
         .addModifiers(Modifier.PRIVATE)
         .addCode(CodeBlock.builder
@@ -304,7 +305,7 @@ class FieldGenerator(val info: FieldInfo):
         ).build
       )
 
-  private def lazyFieldInit = if info.isMessageOrGroup then
+  private def lazyFieldInit = if !info.isRepeated && info.isMessageOrGroup then
     CodeBlock.builder.addStatement("$N()", info.lazyInitName).build
   else FieldGenerator.EMPTY_BLOCK
 

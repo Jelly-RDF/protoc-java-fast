@@ -9,7 +9,7 @@ import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,12 +20,12 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
   /**
    * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamRow rows = 1;</code>
    */
-  private List<RdfStreamRow> rows = null;
+  private final List<RdfStreamRow> rows = new ArrayList<>();
 
   /**
    * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamFrame.MetadataEntry metadata = 15;</code>
    */
-  private List<MetadataEntry> metadata = null;
+  private final List<MetadataEntry> metadata = new ArrayList<>();
 
   private RdfStreamFrame() {
   }
@@ -35,12 +35,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
    */
   public static RdfStreamFrame newInstance() {
     return new RdfStreamFrame();
-  }
-
-  private void initRows() {
-    if (rows == null) {
-      rows = Collections.emptyList();
-    }
   }
 
   /**
@@ -67,15 +61,8 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
    * @return this
    */
   public RdfStreamFrame addRows(final RdfStreamRow value) {
-    initRows();
     rows.add(value);
     return this;
-  }
-
-  private void initMetadata() {
-    if (metadata == null) {
-      metadata = Collections.emptyList();
-    }
   }
 
   /**
@@ -102,7 +89,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
    * @return this
    */
   public RdfStreamFrame addMetadata(final MetadataEntry value) {
-    initMetadata();
     metadata.add(value);
     return this;
   }
@@ -110,9 +96,9 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
   @Override
   public RdfStreamFrame copyFrom(final RdfStreamFrame other) {
     cachedSize = other.cachedSize;
-    initRows();
+    rows.clear();
     rows.addAll(other.rows);
-    initMetadata();
+    metadata.clear();
     metadata.addAll(other.metadata);
     return this;
   }
@@ -148,14 +134,14 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
   @Override
   public void writeTo(final CodedOutputStream output) throws IOException {
-    if (rows != null) {
+    if (!rows.isEmpty()) {
       for (final var _field : rows) {
         output.writeRawByte((byte) 10);
         output.writeUInt32NoTag(_field.getCachedSize());
         _field.writeTo(output);
       }
     }
-    if (metadata != null) {
+    if (!metadata.isEmpty()) {
       for (final var _field : metadata) {
         output.writeRawByte((byte) 122);
         output.writeUInt32NoTag(_field.getCachedSize());
@@ -167,10 +153,10 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
   @Override
   protected int computeSerializedSize() {
     int size = 0;
-    if (rows != null) {
+    if (!rows.isEmpty()) {
       size += rows.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(rows);
     }
-    if (metadata != null) {
+    if (!metadata.isEmpty()) {
       size += metadata.size() + ProtoMessage.computeRepeatedMessageSizeNoTag(metadata);
     }
     return size;
@@ -185,7 +171,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
       switch (tag) {
         case 10: {
           // rows
-          initRows();
           tag = ProtoMessage.readRepeatedMessage(rows, RdfStreamRow.getFactory(), input, tag);
           if (tag != 122) {
             break;
@@ -193,7 +178,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
         }
         case 122: {
           // metadata
-          initMetadata();
           tag = ProtoMessage.readRepeatedMessage(metadata, MetadataEntry.getFactory(), input, tag);
           if (tag != 0) {
             break;

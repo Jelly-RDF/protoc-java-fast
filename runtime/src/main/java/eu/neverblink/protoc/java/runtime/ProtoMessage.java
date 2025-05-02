@@ -146,6 +146,11 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
         writeDelimitedTo(CodedOutputStream.newInstance(output));
         return getThis();
     }
+    
+    public final MessageType writeTo(OutputStream output) throws IOException {
+        writeTo(CodedOutputStream.newInstance(output));
+        return getThis();
+    }
 
     /**
      * Parses the contents for one message written in length delimited form.

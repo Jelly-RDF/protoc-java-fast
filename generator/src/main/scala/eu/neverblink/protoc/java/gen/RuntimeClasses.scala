@@ -42,6 +42,7 @@ object RuntimeClasses:
   private val RepeatedString = ClassName.get(API_PACKAGE, "RepeatedString")
   private val RepeatedBytes = ClassName.get(GOOGLE_PACKAGE, "ByteString")
   val List = ClassName.get(JAVA_UTIL_PACKAGE, "List")
+  val ArrayList = ClassName.get(JAVA_UTIL_PACKAGE, "ArrayList")
   val RepeatedEnum = ClassName.get(API_PACKAGE, "RepeatedEnum")
   val Collections = ClassName.get(JAVA_UTIL_PACKAGE, "Collections")
 
