@@ -31,6 +31,9 @@ class MessageGenerator(val info: MessageInfo):
       .addJavadoc(Javadoc.forMessage(info))
       .superclass(ParameterizedTypeName.get(RuntimeClasses.AbstractMessage, info.typeName))
       .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+    info.implements
+      .map(ClassName.bestGuess)
+      .foreach(t.addSuperinterface)
     if (info.isNested) t.addModifiers(Modifier.STATIC)
     if (!info.isNested) {
       // Note: constants from enums and fields may have the same names

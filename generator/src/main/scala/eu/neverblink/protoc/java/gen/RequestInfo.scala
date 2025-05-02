@@ -144,6 +144,9 @@ object RequestInfo:
         bitIndex += 1; bitIndex - 1
       })
     }
+
+    val implements: Seq[String] = parentFile.parentRequest.pluginOptions.implements
+      .getOrElse(typeId.split('.').last, Seq())
     // Build map
     val fields = for desc <- sortedFields.asScala yield
       new RequestInfo.FieldInfo(parentFile, this, typeName, desc, bitIndices.get(desc))

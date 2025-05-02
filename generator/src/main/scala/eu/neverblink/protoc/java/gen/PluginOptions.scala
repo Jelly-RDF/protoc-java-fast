@@ -1,10 +1,12 @@
 package eu.neverblink.protoc.java.gen
 
 import com.google.protobuf.compiler.PluginProtos
+import eu.neverblink.protoc.java.gen.PluginOptions.parseImplements
 
 import java.lang.Boolean.*
 import java.util
 import java.util.regex.Pattern
+import scala.jdk.CollectionConverters.*
 
 object PluginOptions:
   enum FieldSerializationOrder:
@@ -54,6 +56,12 @@ object PluginOptions:
       case "2" => "  "
       case "tab" => "\t"
       case _ => throw new Exception("Expected 2,4,8,tab. Found: " + indent)
+      
+  private def parseImplements(map: util.Map[String, String]): Map[String, Seq[String]] =
+    map.asScala
+      .filter((k, _) => k.startsWith("implements_"))
+      .map((k, v) => (k.substring(11), v.split(";").toSeq))
+      .toMap
 
 class PluginOptions(request: PluginProtos.CodeGeneratorRequest):
   val map = ParserUtil.getGeneratorParameters(request)
@@ -65,6 +73,7 @@ class PluginOptions(request: PluginProtos.CodeGeneratorRequest):
   val extensionSupport = PluginOptions.ExtensionSupport.parseFromString(map.getOrDefault("extensions", "disabled"))
   // TODO: fix
   val generateDescriptors = parseBoolean(map.getOrDefault("gen_descriptors", "false"))
+  val implements = parseImplements(map)
 
   def parseReplacePackage(replaceOption: String): String => String =
     // leave as is
