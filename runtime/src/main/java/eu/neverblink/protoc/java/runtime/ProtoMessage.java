@@ -14,6 +14,7 @@ import java.util.List;
  * API partially copied from Google's MessageNano
  *
  * @author Florian Enner
+ * @author Piotr Sowiński
  */
 public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
     
@@ -143,10 +144,18 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
     }
 
     public final MessageType writeDelimitedTo(OutputStream output) throws IOException {
-        writeDelimitedTo(CodedOutputStream.newInstance(output));
+        int size = getSerializedSize();
+        int bufferSize = CodedOutputStream.computeUInt32SizeNoTag(size) + size;
+        if (bufferSize > CodedOutputStream.DEFAULT_BUFFER_SIZE) {
+            bufferSize = CodedOutputStream.DEFAULT_BUFFER_SIZE;
+        }
+        final var codedOutput = CodedOutputStream.newInstance(output, bufferSize);
+        codedOutput.writeUInt32NoTag(size);
+        writeTo(codedOutput);
+        codedOutput.flush();
         return getThis();
     }
-    
+
     public final MessageType writeTo(OutputStream output) throws IOException {
         writeTo(CodedOutputStream.newInstance(output));
         return getThis();
