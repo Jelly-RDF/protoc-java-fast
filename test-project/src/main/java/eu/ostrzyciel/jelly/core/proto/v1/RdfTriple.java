@@ -467,18 +467,6 @@ public final class RdfTriple extends ProtoMessage<RdfTriple> implements Cloneabl
   }
 
   @Override
-  public RdfTriple clear() {
-    cachedSize = -1;
-    this.subject = null;
-    this.subjectNumber = 0;
-    this.predicate = null;
-    this.predicateNumber = 0;
-    this.object = null;
-    this.objectNumber = 0;
-    return this;
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (o == this) {
       return true;
@@ -667,7 +655,7 @@ public final class RdfTriple extends ProtoMessage<RdfTriple> implements Cloneabl
   @Override
   @SuppressWarnings("fallthrough")
   public RdfTriple mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -860,11 +848,11 @@ public final class RdfTriple extends ProtoMessage<RdfTriple> implements Cloneabl
   }
 
   public static RdfTriple parseFrom(final byte[] data) throws InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfTriple(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfTriple(), data);
   }
 
   public static RdfTriple parseFrom(final LimitedCodedInputStream input) throws IOException {
-    return ProtoMessage.mergeFrom(new RdfTriple(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfTriple(), input);
   }
 
   public static RdfTriple parseDelimitedFrom(final InputStream input) throws IOException {

@@ -190,7 +190,6 @@ object RequestInfo:
     val hazzerName = "has" + upperName
     val tryGetName = "tryGet" + upperName
     val adderName = "add" + upperName
-    val clearName = "clear" + upperName
     val lazyInitName = "init" + upperName
     val isPrimitive = FieldUtil.isPrimitive(descriptor.getType)
     val tag = FieldUtil.makeTag(descriptor)

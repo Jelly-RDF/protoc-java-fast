@@ -40,15 +40,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
   /**
    * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamRow rows = 1;</code>
-   * @return this
-   */
-  public RdfStreamFrame clearRows() {
-    rows.clear();
-    return this;
-  }
-
-  /**
-   * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamRow rows = 1;</code>
    *
    * @return value for this field
    */
@@ -63,15 +54,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
    */
   public RdfStreamFrame addRows(final RdfStreamRow value) {
     rows.add(value);
-    return this;
-  }
-
-  /**
-   * <code>repeated .eu.ostrzyciel.jelly.core.proto.v1.RdfStreamFrame.MetadataEntry metadata = 15;</code>
-   * @return this
-   */
-  public RdfStreamFrame clearMetadata() {
-    metadata.clear();
     return this;
   }
 
@@ -109,14 +91,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
     cachedSize = -1;
     getRows().addAll(other.rows);
     getMetadata().addAll(other.metadata);
-    return this;
-  }
-
-  @Override
-  public RdfStreamFrame clear() {
-    cachedSize = -1;
-    rows.clear();
-    metadata.clear();
     return this;
   }
 
@@ -166,7 +140,7 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
   @Override
   @SuppressWarnings("fallthrough")
   public RdfStreamFrame mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -205,11 +179,11 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
   }
 
   public static RdfStreamFrame parseFrom(final byte[] data) throws InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfStreamFrame(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfStreamFrame(), data);
   }
 
   public static RdfStreamFrame parseFrom(final LimitedCodedInputStream input) throws IOException {
-    return ProtoMessage.mergeFrom(new RdfStreamFrame(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfStreamFrame(), input);
   }
 
   public static RdfStreamFrame parseDelimitedFrom(final InputStream input) throws IOException {
@@ -249,15 +223,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
     /**
      * <code>optional string key = 1;</code>
-     * @return this
-     */
-    public MetadataEntry clearKey() {
-      key = "";
-      return this;
-    }
-
-    /**
-     * <code>optional string key = 1;</code>
      * @return the key
      */
     public String getKey() {
@@ -271,15 +236,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
      */
     public MetadataEntry setKey(final String value) {
       key = value;
-      return this;
-    }
-
-    /**
-     * <code>optional bytes value = 2;</code>
-     * @return this
-     */
-    public MetadataEntry clearValue() {
-      value_ = ByteString.EMPTY;
       return this;
     }
 
@@ -315,14 +271,6 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
       cachedSize = -1;
       key = other.key;
       value_ = other.value_;
-      return this;
-    }
-
-    @Override
-    public MetadataEntry clear() {
-      cachedSize = -1;
-      key = "";
-      value_ = ByteString.EMPTY;
       return this;
     }
 
@@ -366,7 +314,7 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
     @Override
     @SuppressWarnings("fallthrough")
     public MetadataEntry mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-      // Enabled Fall-Through Optimization (Quickbuf)
+      // Enabled Fall-Through Optimization
       final CodedInputStream input = inputLimited.in();
       int tag = input.readTag();
       while (true) {
@@ -407,11 +355,11 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
     }
 
     public static MetadataEntry parseFrom(final byte[] data) throws InvalidProtocolBufferException {
-      return ProtoMessage.mergeFrom(new MetadataEntry(), data).checkInitialized();
+      return ProtoMessage.mergeFrom(new MetadataEntry(), data);
     }
 
     public static MetadataEntry parseFrom(final LimitedCodedInputStream input) throws IOException {
-      return ProtoMessage.mergeFrom(new MetadataEntry(), input).checkInitialized();
+      return ProtoMessage.mergeFrom(new MetadataEntry(), input);
     }
 
     public static MetadataEntry parseDelimitedFrom(final InputStream input) throws IOException {

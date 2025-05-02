@@ -311,14 +311,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   }
 
   @Override
-  public RdfStreamRow clear() {
-    cachedSize = -1;
-    this.row = null;
-    this.rowNumber = 0;
-    return this;
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (o == this) {
       return true;
@@ -464,7 +456,7 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   @Override
   @SuppressWarnings("fallthrough")
   public RdfStreamRow mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -633,11 +625,11 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   }
 
   public static RdfStreamRow parseFrom(final byte[] data) throws InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfStreamRow(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfStreamRow(), data);
   }
 
   public static RdfStreamRow parseFrom(final LimitedCodedInputStream input) throws IOException {
-    return ProtoMessage.mergeFrom(new RdfStreamRow(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfStreamRow(), input);
   }
 
   public static RdfStreamRow parseDelimitedFrom(final InputStream input) throws IOException {

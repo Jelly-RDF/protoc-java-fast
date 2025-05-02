@@ -38,12 +38,6 @@ public final class RdfDefaultGraph extends ProtoMessage<RdfDefaultGraph> impleme
   }
 
   @Override
-  public RdfDefaultGraph clear() {
-    cachedSize = -1;
-    return this;
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (o == this) {
       return true;
@@ -68,7 +62,7 @@ public final class RdfDefaultGraph extends ProtoMessage<RdfDefaultGraph> impleme
   @Override
   @SuppressWarnings("fallthrough")
   public RdfDefaultGraph mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -93,11 +87,11 @@ public final class RdfDefaultGraph extends ProtoMessage<RdfDefaultGraph> impleme
   }
 
   public static RdfDefaultGraph parseFrom(final byte[] data) throws InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfDefaultGraph(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfDefaultGraph(), data);
   }
 
   public static RdfDefaultGraph parseFrom(final LimitedCodedInputStream input) throws IOException {
-    return ProtoMessage.mergeFrom(new RdfDefaultGraph(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfDefaultGraph(), input);
   }
 
   public static RdfDefaultGraph parseDelimitedFrom(final InputStream input) throws IOException {

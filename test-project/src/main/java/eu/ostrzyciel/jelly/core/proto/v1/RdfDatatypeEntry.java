@@ -37,15 +37,6 @@ public final class RdfDatatypeEntry extends ProtoMessage<RdfDatatypeEntry> imple
 
   /**
    * <code>optional uint32 id = 1;</code>
-   * @return this
-   */
-  public RdfDatatypeEntry clearId() {
-    id = 0;
-    return this;
-  }
-
-  /**
-   * <code>optional uint32 id = 1;</code>
    * @return the id
    */
   public int getId() {
@@ -59,15 +50,6 @@ public final class RdfDatatypeEntry extends ProtoMessage<RdfDatatypeEntry> imple
    */
   public RdfDatatypeEntry setId(final int value) {
     id = value;
-    return this;
-  }
-
-  /**
-   * <code>optional string value = 2;</code>
-   * @return this
-   */
-  public RdfDatatypeEntry clearValue() {
-    value_ = "";
     return this;
   }
 
@@ -102,14 +84,6 @@ public final class RdfDatatypeEntry extends ProtoMessage<RdfDatatypeEntry> imple
     cachedSize = -1;
     setId(other.id);
     value_ = other.value_;
-    return this;
-  }
-
-  @Override
-  public RdfDatatypeEntry clear() {
-    cachedSize = -1;
-    id = 0;
-    value_ = "";
     return this;
   }
 
@@ -153,7 +127,7 @@ public final class RdfDatatypeEntry extends ProtoMessage<RdfDatatypeEntry> imple
   @Override
   @SuppressWarnings("fallthrough")
   public RdfDatatypeEntry mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -195,11 +169,11 @@ public final class RdfDatatypeEntry extends ProtoMessage<RdfDatatypeEntry> imple
 
   public static RdfDatatypeEntry parseFrom(final byte[] data) throws
       InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfDatatypeEntry(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfDatatypeEntry(), data);
   }
 
   public static RdfDatatypeEntry parseFrom(final LimitedCodedInputStream input) throws IOException {
-    return ProtoMessage.mergeFrom(new RdfDatatypeEntry(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfDatatypeEntry(), input);
   }
 
   public static RdfDatatypeEntry parseDelimitedFrom(final InputStream input) throws IOException {

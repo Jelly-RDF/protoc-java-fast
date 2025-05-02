@@ -20,10 +20,6 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
     
     protected int cachedSize = -1;
 
-    // Keep the first bitfield in the parent class so that it
-    // is likely in the same cache line as the object header
-    // protected int bitField0_;
-
     protected ProtoMessage() {
     }
 
@@ -35,45 +31,6 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
      * @return this
      */
     public abstract MessageType copyFrom(MessageType other);
-
-    /**
-     * Sets all fields and data to their default values.
-     *
-     * @return this
-     */
-    public abstract MessageType clear();
-
-    /**
-     * @return true if none of the fields in this message are set
-     */
-    public boolean isEmpty() {
-        throw new RuntimeException("Generated message does not implement isEmpty");
-    }
-
-    /**
-     * @return true if all required fields in this message and in nested messages are set
-     */
-    public boolean isInitialized() {
-        return true;
-    }
-
-    /**
-     * Helper method to check if this message is initialized, i.e.,
-     * if all required fields are set.
-     * <p>
-     * Message content is not automatically checked after merging
-     * new data. This method should be called manually as needed.
-     *
-     * @return this
-     * @throws InvalidProtocolBufferException if it is not initialized.
-     */
-    public final MessageType checkInitialized() throws InvalidProtocolBufferException {
-        if (!isInitialized()) {
-            throw new UninitializedMessageException(new ArrayList<>())
-                .asInvalidProtocolBufferException();
-        }
-        return getThis();
-    }
 
     /**
      * Get the number of bytes required to encode this message.
@@ -112,14 +69,6 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
      * @return the size of the serialized proto form
      */
     protected abstract int computeSerializedSize();
-
-    /**
-     * Resets the cached size. This must be called when a field is modified after being already
-     * serialized.
-     */
-    public void resetCachedSize() {
-        cachedSize = -1;
-    }
 
     /**
      * Serializes the message and writes it to {@code output}.
@@ -286,7 +235,7 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
         input.in().checkLastTagWas(0);
         return msg;
     }
-    
+
     protected static <T extends ProtoMessage<T>> void mergeDelimitedFrom(
         T msg, LimitedCodedInputStream inputLimited
     ) throws IOException {
@@ -341,18 +290,6 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
      */
     @Override
     public abstract boolean equals(Object obj);
-
-    /**
-     * Messages have no immutable state and should not
-     * be used in hashing structures. This implementation
-     * returns a constant value in order to satisfy the
-     * contract.
-     * TODO: oh really?
-     */
-    @Override
-    public final int hashCode() {
-        return 0;
-    }
 
     /**
      * Creates a new instance of this message with the same content

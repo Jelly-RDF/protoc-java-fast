@@ -72,15 +72,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
 
   /**
    * <code>optional string stream_name = 1;</code>
-   * @return this
-   */
-  public RdfStreamOptions clearStreamName() {
-    streamName = "";
-    return this;
-  }
-
-  /**
-   * <code>optional string stream_name = 1;</code>
    * @return the streamName
    */
   public String getStreamName() {
@@ -94,15 +85,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    */
   public RdfStreamOptions setStreamName(final String value) {
     streamName = value;
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.PhysicalStreamType physical_type = 2;</code>
-   * @return this
-   */
-  public RdfStreamOptions clearPhysicalType() {
-    physicalType = 0;
     return this;
   }
 
@@ -150,15 +132,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
 
   /**
    * <code>optional bool generalized_statements = 3;</code>
-   * @return this
-   */
-  public RdfStreamOptions clearGeneralizedStatements() {
-    generalizedStatements = false;
-    return this;
-  }
-
-  /**
-   * <code>optional bool generalized_statements = 3;</code>
    * @return the generalizedStatements
    */
   public boolean getGeneralizedStatements() {
@@ -172,15 +145,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    */
   public RdfStreamOptions setGeneralizedStatements(final boolean value) {
     generalizedStatements = value;
-    return this;
-  }
-
-  /**
-   * <code>optional bool rdf_star = 4;</code>
-   * @return this
-   */
-  public RdfStreamOptions clearRdfStar() {
-    rdfStar = false;
     return this;
   }
 
@@ -204,15 +168,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
 
   /**
    * <code>optional uint32 max_name_table_size = 9;</code>
-   * @return this
-   */
-  public RdfStreamOptions clearMaxNameTableSize() {
-    maxNameTableSize = 0;
-    return this;
-  }
-
-  /**
-   * <code>optional uint32 max_name_table_size = 9;</code>
    * @return the maxNameTableSize
    */
   public int getMaxNameTableSize() {
@@ -226,15 +181,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    */
   public RdfStreamOptions setMaxNameTableSize(final int value) {
     maxNameTableSize = value;
-    return this;
-  }
-
-  /**
-   * <code>optional uint32 max_prefix_table_size = 10;</code>
-   * @return this
-   */
-  public RdfStreamOptions clearMaxPrefixTableSize() {
-    maxPrefixTableSize = 0;
     return this;
   }
 
@@ -258,15 +204,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
 
   /**
    * <code>optional uint32 max_datatype_table_size = 11;</code>
-   * @return this
-   */
-  public RdfStreamOptions clearMaxDatatypeTableSize() {
-    maxDatatypeTableSize = 0;
-    return this;
-  }
-
-  /**
-   * <code>optional uint32 max_datatype_table_size = 11;</code>
    * @return the maxDatatypeTableSize
    */
   public int getMaxDatatypeTableSize() {
@@ -280,15 +217,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    */
   public RdfStreamOptions setMaxDatatypeTableSize(final int value) {
     maxDatatypeTableSize = value;
-    return this;
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.LogicalStreamType logical_type = 14;</code>
-   * @return this
-   */
-  public RdfStreamOptions clearLogicalType() {
-    logicalType = 0;
     return this;
   }
 
@@ -331,15 +259,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
    */
   public RdfStreamOptions setLogicalType(final LogicalStreamType value) {
     logicalType = value.getNumber();
-    return this;
-  }
-
-  /**
-   * <code>optional uint32 version = 15;</code>
-   * @return this
-   */
-  public RdfStreamOptions clearVersion() {
-    version = 0;
     return this;
   }
 
@@ -388,21 +307,6 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
     setMaxDatatypeTableSize(other.maxDatatypeTableSize);
     setLogicalTypeValue(other.logicalType);
     setVersion(other.version);
-    return this;
-  }
-
-  @Override
-  public RdfStreamOptions clear() {
-    cachedSize = -1;
-    streamName = "";
-    physicalType = 0;
-    generalizedStatements = false;
-    rdfStar = false;
-    maxNameTableSize = 0;
-    maxPrefixTableSize = 0;
-    maxDatatypeTableSize = 0;
-    logicalType = 0;
-    version = 0;
     return this;
   }
 
@@ -502,7 +406,7 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
   @Override
   @SuppressWarnings("fallthrough")
   public RdfStreamOptions mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -606,11 +510,11 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
 
   public static RdfStreamOptions parseFrom(final byte[] data) throws
       InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfStreamOptions(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfStreamOptions(), data);
   }
 
   public static RdfStreamOptions parseFrom(final LimitedCodedInputStream input) throws IOException {
-    return ProtoMessage.mergeFrom(new RdfStreamOptions(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfStreamOptions(), input);
   }
 
   public static RdfStreamOptions parseDelimitedFrom(final InputStream input) throws IOException {

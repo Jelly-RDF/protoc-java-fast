@@ -75,7 +75,6 @@ class MessageGenerator(val info: MessageInfo):
     fields.foreach(_.generateMemberMethods(t))
     generateCopyFrom(t)
     generateMergeFromMessage(t)
-    generateClear(t)
     generateEquals(t)
     generateWriteTo(t)
     generateComputeSerializedSize(t)
@@ -88,22 +87,6 @@ class MessageGenerator(val info: MessageInfo):
     // Descriptors
     if (info.parentFile.parentRequest.pluginOptions.generateDescriptors) generateDescriptors(t)
     t.build
-
-  private def generateClear(t: TypeSpec.Builder): Unit =
-    t.addMethod(generateClearCode("clear"))
-
-  private def generateClearCode(name: String) =
-    val clear = MethodSpec.methodBuilder(name)
-      .addJavadoc(Javadoc.inherit)
-      .addAnnotation(classOf[Override])
-      .addModifiers(Modifier.PUBLIC)
-      .returns(info.typeName)
-    // clear has state
-    clear.addStatement("cachedSize = -1")
-    fields.foreach(_.generateClearCode(clear))
-    oneOfGenerators.foreach(_.generateClearCode(clear))
-    clear.addStatement("return this")
-    clear.build
 
   private def generateEquals(t: TypeSpec.Builder): Unit =
     val equals = MethodSpec.methodBuilder("equals")
@@ -160,7 +143,7 @@ class MessageGenerator(val info: MessageInfo):
       .sortBy(_._2)
       .map(_._1)
     if (enableFallthroughOptimization) {
-      mergeFrom.addComment("Enabled Fall-Through Optimization (" + info.expectedInputOrder + ")")
+      mergeFrom.addComment("Enabled Fall-Through Optimization")
       mergeFrom.addAnnotation(AnnotationSpec
         .builder(classOf[SuppressWarnings])
         .addMember("value", "$S", "fallthrough")
@@ -304,7 +287,7 @@ class MessageGenerator(val info: MessageInfo):
       .addException(RuntimeClasses.InvalidProtocolBufferException)
       .addParameter(classOf[Array[Byte]], "data", Modifier.FINAL)
       .returns(info.typeName)
-      .addStatement("return $T.mergeFrom(new $T(), data).checkInitialized()", RuntimeClasses.AbstractMessage, info.typeName)
+      .addStatement("return $T.mergeFrom(new $T(), data)", RuntimeClasses.AbstractMessage, info.typeName)
       .build
     )
     t.addMethod(MethodSpec.methodBuilder("parseFrom")
@@ -312,7 +295,7 @@ class MessageGenerator(val info: MessageInfo):
       .addException(classOf[IOException])
       .addParameter(RuntimeClasses.LimitedCodedInputStream, "input", Modifier.FINAL)
       .returns(info.typeName)
-      .addStatement("return $T.mergeFrom(new $T(), input).checkInitialized()", RuntimeClasses.AbstractMessage, info.typeName)
+      .addStatement("return $T.mergeFrom(new $T(), input)", RuntimeClasses.AbstractMessage, info.typeName)
       .build
     )
     t.addMethod(MethodSpec.methodBuilder("parseDelimitedFrom")

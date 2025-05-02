@@ -119,15 +119,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
 
   /**
    * <code>optional string lex = 1;</code>
-   * @return this
-   */
-  public RdfLiteral clearLex() {
-    lex = "";
-    return this;
-  }
-
-  /**
-   * <code>optional string lex = 1;</code>
    * @return the lex
    */
   public String getLex() {
@@ -159,15 +150,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
     lex = other.lex;
     this.literalKind = other.literalKind;
     this.literalKindNumber = other.literalKindNumber;
-    return this;
-  }
-
-  @Override
-  public RdfLiteral clear() {
-    cachedSize = -1;
-    lex = "";
-    this.literalKind = null;
-    this.literalKindNumber = 0;
     return this;
   }
 
@@ -230,7 +212,7 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   @Override
   @SuppressWarnings("fallthrough")
   public RdfLiteral mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -279,11 +261,11 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   }
 
   public static RdfLiteral parseFrom(final byte[] data) throws InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfLiteral(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfLiteral(), data);
   }
 
   public static RdfLiteral parseFrom(final LimitedCodedInputStream input) throws IOException {
-    return ProtoMessage.mergeFrom(new RdfLiteral(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfLiteral(), input);
   }
 
   public static RdfLiteral parseDelimitedFrom(final InputStream input) throws IOException {

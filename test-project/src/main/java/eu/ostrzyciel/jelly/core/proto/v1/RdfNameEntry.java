@@ -37,15 +37,6 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
 
   /**
    * <code>optional uint32 id = 1;</code>
-   * @return this
-   */
-  public RdfNameEntry clearId() {
-    id = 0;
-    return this;
-  }
-
-  /**
-   * <code>optional uint32 id = 1;</code>
    * @return the id
    */
   public int getId() {
@@ -59,15 +50,6 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
    */
   public RdfNameEntry setId(final int value) {
     id = value;
-    return this;
-  }
-
-  /**
-   * <code>optional string value = 2;</code>
-   * @return this
-   */
-  public RdfNameEntry clearValue() {
-    value_ = "";
     return this;
   }
 
@@ -102,14 +84,6 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
     cachedSize = -1;
     setId(other.id);
     value_ = other.value_;
-    return this;
-  }
-
-  @Override
-  public RdfNameEntry clear() {
-    cachedSize = -1;
-    id = 0;
-    value_ = "";
     return this;
   }
 
@@ -153,7 +127,7 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
   @Override
   @SuppressWarnings("fallthrough")
   public RdfNameEntry mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -194,11 +168,11 @@ public final class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements Cl
   }
 
   public static RdfNameEntry parseFrom(final byte[] data) throws InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfNameEntry(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfNameEntry(), data);
   }
 
   public static RdfNameEntry parseFrom(final LimitedCodedInputStream input) throws IOException {
-    return ProtoMessage.mergeFrom(new RdfNameEntry(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfNameEntry(), input);
   }
 
   public static RdfNameEntry parseDelimitedFrom(final InputStream input) throws IOException {

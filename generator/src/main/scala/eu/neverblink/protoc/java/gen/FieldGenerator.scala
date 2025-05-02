@@ -65,7 +65,6 @@ class FieldGenerator(val info: FieldInfo):
   m.put("getMethod", info.getterName)
   m.put("setMethod", info.setterName)
   m.put("addMethod", info.adderName)
-  m.put("clearMethod", info.clearName)
   m.put("message", info.parentType)
   m.put("type", typeName)
   m.put("number", info.number)
@@ -287,7 +286,6 @@ class FieldGenerator(val info: FieldInfo):
 
   def generateMemberMethods(t: TypeSpec.Builder): Unit =
     generateInitializedMethod(t)
-    generateClearMethod(t)
     generateGetMethods(t)
     if (info.isEnum) generateExtraEnumAccessors(t)
     generateSetMethods(t)
@@ -456,16 +454,6 @@ class FieldGenerator(val info: FieldInfo):
       .add("\n@return the $L", info.fieldName)
       .build
     ).build)
-
-  def generateClearMethod(t: TypeSpec.Builder): Unit =
-    val method = MethodSpec.methodBuilder(info.clearName)
-      .addJavadoc(Javadoc.forMessageField(info).add("\n@return this").build)
-      .addAnnotations(info.methodAnnotations)
-      .addModifiers(Modifier.PUBLIC)
-      .returns(info.parentType)
-    generateClearCode(method)
-    method.addStatement("return this")
-    t.addMethod(method.build)
 
   private def named(format: String, args: AnyRef*) =
     CodeBlock.builder.addNamed(format, m).build

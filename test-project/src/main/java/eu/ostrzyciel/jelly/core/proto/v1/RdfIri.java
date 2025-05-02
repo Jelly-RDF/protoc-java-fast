@@ -37,15 +37,6 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
 
   /**
    * <code>optional uint32 prefix_id = 1;</code>
-   * @return this
-   */
-  public RdfIri clearPrefixId() {
-    prefixId = 0;
-    return this;
-  }
-
-  /**
-   * <code>optional uint32 prefix_id = 1;</code>
    * @return the prefixId
    */
   public int getPrefixId() {
@@ -59,15 +50,6 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
    */
   public RdfIri setPrefixId(final int value) {
     prefixId = value;
-    return this;
-  }
-
-  /**
-   * <code>optional uint32 name_id = 2;</code>
-   * @return this
-   */
-  public RdfIri clearNameId() {
-    nameId = 0;
     return this;
   }
 
@@ -102,14 +84,6 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
     cachedSize = -1;
     setPrefixId(other.prefixId);
     setNameId(other.nameId);
-    return this;
-  }
-
-  @Override
-  public RdfIri clear() {
-    cachedSize = -1;
-    prefixId = 0;
-    nameId = 0;
     return this;
   }
 
@@ -153,7 +127,7 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
   @Override
   @SuppressWarnings("fallthrough")
   public RdfIri mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -194,11 +168,11 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
   }
 
   public static RdfIri parseFrom(final byte[] data) throws InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfIri(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfIri(), data);
   }
 
   public static RdfIri parseFrom(final LimitedCodedInputStream input) throws IOException {
-    return ProtoMessage.mergeFrom(new RdfIri(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfIri(), input);
   }
 
   public static RdfIri parseDelimitedFrom(final InputStream input) throws IOException {

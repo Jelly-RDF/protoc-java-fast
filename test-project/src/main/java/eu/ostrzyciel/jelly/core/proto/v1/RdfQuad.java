@@ -610,20 +610,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   @Override
-  public RdfQuad clear() {
-    cachedSize = -1;
-    this.subject = null;
-    this.subjectNumber = 0;
-    this.predicate = null;
-    this.predicateNumber = 0;
-    this.object = null;
-    this.objectNumber = 0;
-    this.graph = null;
-    this.graphNumber = 0;
-    return this;
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (o == this) {
       return true;
@@ -868,7 +854,7 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   @Override
   @SuppressWarnings("fallthrough")
   public RdfQuad mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -1117,11 +1103,11 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   public static RdfQuad parseFrom(final byte[] data) throws InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfQuad(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfQuad(), data);
   }
 
   public static RdfQuad parseFrom(final LimitedCodedInputStream input) throws IOException {
-    return ProtoMessage.mergeFrom(new RdfQuad(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfQuad(), input);
   }
 
   public static RdfQuad parseDelimitedFrom(final InputStream input) throws IOException {

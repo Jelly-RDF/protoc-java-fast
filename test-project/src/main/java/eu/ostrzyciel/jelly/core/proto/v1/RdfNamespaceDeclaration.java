@@ -37,15 +37,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
 
   /**
    * <code>optional string name = 1;</code>
-   * @return this
-   */
-  public RdfNamespaceDeclaration clearName() {
-    name = "";
-    return this;
-  }
-
-  /**
-   * <code>optional string name = 1;</code>
    * @return the name
    */
   public String getName() {
@@ -66,15 +57,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
     if (value_ == null) {
       value_ = RdfIri.newInstance();
     }
-  }
-
-  /**
-   * <code>optional .eu.ostrzyciel.jelly.core.proto.v1.RdfIri value = 2;</code>
-   * @return this
-   */
-  public RdfNamespaceDeclaration clearValue() {
-    value_ = null;
-    return this;
   }
 
   /**
@@ -111,14 +93,6 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
     cachedSize = -1;
     name = other.name;
     getValue().mergeFrom(other.value_);
-    return this;
-  }
-
-  @Override
-  public RdfNamespaceDeclaration clear() {
-    cachedSize = -1;
-    name = "";
-    value_ = null;
     return this;
   }
 
@@ -165,7 +139,7 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
   @SuppressWarnings("fallthrough")
   public RdfNamespaceDeclaration mergeFrom(final LimitedCodedInputStream inputLimited) throws
       IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -208,12 +182,12 @@ public final class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceDecl
 
   public static RdfNamespaceDeclaration parseFrom(final byte[] data) throws
       InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfNamespaceDeclaration(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfNamespaceDeclaration(), data);
   }
 
   public static RdfNamespaceDeclaration parseFrom(final LimitedCodedInputStream input) throws
       IOException {
-    return ProtoMessage.mergeFrom(new RdfNamespaceDeclaration(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfNamespaceDeclaration(), input);
   }
 
   public static RdfNamespaceDeclaration parseDelimitedFrom(final InputStream input) throws

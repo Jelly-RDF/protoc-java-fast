@@ -181,14 +181,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   }
 
   @Override
-  public RdfGraphStart clear() {
-    cachedSize = -1;
-    this.graph = null;
-    this.graphNumber = 0;
-    return this;
-  }
-
-  @Override
   public boolean equals(Object o) {
     if (o == this) {
       return true;
@@ -267,7 +259,7 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   @Override
   @SuppressWarnings("fallthrough")
   public RdfGraphStart mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
-    // Enabled Fall-Through Optimization (Quickbuf)
+    // Enabled Fall-Through Optimization
     final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
@@ -348,11 +340,11 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   }
 
   public static RdfGraphStart parseFrom(final byte[] data) throws InvalidProtocolBufferException {
-    return ProtoMessage.mergeFrom(new RdfGraphStart(), data).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfGraphStart(), data);
   }
 
   public static RdfGraphStart parseFrom(final LimitedCodedInputStream input) throws IOException {
-    return ProtoMessage.mergeFrom(new RdfGraphStart(), input).checkInitialized();
+    return ProtoMessage.mergeFrom(new RdfGraphStart(), input);
   }
 
   public static RdfGraphStart parseDelimitedFrom(final InputStream input) throws IOException {
