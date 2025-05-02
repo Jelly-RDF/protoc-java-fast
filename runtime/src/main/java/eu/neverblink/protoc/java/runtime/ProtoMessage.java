@@ -180,9 +180,9 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
         } catch (IOException e) {
             throw new InvalidProtocolBufferException(e);
         }
-        InputStream limitedInput = new LimitedInputStream(input, size);
         final var msg = factory.create();
-        msg.mergeFrom(CodedInputStream.newInstance(limitedInput));
+        final var limitedInput = LimitedCodedInputStream.newInstance(input, size);
+        msg.mergeFrom(limitedInput);
         return msg;
     }
 
@@ -192,7 +192,7 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
      *
      * @return this
      */
-    public abstract MessageType mergeFrom(CodedInputStream input) throws IOException;
+    public abstract MessageType mergeFrom(LimitedCodedInputStream input) throws IOException;
 
     /**
      * Merge {@code other} into the message being built. {@code other} must have the exact same type
@@ -269,7 +269,8 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
     public static <T extends ProtoMessage<T>> T mergeFrom(T msg, final byte[] data, final int off, final int len)
             throws InvalidProtocolBufferException {
         try {
-            return mergeFrom(msg, CodedInputStream.newInstance(data, off, len));
+            final var input = CodedInputStream.newInstance(data, off, len);
+            return mergeFrom(msg, new LimitedCodedInputStream(input));
         } catch (InvalidProtocolBufferException e) {
             throw e;
         } catch (IOException e) {
@@ -280,21 +281,24 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
     /**
      * Parse {@code input} as a message of this type and merge it with the message being built.
      */
-    public static <T extends ProtoMessage<T>> T mergeFrom(T msg, CodedInputStream input) throws IOException {
+    public static <T extends ProtoMessage<T>> T mergeFrom(T msg, LimitedCodedInputStream input) throws IOException {
         msg.mergeFrom(input);
-        input.checkLastTagWas(0);
+        input.in().checkLastTagWas(0);
         return msg;
     }
-
-    // TODO: recursion limits???
+    
     protected static <T extends ProtoMessage<T>> void mergeDelimitedFrom(
-        T msg, CodedInputStream input
+        T msg, LimitedCodedInputStream inputLimited
     ) throws IOException {
+        inputLimited.checkRecursionDepth();
+        inputLimited.incrementRecursionDepth();
+        final CodedInputStream input = inputLimited.in();
         final int length = input.readRawVarint32();
         final int oldLimit = input.pushLimit(length);
-        msg.mergeFrom(input);
+        msg.mergeFrom(inputLimited);
         input.checkLastTagWas(0);
         input.popLimit(oldLimit);
+        inputLimited.decrementRecursionDepth();
     }
 
     protected static <T extends ProtoMessage<T>> int computeRepeatedMessageSizeNoTag(final List<T> values) {
@@ -309,7 +313,7 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
     protected static <T extends ProtoMessage<T>> int readRepeatedMessage(
         final List<T> store,
         final MessageFactory<T> factory,
-        final CodedInputStream input,
+        final LimitedCodedInputStream input,
         final int tag
     ) throws IOException {
         int nextTag;
@@ -317,7 +321,7 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
             final var msg = factory.create();
             mergeDelimitedFrom(msg, input);
             store.add(msg);
-        } while((nextTag = input.readTag()) == tag);
+        } while((nextTag = input.in().readTag()) == tag);
         return nextTag;
     }
 

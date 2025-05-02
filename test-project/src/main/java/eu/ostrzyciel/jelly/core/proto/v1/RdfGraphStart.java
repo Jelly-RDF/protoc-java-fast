@@ -4,6 +4,7 @@ package eu.ostrzyciel.jelly.core.proto.v1;
 import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.CodedOutputStream;
 import com.google.protobuf.InvalidProtocolBufferException;
+import eu.neverblink.protoc.java.runtime.LimitedCodedInputStream;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
@@ -265,8 +266,9 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
 
   @Override
   @SuppressWarnings("fallthrough")
-  public RdfGraphStart mergeFrom(final CodedInputStream input) throws IOException {
+  public RdfGraphStart mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
     // Enabled Fall-Through Optimization (Quickbuf)
+    final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
       switch (tag) {
@@ -280,7 +282,7 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
             gIri = RdfIri.newInstance();
             setGIri(gIri);
           }
-          ProtoMessage.mergeDelimitedFrom(gIri, input);
+          ProtoMessage.mergeDelimitedFrom(gIri, inputLimited);
           tag = input.readTag();
           if (tag != 18) {
             break;
@@ -304,7 +306,7 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
             gDefaultGraph = RdfDefaultGraph.newInstance();
             setGDefaultGraph(gDefaultGraph);
           }
-          ProtoMessage.mergeDelimitedFrom(gDefaultGraph, input);
+          ProtoMessage.mergeDelimitedFrom(gDefaultGraph, inputLimited);
           tag = input.readTag();
           if (tag != 34) {
             break;
@@ -320,7 +322,7 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
             gLiteral = RdfLiteral.newInstance();
             setGLiteral(gLiteral);
           }
-          ProtoMessage.mergeDelimitedFrom(gLiteral, input);
+          ProtoMessage.mergeDelimitedFrom(gLiteral, inputLimited);
           tag = input.readTag();
           if (tag != 0) {
             break;
@@ -349,7 +351,7 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
     return ProtoMessage.mergeFrom(new RdfGraphStart(), data).checkInitialized();
   }
 
-  public static RdfGraphStart parseFrom(final CodedInputStream input) throws IOException {
+  public static RdfGraphStart parseFrom(final LimitedCodedInputStream input) throws IOException {
     return ProtoMessage.mergeFrom(new RdfGraphStart(), input).checkInitialized();
   }
 

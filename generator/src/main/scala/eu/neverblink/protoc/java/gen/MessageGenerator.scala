@@ -23,8 +23,6 @@ class MessageGenerator(val info: MessageInfo):
 
   final val m = new java.util.HashMap[String, AnyRef]
   m.put("abstractMessage", RuntimeClasses.AbstractMessage)
-  m.put("unknownBytes", RuntimeClasses.unknownBytesField)
-  m.put("unknownBytesKey", RuntimeClasses.unknownBytesFieldName)
 
   private val oneOfGenerators = info.oneOfs.map(new OneOfGenerator(_))
 
@@ -143,7 +141,7 @@ class MessageGenerator(val info: MessageInfo):
       .addJavadoc(Javadoc.inherit)
       .addAnnotation(classOf[Override])
       .addModifiers(Modifier.PUBLIC).returns(info.typeName)
-      .addParameter(RuntimeClasses.CodedInputStream, "input", Modifier.FINAL)
+      .addParameter(RuntimeClasses.LimitedCodedInputStream, "inputLimited", Modifier.FINAL)
       .addException(classOf[IOException])
     // Fallthrough optimization:
     //
@@ -169,7 +167,8 @@ class MessageGenerator(val info: MessageInfo):
         .build
       )
     }
-    mergeFrom.addStatement(named("int tag = input.readTag()"))
+    mergeFrom.addStatement("final $T input = inputLimited.in()", RuntimeClasses.CodedInputStream)
+      .addStatement(named("int tag = input.readTag()"))
       .beginControlFlow("while (true)")
       .beginControlFlow("switch (tag)")
     // Add fields by the expected order and type
@@ -311,7 +310,7 @@ class MessageGenerator(val info: MessageInfo):
     t.addMethod(MethodSpec.methodBuilder("parseFrom")
       .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
       .addException(classOf[IOException])
-      .addParameter(RuntimeClasses.CodedInputStream, "input", Modifier.FINAL)
+      .addParameter(RuntimeClasses.LimitedCodedInputStream, "input", Modifier.FINAL)
       .returns(info.typeName)
       .addStatement("return $T.mergeFrom(new $T(), input).checkInitialized()", RuntimeClasses.AbstractMessage, info.typeName)
       .build

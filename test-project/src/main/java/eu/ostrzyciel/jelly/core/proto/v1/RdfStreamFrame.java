@@ -5,6 +5,7 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.CodedOutputStream;
 import com.google.protobuf.InvalidProtocolBufferException;
+import eu.neverblink.protoc.java.runtime.LimitedCodedInputStream;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
@@ -164,21 +165,22 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
   @Override
   @SuppressWarnings("fallthrough")
-  public RdfStreamFrame mergeFrom(final CodedInputStream input) throws IOException {
+  public RdfStreamFrame mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
     // Enabled Fall-Through Optimization (Quickbuf)
+    final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
       switch (tag) {
         case 10: {
           // rows
-          tag = ProtoMessage.readRepeatedMessage(rows, RdfStreamRow.getFactory(), input, tag);
+          tag = ProtoMessage.readRepeatedMessage(rows, RdfStreamRow.getFactory(), inputLimited, tag);
           if (tag != 122) {
             break;
           }
         }
         case 122: {
           // metadata
-          tag = ProtoMessage.readRepeatedMessage(metadata, MetadataEntry.getFactory(), input, tag);
+          tag = ProtoMessage.readRepeatedMessage(metadata, MetadataEntry.getFactory(), inputLimited, tag);
           if (tag != 0) {
             break;
           }
@@ -206,7 +208,7 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
     return ProtoMessage.mergeFrom(new RdfStreamFrame(), data).checkInitialized();
   }
 
-  public static RdfStreamFrame parseFrom(final CodedInputStream input) throws IOException {
+  public static RdfStreamFrame parseFrom(final LimitedCodedInputStream input) throws IOException {
     return ProtoMessage.mergeFrom(new RdfStreamFrame(), input).checkInitialized();
   }
 
@@ -363,8 +365,9 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
     @Override
     @SuppressWarnings("fallthrough")
-    public MetadataEntry mergeFrom(final CodedInputStream input) throws IOException {
+    public MetadataEntry mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
       // Enabled Fall-Through Optimization (Quickbuf)
+      final CodedInputStream input = inputLimited.in();
       int tag = input.readTag();
       while (true) {
         switch (tag) {
@@ -407,7 +410,7 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
       return ProtoMessage.mergeFrom(new MetadataEntry(), data).checkInitialized();
     }
 
-    public static MetadataEntry parseFrom(final CodedInputStream input) throws IOException {
+    public static MetadataEntry parseFrom(final LimitedCodedInputStream input) throws IOException {
       return ProtoMessage.mergeFrom(new MetadataEntry(), input).checkInitialized();
     }
 

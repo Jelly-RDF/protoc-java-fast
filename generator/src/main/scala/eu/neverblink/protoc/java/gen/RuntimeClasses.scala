@@ -16,24 +16,20 @@ object RuntimeClasses:
   private val GOOGLE_PACKAGE = "com.google.protobuf"
 
   val CodedInputStream = ClassName.get(GOOGLE_PACKAGE, "CodedInputStream")
+  val LimitedCodedInputStream = ClassName.get(API_PACKAGE, "LimitedCodedInputStream")
   val CodedOutputStream = ClassName.get(GOOGLE_PACKAGE, "CodedOutputStream")
   val ProtoUtil = ClassName.get(API_PACKAGE, "ProtoUtil")
   val AbstractMessage = ClassName.get(API_PACKAGE, "ProtoMessage")
   val MessageFactory = ClassName.get(API_PACKAGE, "MessageFactory")
   val ObjectType = ClassName.get(classOf[Object])
   val StringType = ClassName.get(classOf[String])
-  val Utf8Decoder = ClassName.get(API_PACKAGE, "Utf8Decoder")
   val BytesType = ClassName.get(GOOGLE_PACKAGE, "ByteString")
   val InvalidProtocolBufferException = ClassName.get(GOOGLE_PACKAGE, "InvalidProtocolBufferException")
   val UninitializedMessageException = ClassName.get(GOOGLE_PACKAGE, "UninitializedMessageException")
-  val FieldName = ClassName.get(API_PACKAGE, "FieldName")
   val ProtoEnum = ClassName.get(API_PACKAGE, "ProtoEnum")
   val EnumConverter = ProtoEnum.nestedClass("EnumConverter")
   val FileDescriptor = ClassName.get(API_PACKAGE, "Descriptors").nestedClass("FileDescriptor")
   val MessageDescriptor = ClassName.get(API_PACKAGE, "Descriptors").nestedClass("Descriptor")
-  val unknownBytesField = "unknownBytes"
-  val unknownBytesFieldName = "unknownBytesFieldName"
-  val unknownBytesFieldHash = "[quickbuf.unknown_bytes]".hashCode
   private val RepeatedDouble = ClassName.get(API_PACKAGE, "RepeatedDouble")
   private val RepeatedFloat = ClassName.get(API_PACKAGE, "RepeatedFloat")
   private val RepeatedLong = ClassName.get(API_PACKAGE, "RepeatedLong")

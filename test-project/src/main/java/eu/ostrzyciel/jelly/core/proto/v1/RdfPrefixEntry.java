@@ -4,6 +4,7 @@ package eu.ostrzyciel.jelly.core.proto.v1;
 import com.google.protobuf.CodedInputStream;
 import com.google.protobuf.CodedOutputStream;
 import com.google.protobuf.InvalidProtocolBufferException;
+import eu.neverblink.protoc.java.runtime.LimitedCodedInputStream;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
@@ -151,8 +152,9 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
 
   @Override
   @SuppressWarnings("fallthrough")
-  public RdfPrefixEntry mergeFrom(final CodedInputStream input) throws IOException {
+  public RdfPrefixEntry mergeFrom(final LimitedCodedInputStream inputLimited) throws IOException {
     // Enabled Fall-Through Optimization (Quickbuf)
+    final CodedInputStream input = inputLimited.in();
     int tag = input.readTag();
     while (true) {
       switch (tag) {
@@ -195,7 +197,7 @@ public final class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implement
     return ProtoMessage.mergeFrom(new RdfPrefixEntry(), data).checkInitialized();
   }
 
-  public static RdfPrefixEntry parseFrom(final CodedInputStream input) throws IOException {
+  public static RdfPrefixEntry parseFrom(final LimitedCodedInputStream input) throws IOException {
     return ProtoMessage.mergeFrom(new RdfPrefixEntry(), input).checkInitialized();
   }
 

@@ -164,7 +164,7 @@ class FieldGenerator(val info: FieldInfo):
     method.addCode(ensureFieldNotNull)
     if (info.isRepeated && info.isMessageOrGroup) {
       method.addStatement(
-        "tag = $T.readRepeatedMessage($N, $T.getFactory(), input, tag)",
+        "tag = $T.readRepeatedMessage($N, $T.getFactory(), inputLimited, tag)",
         RuntimeClasses.AbstractMessage, info.fieldName, info.getTypeName
       )
       return false // tag is already read, so don't read again
@@ -174,7 +174,7 @@ class FieldGenerator(val info: FieldInfo):
     } else if (info.isString)
       method.addStatement(named("$field:N = input.readStringRequireUtf8()"))
     else if (info.isMessageOrGroup)
-      method.addStatement("$T.mergeDelimitedFrom($N, input)", RuntimeClasses.AbstractMessage, info.fieldName)
+      method.addStatement("$T.mergeDelimitedFrom($N, inputLimited)", RuntimeClasses.AbstractMessage, info.fieldName)
     else if (info.isBytes)
       method.addStatement(named("$field:N = input.readBytes()"))
     else if (info.isPrimitive)
