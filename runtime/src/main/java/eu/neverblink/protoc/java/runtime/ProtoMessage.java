@@ -3,6 +3,8 @@ package eu.neverblink.protoc.java.runtime;
 import com.google.protobuf.*;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -132,7 +134,7 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
      *
      * @return this
      */
-    public MessageType writeDelimitedTo(CodedOutputStream output) throws IOException {
+    public final MessageType writeDelimitedTo(CodedOutputStream output) throws IOException {
         // Force cached size to be recomputed
         // TODO: is this needed?
         output.writeUInt32NoTag(getSerializedSize());
@@ -140,26 +142,35 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
         return getThis();
     }
 
-//    /**
-//     * Merges the contents for one message written in length delimited form.
-//     *
-//     * @return this
-//     */
-//    public MessageType mergeDelimitedFrom(InputStream input) throws IOException {
-//        int size;
-//        try {
-//            int firstByte = input.read();
-//            if (firstByte == -1) {
-//                return null;
-//            }
-//            size = CodedInputStream.readRawVarint32(firstByte, input);
-//        } catch (IOException e) {
-//            throw new InvalidProtocolBufferException(e);
-//        }
-//        InputStream limitedInput = new LimitedInputStream(input, size);
-//        mergeFrom(CodedInputStream.newInstance(limitedInput));
-//        return getThis();
-//    }
+    public final MessageType writeDelimitedTo(OutputStream output) throws IOException {
+        writeDelimitedTo(CodedOutputStream.newInstance(output));
+        return getThis();
+    }
+
+    /**
+     * Parses the contents for one message written in length delimited form.
+     *
+     * @return a new message parsed from the input stream or null if there is no message to parse.
+     */
+    protected static <T extends ProtoMessage<T>> T parseDelimitedFrom(
+        InputStream input,
+        MessageFactory<T> factory
+    ) throws IOException {
+        int size;
+        try {
+            int firstByte = input.read();
+            if (firstByte == -1) {
+                return null;
+            }
+            size = CodedInputStream.readRawVarint32(firstByte, input);
+        } catch (IOException e) {
+            throw new InvalidProtocolBufferException(e);
+        }
+        InputStream limitedInput = new LimitedInputStream(input, size);
+        final var msg = factory.create();
+        msg.mergeFrom(CodedInputStream.newInstance(limitedInput));
+        return msg;
+    }
 
     /**
      * Parse {@code input} as a message of this type and merge it with the
@@ -318,6 +329,7 @@ public abstract class ProtoMessage<MessageType extends ProtoMessage<?>> {
      * be used in hashing structures. This implementation
      * returns a constant value in order to satisfy the
      * contract.
+     * TODO: oh really?
      */
     @Override
     public final int hashCode() {

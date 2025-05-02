@@ -7,6 +7,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Protobuf type {@code RdfStreamRow}
@@ -63,87 +64,6 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   }
 
   /**
-   * Sets the <code>row</code> oneof field to options.
-   */
-  public RdfStreamRow setOptions(RdfStreamOptions options) {
-    this.row = options;
-    this.rowNumber = 1;
-    return this;
-  }
-
-  /**
-   * Sets the <code>row</code> oneof field to triple.
-   */
-  public RdfStreamRow setTriple(RdfTriple triple) {
-    this.row = triple;
-    this.rowNumber = 2;
-    return this;
-  }
-
-  /**
-   * Sets the <code>row</code> oneof field to quad.
-   */
-  public RdfStreamRow setQuad(RdfQuad quad) {
-    this.row = quad;
-    this.rowNumber = 3;
-    return this;
-  }
-
-  /**
-   * Sets the <code>row</code> oneof field to graphStart.
-   */
-  public RdfStreamRow setGraphStart(RdfGraphStart graphStart) {
-    this.row = graphStart;
-    this.rowNumber = 4;
-    return this;
-  }
-
-  /**
-   * Sets the <code>row</code> oneof field to graphEnd.
-   */
-  public RdfStreamRow setGraphEnd(RdfGraphEnd graphEnd) {
-    this.row = graphEnd;
-    this.rowNumber = 5;
-    return this;
-  }
-
-  /**
-   * Sets the <code>row</code> oneof field to namespace.
-   */
-  public RdfStreamRow setNamespace(RdfNamespaceDeclaration namespace) {
-    this.row = namespace;
-    this.rowNumber = 6;
-    return this;
-  }
-
-  /**
-   * Sets the <code>row</code> oneof field to name.
-   */
-  public RdfStreamRow setName(RdfNameEntry name) {
-    this.row = name;
-    this.rowNumber = 9;
-    return this;
-  }
-
-  /**
-   * Sets the <code>row</code> oneof field to prefix.
-   */
-  public RdfStreamRow setPrefix(RdfPrefixEntry prefix) {
-    this.row = prefix;
-    this.rowNumber = 10;
-    return this;
-  }
-
-  /**
-   * Sets the <code>row</code> oneof field to datatype.
-   */
-  public RdfStreamRow setDatatype(RdfDatatypeEntry datatype) {
-    this.row = datatype;
-    this.rowNumber = 11;
-    return this;
-  }
-
-  /**
    * Returns the <code>row</code> oneof field.
    */
   public Object getRow() {
@@ -158,75 +78,219 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
   }
 
   /**
+   * Sets the <code>row</code> oneof field to options.
+   */
+  public RdfStreamRow setOptions(RdfStreamOptions options) {
+    this.row = options;
+    this.rowNumber = 1;
+    return this;
+  }
+
+  /**
    * Returns the <code>row</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfStreamOptions getOptions() {
     return (RdfStreamOptions) row;
   }
 
   /**
+   * Checks if the <code>row</code> oneof is set to options.
+   */
+  public boolean hasOptions() {
+    return rowNumber == 1;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to triple.
+   */
+  public RdfStreamRow setTriple(RdfTriple triple) {
+    this.row = triple;
+    this.rowNumber = 2;
+    return this;
+  }
+
+  /**
    * Returns the <code>row</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfTriple getTriple() {
     return (RdfTriple) row;
   }
 
   /**
+   * Checks if the <code>row</code> oneof is set to triple.
+   */
+  public boolean hasTriple() {
+    return rowNumber == 2;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to quad.
+   */
+  public RdfStreamRow setQuad(RdfQuad quad) {
+    this.row = quad;
+    this.rowNumber = 3;
+    return this;
+  }
+
+  /**
    * Returns the <code>row</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfQuad getQuad() {
     return (RdfQuad) row;
   }
 
   /**
+   * Checks if the <code>row</code> oneof is set to quad.
+   */
+  public boolean hasQuad() {
+    return rowNumber == 3;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to graphStart.
+   */
+  public RdfStreamRow setGraphStart(RdfGraphStart graphStart) {
+    this.row = graphStart;
+    this.rowNumber = 4;
+    return this;
+  }
+
+  /**
    * Returns the <code>row</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfGraphStart getGraphStart() {
     return (RdfGraphStart) row;
   }
 
   /**
+   * Checks if the <code>row</code> oneof is set to graphStart.
+   */
+  public boolean hasGraphStart() {
+    return rowNumber == 4;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to graphEnd.
+   */
+  public RdfStreamRow setGraphEnd(RdfGraphEnd graphEnd) {
+    this.row = graphEnd;
+    this.rowNumber = 5;
+    return this;
+  }
+
+  /**
    * Returns the <code>row</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfGraphEnd getGraphEnd() {
     return (RdfGraphEnd) row;
   }
 
   /**
+   * Checks if the <code>row</code> oneof is set to graphEnd.
+   */
+  public boolean hasGraphEnd() {
+    return rowNumber == 5;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to namespace.
+   */
+  public RdfStreamRow setNamespace(RdfNamespaceDeclaration namespace) {
+    this.row = namespace;
+    this.rowNumber = 6;
+    return this;
+  }
+
+  /**
    * Returns the <code>row</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfNamespaceDeclaration getNamespace() {
     return (RdfNamespaceDeclaration) row;
   }
 
   /**
+   * Checks if the <code>row</code> oneof is set to namespace.
+   */
+  public boolean hasNamespace() {
+    return rowNumber == 6;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to name.
+   */
+  public RdfStreamRow setName(RdfNameEntry name) {
+    this.row = name;
+    this.rowNumber = 9;
+    return this;
+  }
+
+  /**
    * Returns the <code>row</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfNameEntry getName() {
     return (RdfNameEntry) row;
   }
 
   /**
+   * Checks if the <code>row</code> oneof is set to name.
+   */
+  public boolean hasName() {
+    return rowNumber == 9;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to prefix.
+   */
+  public RdfStreamRow setPrefix(RdfPrefixEntry prefix) {
+    this.row = prefix;
+    this.rowNumber = 10;
+    return this;
+  }
+
+  /**
    * Returns the <code>row</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfPrefixEntry getPrefix() {
     return (RdfPrefixEntry) row;
   }
 
   /**
+   * Checks if the <code>row</code> oneof is set to prefix.
+   */
+  public boolean hasPrefix() {
+    return rowNumber == 10;
+  }
+
+  /**
+   * Sets the <code>row</code> oneof field to datatype.
+   */
+  public RdfStreamRow setDatatype(RdfDatatypeEntry datatype) {
+    this.row = datatype;
+    this.rowNumber = 11;
+    return this;
+  }
+
+  /**
    * Returns the <code>row</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfDatatypeEntry getDatatype() {
     return (RdfDatatypeEntry) row;
+  }
+
+  /**
+   * Checks if the <code>row</code> oneof is set to datatype.
+   */
+  public boolean hasDatatype() {
+    return rowNumber == 11;
   }
 
   @Override
@@ -572,6 +636,10 @@ public final class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements Cl
 
   public static RdfStreamRow parseFrom(final CodedInputStream input) throws IOException {
     return ProtoMessage.mergeFrom(new RdfStreamRow(), input).checkInitialized();
+  }
+
+  public static RdfStreamRow parseDelimitedFrom(final InputStream input) throws IOException {
+    return ProtoMessage.parseDelimitedFrom(input, RdfStreamRow.getFactory());
   }
 
   /**

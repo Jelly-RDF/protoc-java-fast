@@ -7,6 +7,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Protobuf type {@code RdfGraphStart}
@@ -53,42 +54,6 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   }
 
   /**
-   * Sets the <code>graph</code> oneof field to gIri.
-   */
-  public RdfGraphStart setGIri(RdfIri gIri) {
-    this.graph = gIri;
-    this.graphNumber = 1;
-    return this;
-  }
-
-  /**
-   * Sets the <code>graph</code> oneof field to gBnode.
-   */
-  public RdfGraphStart setGBnode(String gBnode) {
-    this.graph = gBnode;
-    this.graphNumber = 2;
-    return this;
-  }
-
-  /**
-   * Sets the <code>graph</code> oneof field to gDefaultGraph.
-   */
-  public RdfGraphStart setGDefaultGraph(RdfDefaultGraph gDefaultGraph) {
-    this.graph = gDefaultGraph;
-    this.graphNumber = 3;
-    return this;
-  }
-
-  /**
-   * Sets the <code>graph</code> oneof field to gLiteral.
-   */
-  public RdfGraphStart setGLiteral(RdfLiteral gLiteral) {
-    this.graph = gLiteral;
-    this.graphNumber = 4;
-    return this;
-  }
-
-  /**
    * Returns the <code>graph</code> oneof field.
    */
   public Object getGraph() {
@@ -103,35 +68,99 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
   }
 
   /**
+   * Sets the <code>graph</code> oneof field to gIri.
+   */
+  public RdfGraphStart setGIri(RdfIri gIri) {
+    this.graph = gIri;
+    this.graphNumber = 1;
+    return this;
+  }
+
+  /**
    * Returns the <code>graph</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfIri getGIri() {
     return (RdfIri) graph;
   }
 
   /**
+   * Checks if the <code>graph</code> oneof is set to gIri.
+   */
+  public boolean hasGIri() {
+    return graphNumber == 1;
+  }
+
+  /**
+   * Sets the <code>graph</code> oneof field to gBnode.
+   */
+  public RdfGraphStart setGBnode(String gBnode) {
+    this.graph = gBnode;
+    this.graphNumber = 2;
+    return this;
+  }
+
+  /**
    * Returns the <code>graph</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public String getGBnode() {
     return (String) graph;
   }
 
   /**
+   * Checks if the <code>graph</code> oneof is set to gBnode.
+   */
+  public boolean hasGBnode() {
+    return graphNumber == 2;
+  }
+
+  /**
+   * Sets the <code>graph</code> oneof field to gDefaultGraph.
+   */
+  public RdfGraphStart setGDefaultGraph(RdfDefaultGraph gDefaultGraph) {
+    this.graph = gDefaultGraph;
+    this.graphNumber = 3;
+    return this;
+  }
+
+  /**
    * Returns the <code>graph</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfDefaultGraph getGDefaultGraph() {
     return (RdfDefaultGraph) graph;
   }
 
   /**
+   * Checks if the <code>graph</code> oneof is set to gDefaultGraph.
+   */
+  public boolean hasGDefaultGraph() {
+    return graphNumber == 3;
+  }
+
+  /**
+   * Sets the <code>graph</code> oneof field to gLiteral.
+   */
+  public RdfGraphStart setGLiteral(RdfLiteral gLiteral) {
+    this.graph = gLiteral;
+    this.graphNumber = 4;
+    return this;
+  }
+
+  /**
    * Returns the <code>graph</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfLiteral getGLiteral() {
     return (RdfLiteral) graph;
+  }
+
+  /**
+   * Checks if the <code>graph</code> oneof is set to gLiteral.
+   */
+  public boolean hasGLiteral() {
+    return graphNumber == 4;
   }
 
   @Override
@@ -322,6 +351,10 @@ public final class RdfGraphStart extends ProtoMessage<RdfGraphStart> implements 
 
   public static RdfGraphStart parseFrom(final CodedInputStream input) throws IOException {
     return ProtoMessage.mergeFrom(new RdfGraphStart(), input).checkInitialized();
+  }
+
+  public static RdfGraphStart parseDelimitedFrom(final InputStream input) throws IOException {
+    return ProtoMessage.parseDelimitedFrom(input, RdfGraphStart.getFactory());
   }
 
   /**

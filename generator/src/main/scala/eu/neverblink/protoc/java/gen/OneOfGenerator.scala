@@ -46,19 +46,6 @@ class OneOfGenerator(val info: OneOfInfo):
       .addStatement("this.$N = $L", info.numberFieldName, "number")
       .addStatement("return this")
     t.addMethod(set.build)
-    // Set the value -- specific methods
-    for field <- fields do
-      val setField = MethodSpec.methodBuilder(field.setterName)
-        .addJavadoc("Sets the <code>$L</code> oneof field to $L.",
-          info.descriptor.getName, field.fieldName
-        )
-        .addModifiers(Modifier.PUBLIC)
-        .returns(info.parentType)
-        .addParameter(field.getTypeName, field.fieldName)
-        .addStatement("this.$N = $N", info.fieldName, field.fieldName)
-        .addStatement("this.$N = $L", info.numberFieldName, field.descriptor.getNumber)
-        .addStatement("return this")
-      t.addMethod(setField.build)
     // Get the value -- general method
     val get = MethodSpec.methodBuilder(info.getterName)
       .addJavadoc("Returns the <code>$L</code> oneof field.",
@@ -77,17 +64,39 @@ class OneOfGenerator(val info: OneOfInfo):
       .returns(TypeName.BYTE)
       .addStatement("return $N", info.numberFieldName)
     t.addMethod(getNumber.build)
-    // Get the value -- specific methods
+    // Specific per-field methods
     for field <- fields do
+      // Set
+      val setField = MethodSpec.methodBuilder(field.setterName)
+        .addJavadoc("Sets the <code>$L</code> oneof field to $L.",
+          info.descriptor.getName, field.fieldName
+        )
+        .addModifiers(Modifier.PUBLIC)
+        .returns(info.parentType)
+        .addParameter(field.getTypeName, field.fieldName)
+        .addStatement("this.$N = $N", info.fieldName, field.fieldName)
+        .addStatement("this.$N = $L", info.numberFieldName, field.descriptor.getNumber)
+        .addStatement("return this")
+      t.addMethod(setField.build)
+      // Get
       val getField = MethodSpec.methodBuilder(field.getterName)
         .addJavadoc("Returns the <code>$L</code> oneof field.\n" +
-          "Use with care, as it will not check if the correct field numeber is actually set.",
+          "Use with care, as it will not check if the correct field number is actually set.",
           info.descriptor.getName
         )
         .addModifiers(Modifier.PUBLIC)
         .returns(field.getTypeName)
         .addStatement("return ($T) $N", field.getTypeName, info.fieldName)
       t.addMethod(getField.build)
+      // Has
+      val hasField = MethodSpec.methodBuilder(field.hazzerName)
+        .addJavadoc("Checks if the <code>$L</code> oneof is set to $L.",
+          info.descriptor.getName, field.fieldName
+        )
+        .addModifiers(Modifier.PUBLIC)
+        .returns(classOf[Boolean])
+        .addStatement("return $N == $L", info.numberFieldName, field.descriptor.getNumber)
+      t.addMethod(hasField.build)
 
 
   def generateCopyFromCode(method: MethodSpec.Builder): Unit =

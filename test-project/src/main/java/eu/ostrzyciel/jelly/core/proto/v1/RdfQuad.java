@@ -7,6 +7,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Protobuf type {@code RdfQuad}
@@ -98,42 +99,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   /**
-   * Sets the <code>subject</code> oneof field to sIri.
-   */
-  public RdfQuad setSIri(RdfIri sIri) {
-    this.subject = sIri;
-    this.subjectNumber = 1;
-    return this;
-  }
-
-  /**
-   * Sets the <code>subject</code> oneof field to sBnode.
-   */
-  public RdfQuad setSBnode(String sBnode) {
-    this.subject = sBnode;
-    this.subjectNumber = 2;
-    return this;
-  }
-
-  /**
-   * Sets the <code>subject</code> oneof field to sLiteral.
-   */
-  public RdfQuad setSLiteral(RdfLiteral sLiteral) {
-    this.subject = sLiteral;
-    this.subjectNumber = 3;
-    return this;
-  }
-
-  /**
-   * Sets the <code>subject</code> oneof field to sTripleTerm.
-   */
-  public RdfQuad setSTripleTerm(RdfTriple sTripleTerm) {
-    this.subject = sTripleTerm;
-    this.subjectNumber = 4;
-    return this;
-  }
-
-  /**
    * Returns the <code>subject</code> oneof field.
    */
   public Object getSubject() {
@@ -148,35 +113,99 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   /**
+   * Sets the <code>subject</code> oneof field to sIri.
+   */
+  public RdfQuad setSIri(RdfIri sIri) {
+    this.subject = sIri;
+    this.subjectNumber = 1;
+    return this;
+  }
+
+  /**
    * Returns the <code>subject</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfIri getSIri() {
     return (RdfIri) subject;
   }
 
   /**
+   * Checks if the <code>subject</code> oneof is set to sIri.
+   */
+  public boolean hasSIri() {
+    return subjectNumber == 1;
+  }
+
+  /**
+   * Sets the <code>subject</code> oneof field to sBnode.
+   */
+  public RdfQuad setSBnode(String sBnode) {
+    this.subject = sBnode;
+    this.subjectNumber = 2;
+    return this;
+  }
+
+  /**
    * Returns the <code>subject</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public String getSBnode() {
     return (String) subject;
   }
 
   /**
+   * Checks if the <code>subject</code> oneof is set to sBnode.
+   */
+  public boolean hasSBnode() {
+    return subjectNumber == 2;
+  }
+
+  /**
+   * Sets the <code>subject</code> oneof field to sLiteral.
+   */
+  public RdfQuad setSLiteral(RdfLiteral sLiteral) {
+    this.subject = sLiteral;
+    this.subjectNumber = 3;
+    return this;
+  }
+
+  /**
    * Returns the <code>subject</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfLiteral getSLiteral() {
     return (RdfLiteral) subject;
   }
 
   /**
+   * Checks if the <code>subject</code> oneof is set to sLiteral.
+   */
+  public boolean hasSLiteral() {
+    return subjectNumber == 3;
+  }
+
+  /**
+   * Sets the <code>subject</code> oneof field to sTripleTerm.
+   */
+  public RdfQuad setSTripleTerm(RdfTriple sTripleTerm) {
+    this.subject = sTripleTerm;
+    this.subjectNumber = 4;
+    return this;
+  }
+
+  /**
    * Returns the <code>subject</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfTriple getSTripleTerm() {
     return (RdfTriple) subject;
+  }
+
+  /**
+   * Checks if the <code>subject</code> oneof is set to sTripleTerm.
+   */
+  public boolean hasSTripleTerm() {
+    return subjectNumber == 4;
   }
 
   public boolean hasPredicate() {
@@ -190,42 +219,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setPredicate(Object predicate, byte number) {
     this.predicate = predicate;
     this.predicateNumber = number;
-    return this;
-  }
-
-  /**
-   * Sets the <code>predicate</code> oneof field to pIri.
-   */
-  public RdfQuad setPIri(RdfIri pIri) {
-    this.predicate = pIri;
-    this.predicateNumber = 5;
-    return this;
-  }
-
-  /**
-   * Sets the <code>predicate</code> oneof field to pBnode.
-   */
-  public RdfQuad setPBnode(String pBnode) {
-    this.predicate = pBnode;
-    this.predicateNumber = 6;
-    return this;
-  }
-
-  /**
-   * Sets the <code>predicate</code> oneof field to pLiteral.
-   */
-  public RdfQuad setPLiteral(RdfLiteral pLiteral) {
-    this.predicate = pLiteral;
-    this.predicateNumber = 7;
-    return this;
-  }
-
-  /**
-   * Sets the <code>predicate</code> oneof field to pTripleTerm.
-   */
-  public RdfQuad setPTripleTerm(RdfTriple pTripleTerm) {
-    this.predicate = pTripleTerm;
-    this.predicateNumber = 8;
     return this;
   }
 
@@ -244,35 +237,99 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   /**
+   * Sets the <code>predicate</code> oneof field to pIri.
+   */
+  public RdfQuad setPIri(RdfIri pIri) {
+    this.predicate = pIri;
+    this.predicateNumber = 5;
+    return this;
+  }
+
+  /**
    * Returns the <code>predicate</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfIri getPIri() {
     return (RdfIri) predicate;
   }
 
   /**
+   * Checks if the <code>predicate</code> oneof is set to pIri.
+   */
+  public boolean hasPIri() {
+    return predicateNumber == 5;
+  }
+
+  /**
+   * Sets the <code>predicate</code> oneof field to pBnode.
+   */
+  public RdfQuad setPBnode(String pBnode) {
+    this.predicate = pBnode;
+    this.predicateNumber = 6;
+    return this;
+  }
+
+  /**
    * Returns the <code>predicate</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public String getPBnode() {
     return (String) predicate;
   }
 
   /**
+   * Checks if the <code>predicate</code> oneof is set to pBnode.
+   */
+  public boolean hasPBnode() {
+    return predicateNumber == 6;
+  }
+
+  /**
+   * Sets the <code>predicate</code> oneof field to pLiteral.
+   */
+  public RdfQuad setPLiteral(RdfLiteral pLiteral) {
+    this.predicate = pLiteral;
+    this.predicateNumber = 7;
+    return this;
+  }
+
+  /**
    * Returns the <code>predicate</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfLiteral getPLiteral() {
     return (RdfLiteral) predicate;
   }
 
   /**
+   * Checks if the <code>predicate</code> oneof is set to pLiteral.
+   */
+  public boolean hasPLiteral() {
+    return predicateNumber == 7;
+  }
+
+  /**
+   * Sets the <code>predicate</code> oneof field to pTripleTerm.
+   */
+  public RdfQuad setPTripleTerm(RdfTriple pTripleTerm) {
+    this.predicate = pTripleTerm;
+    this.predicateNumber = 8;
+    return this;
+  }
+
+  /**
    * Returns the <code>predicate</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfTriple getPTripleTerm() {
     return (RdfTriple) predicate;
+  }
+
+  /**
+   * Checks if the <code>predicate</code> oneof is set to pTripleTerm.
+   */
+  public boolean hasPTripleTerm() {
+    return predicateNumber == 8;
   }
 
   public boolean hasObject() {
@@ -286,42 +343,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setObject(Object object, byte number) {
     this.object = object;
     this.objectNumber = number;
-    return this;
-  }
-
-  /**
-   * Sets the <code>object</code> oneof field to oIri.
-   */
-  public RdfQuad setOIri(RdfIri oIri) {
-    this.object = oIri;
-    this.objectNumber = 9;
-    return this;
-  }
-
-  /**
-   * Sets the <code>object</code> oneof field to oBnode.
-   */
-  public RdfQuad setOBnode(String oBnode) {
-    this.object = oBnode;
-    this.objectNumber = 10;
-    return this;
-  }
-
-  /**
-   * Sets the <code>object</code> oneof field to oLiteral.
-   */
-  public RdfQuad setOLiteral(RdfLiteral oLiteral) {
-    this.object = oLiteral;
-    this.objectNumber = 11;
-    return this;
-  }
-
-  /**
-   * Sets the <code>object</code> oneof field to oTripleTerm.
-   */
-  public RdfQuad setOTripleTerm(RdfTriple oTripleTerm) {
-    this.object = oTripleTerm;
-    this.objectNumber = 12;
     return this;
   }
 
@@ -340,35 +361,99 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   /**
+   * Sets the <code>object</code> oneof field to oIri.
+   */
+  public RdfQuad setOIri(RdfIri oIri) {
+    this.object = oIri;
+    this.objectNumber = 9;
+    return this;
+  }
+
+  /**
    * Returns the <code>object</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfIri getOIri() {
     return (RdfIri) object;
   }
 
   /**
+   * Checks if the <code>object</code> oneof is set to oIri.
+   */
+  public boolean hasOIri() {
+    return objectNumber == 9;
+  }
+
+  /**
+   * Sets the <code>object</code> oneof field to oBnode.
+   */
+  public RdfQuad setOBnode(String oBnode) {
+    this.object = oBnode;
+    this.objectNumber = 10;
+    return this;
+  }
+
+  /**
    * Returns the <code>object</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public String getOBnode() {
     return (String) object;
   }
 
   /**
+   * Checks if the <code>object</code> oneof is set to oBnode.
+   */
+  public boolean hasOBnode() {
+    return objectNumber == 10;
+  }
+
+  /**
+   * Sets the <code>object</code> oneof field to oLiteral.
+   */
+  public RdfQuad setOLiteral(RdfLiteral oLiteral) {
+    this.object = oLiteral;
+    this.objectNumber = 11;
+    return this;
+  }
+
+  /**
    * Returns the <code>object</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfLiteral getOLiteral() {
     return (RdfLiteral) object;
   }
 
   /**
+   * Checks if the <code>object</code> oneof is set to oLiteral.
+   */
+  public boolean hasOLiteral() {
+    return objectNumber == 11;
+  }
+
+  /**
+   * Sets the <code>object</code> oneof field to oTripleTerm.
+   */
+  public RdfQuad setOTripleTerm(RdfTriple oTripleTerm) {
+    this.object = oTripleTerm;
+    this.objectNumber = 12;
+    return this;
+  }
+
+  /**
    * Returns the <code>object</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfTriple getOTripleTerm() {
     return (RdfTriple) object;
+  }
+
+  /**
+   * Checks if the <code>object</code> oneof is set to oTripleTerm.
+   */
+  public boolean hasOTripleTerm() {
+    return objectNumber == 12;
   }
 
   public boolean hasGraph() {
@@ -382,42 +467,6 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   public RdfQuad setGraph(Object graph, byte number) {
     this.graph = graph;
     this.graphNumber = number;
-    return this;
-  }
-
-  /**
-   * Sets the <code>graph</code> oneof field to gIri.
-   */
-  public RdfQuad setGIri(RdfIri gIri) {
-    this.graph = gIri;
-    this.graphNumber = 13;
-    return this;
-  }
-
-  /**
-   * Sets the <code>graph</code> oneof field to gBnode.
-   */
-  public RdfQuad setGBnode(String gBnode) {
-    this.graph = gBnode;
-    this.graphNumber = 14;
-    return this;
-  }
-
-  /**
-   * Sets the <code>graph</code> oneof field to gDefaultGraph.
-   */
-  public RdfQuad setGDefaultGraph(RdfDefaultGraph gDefaultGraph) {
-    this.graph = gDefaultGraph;
-    this.graphNumber = 15;
-    return this;
-  }
-
-  /**
-   * Sets the <code>graph</code> oneof field to gLiteral.
-   */
-  public RdfQuad setGLiteral(RdfLiteral gLiteral) {
-    this.graph = gLiteral;
-    this.graphNumber = 16;
     return this;
   }
 
@@ -436,35 +485,99 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
   }
 
   /**
+   * Sets the <code>graph</code> oneof field to gIri.
+   */
+  public RdfQuad setGIri(RdfIri gIri) {
+    this.graph = gIri;
+    this.graphNumber = 13;
+    return this;
+  }
+
+  /**
    * Returns the <code>graph</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfIri getGIri() {
     return (RdfIri) graph;
   }
 
   /**
+   * Checks if the <code>graph</code> oneof is set to gIri.
+   */
+  public boolean hasGIri() {
+    return graphNumber == 13;
+  }
+
+  /**
+   * Sets the <code>graph</code> oneof field to gBnode.
+   */
+  public RdfQuad setGBnode(String gBnode) {
+    this.graph = gBnode;
+    this.graphNumber = 14;
+    return this;
+  }
+
+  /**
    * Returns the <code>graph</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public String getGBnode() {
     return (String) graph;
   }
 
   /**
+   * Checks if the <code>graph</code> oneof is set to gBnode.
+   */
+  public boolean hasGBnode() {
+    return graphNumber == 14;
+  }
+
+  /**
+   * Sets the <code>graph</code> oneof field to gDefaultGraph.
+   */
+  public RdfQuad setGDefaultGraph(RdfDefaultGraph gDefaultGraph) {
+    this.graph = gDefaultGraph;
+    this.graphNumber = 15;
+    return this;
+  }
+
+  /**
    * Returns the <code>graph</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfDefaultGraph getGDefaultGraph() {
     return (RdfDefaultGraph) graph;
   }
 
   /**
+   * Checks if the <code>graph</code> oneof is set to gDefaultGraph.
+   */
+  public boolean hasGDefaultGraph() {
+    return graphNumber == 15;
+  }
+
+  /**
+   * Sets the <code>graph</code> oneof field to gLiteral.
+   */
+  public RdfQuad setGLiteral(RdfLiteral gLiteral) {
+    this.graph = gLiteral;
+    this.graphNumber = 16;
+    return this;
+  }
+
+  /**
    * Returns the <code>graph</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public RdfLiteral getGLiteral() {
     return (RdfLiteral) graph;
+  }
+
+  /**
+   * Checks if the <code>graph</code> oneof is set to gLiteral.
+   */
+  public boolean hasGLiteral() {
+    return graphNumber == 16;
   }
 
   @Override
@@ -1007,6 +1120,10 @@ public final class RdfQuad extends ProtoMessage<RdfQuad> implements Cloneable {
 
   public static RdfQuad parseFrom(final CodedInputStream input) throws IOException {
     return ProtoMessage.mergeFrom(new RdfQuad(), input).checkInitialized();
+  }
+
+  public static RdfQuad parseDelimitedFrom(final InputStream input) throws IOException {
+    return ProtoMessage.parseDelimitedFrom(input, RdfQuad.getFactory());
   }
 
   /**

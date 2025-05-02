@@ -8,6 +8,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collections;
 import java.util.List;
 
@@ -225,6 +226,10 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
     return ProtoMessage.mergeFrom(new RdfStreamFrame(), input).checkInitialized();
   }
 
+  public static RdfStreamFrame parseDelimitedFrom(final InputStream input) throws IOException {
+    return ProtoMessage.parseDelimitedFrom(input, RdfStreamFrame.getFactory());
+  }
+
   /**
    * @return factory for creating RdfStreamFrame messages
    */
@@ -420,6 +425,10 @@ public final class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implement
 
     public static MetadataEntry parseFrom(final CodedInputStream input) throws IOException {
       return ProtoMessage.mergeFrom(new MetadataEntry(), input).checkInitialized();
+    }
+
+    public static MetadataEntry parseDelimitedFrom(final InputStream input) throws IOException {
+      return ProtoMessage.parseDelimitedFrom(input, MetadataEntry.getFactory());
     }
 
     /**

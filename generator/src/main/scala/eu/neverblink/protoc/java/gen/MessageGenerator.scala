@@ -316,6 +316,18 @@ class MessageGenerator(val info: MessageInfo):
       .addStatement("return $T.mergeFrom(new $T(), input).checkInitialized()", RuntimeClasses.AbstractMessage, info.typeName)
       .build
     )
+    t.addMethod(MethodSpec.methodBuilder("parseDelimitedFrom")
+      .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
+      .addException(classOf[IOException])
+      .addParameter(classOf[java.io.InputStream], "input", Modifier.FINAL)
+      .returns(info.typeName)
+      .addStatement(
+        "return $T.parseDelimitedFrom(input, $T.getFactory())",
+        RuntimeClasses.AbstractMessage,
+        info.typeName
+      )
+      .build
+    )
 
   private def generateMessageFactory(t: TypeSpec.Builder): Unit =
     val factoryReturnType = ParameterizedTypeName.get(RuntimeClasses.MessageFactory, info.typeName)

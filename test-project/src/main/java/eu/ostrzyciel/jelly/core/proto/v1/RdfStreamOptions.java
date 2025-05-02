@@ -7,6 +7,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Protobuf type {@code RdfStreamOptions}
@@ -608,6 +609,10 @@ public final class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> imple
 
   public static RdfStreamOptions parseFrom(final CodedInputStream input) throws IOException {
     return ProtoMessage.mergeFrom(new RdfStreamOptions(), input).checkInitialized();
+  }
+
+  public static RdfStreamOptions parseDelimitedFrom(final InputStream input) throws IOException {
+    return ProtoMessage.parseDelimitedFrom(input, RdfStreamOptions.getFactory());
   }
 
   /**

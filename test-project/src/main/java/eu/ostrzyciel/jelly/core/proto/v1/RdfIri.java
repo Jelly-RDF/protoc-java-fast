@@ -7,6 +7,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Protobuf type {@code RdfIri}
@@ -196,6 +197,10 @@ public final class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
 
   public static RdfIri parseFrom(final CodedInputStream input) throws IOException {
     return ProtoMessage.mergeFrom(new RdfIri(), input).checkInitialized();
+  }
+
+  public static RdfIri parseDelimitedFrom(final InputStream input) throws IOException {
+    return ProtoMessage.parseDelimitedFrom(input, RdfIri.getFactory());
   }
 
   /**

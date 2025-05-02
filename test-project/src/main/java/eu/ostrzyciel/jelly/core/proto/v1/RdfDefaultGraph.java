@@ -7,6 +7,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Protobuf type {@code RdfDefaultGraph}
@@ -95,6 +96,10 @@ public final class RdfDefaultGraph extends ProtoMessage<RdfDefaultGraph> impleme
 
   public static RdfDefaultGraph parseFrom(final CodedInputStream input) throws IOException {
     return ProtoMessage.mergeFrom(new RdfDefaultGraph(), input).checkInitialized();
+  }
+
+  public static RdfDefaultGraph parseDelimitedFrom(final InputStream input) throws IOException {
+    return ProtoMessage.parseDelimitedFrom(input, RdfDefaultGraph.getFactory());
   }
 
   /**

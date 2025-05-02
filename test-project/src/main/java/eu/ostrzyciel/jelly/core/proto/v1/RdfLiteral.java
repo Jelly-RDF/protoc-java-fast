@@ -7,6 +7,7 @@ import com.google.protobuf.InvalidProtocolBufferException;
 import eu.neverblink.protoc.java.runtime.MessageFactory;
 import eu.neverblink.protoc.java.runtime.ProtoMessage;
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Protobuf type {@code RdfLiteral}
@@ -54,24 +55,6 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   }
 
   /**
-   * Sets the <code>literalKind</code> oneof field to langtag.
-   */
-  public RdfLiteral setLangtag(String langtag) {
-    this.literalKind = langtag;
-    this.literalKindNumber = 2;
-    return this;
-  }
-
-  /**
-   * Sets the <code>literalKind</code> oneof field to datatype.
-   */
-  public RdfLiteral setDatatype(int datatype) {
-    this.literalKind = datatype;
-    this.literalKindNumber = 3;
-    return this;
-  }
-
-  /**
    * Returns the <code>literalKind</code> oneof field.
    */
   public Object getLiteralKind() {
@@ -86,19 +69,51 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
   }
 
   /**
+   * Sets the <code>literalKind</code> oneof field to langtag.
+   */
+  public RdfLiteral setLangtag(String langtag) {
+    this.literalKind = langtag;
+    this.literalKindNumber = 2;
+    return this;
+  }
+
+  /**
    * Returns the <code>literalKind</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public String getLangtag() {
     return (String) literalKind;
   }
 
   /**
+   * Checks if the <code>literalKind</code> oneof is set to langtag.
+   */
+  public boolean hasLangtag() {
+    return literalKindNumber == 2;
+  }
+
+  /**
+   * Sets the <code>literalKind</code> oneof field to datatype.
+   */
+  public RdfLiteral setDatatype(int datatype) {
+    this.literalKind = datatype;
+    this.literalKindNumber = 3;
+    return this;
+  }
+
+  /**
    * Returns the <code>literalKind</code> oneof field.
-   * Use with care, as it will not check if the correct field numeber is actually set.
+   * Use with care, as it will not check if the correct field number is actually set.
    */
   public int getDatatype() {
     return (int) literalKind;
+  }
+
+  /**
+   * Checks if the <code>literalKind</code> oneof is set to datatype.
+   */
+  public boolean hasDatatype() {
+    return literalKindNumber == 3;
   }
 
   /**
@@ -267,6 +282,10 @@ public final class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clonea
 
   public static RdfLiteral parseFrom(final CodedInputStream input) throws IOException {
     return ProtoMessage.mergeFrom(new RdfLiteral(), input).checkInitialized();
+  }
+
+  public static RdfLiteral parseDelimitedFrom(final InputStream input) throws IOException {
+    return ProtoMessage.parseDelimitedFrom(input, RdfLiteral.getFactory());
   }
 
   /**

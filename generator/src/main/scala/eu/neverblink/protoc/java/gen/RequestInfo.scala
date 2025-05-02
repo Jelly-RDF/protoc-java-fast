@@ -187,6 +187,7 @@ object RequestInfo:
     val lowerName = Character.toLowerCase(upperName.charAt(0)) + upperName.substring(1)
     val setterName = "set" + upperName
     val getterName = "get" + upperName
+    val hazzerName = "has" + upperName
     val tryGetName = "tryGet" + upperName
     val adderName = "add" + upperName
     val clearName = "clear" + upperName
