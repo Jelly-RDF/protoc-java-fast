@@ -7,6 +7,7 @@ import java.util.Base64;
 
 public final class Rdf {
   private static final byte[] descriptorData = Base64.getDecoder().decode(
+    "CglyZGYucHJvdG8SIWV1Lm9zdHJ6eWNpZWwuamVsbHkuY29yZS5wcm90by52MSI+CgZSZGZJcmkSGwoJ" + 
     "cHJlZml4X2lkGAEgASgNUghwcmVmaXhJZBIXCgduYW1lX2lkGAIgASgNUgZuYW1lSWQiZwoKUmRmTGl0" + 
     "ZXJhbBIQCgNsZXgYASABKAlSA2xleBIaCgdsYW5ndGFnGAIgASgJSABSB2xhbmd0YWcSHAoIZGF0YXR5" + 
     "cGUYAyABKA1IAFIIZGF0YXR5cGVCDQoLbGl0ZXJhbEtpbmQiEQoPUmRmRGVmYXVsdEdyYXBoIqoGCglS" + 
@@ -350,6 +351,8 @@ public final class Rdf {
 
   static final Descriptors.Descriptor eu_ostrzyciel_jelly_core_proto_v1_RdfStreamFrame_descriptor;
 
+  static final Descriptors.Descriptor eu_ostrzyciel_jelly_core_proto_v1_RdfStreamFrame_MetadataEntry_descriptor;
+
   static {
     try {
       descriptor = Descriptors.FileDescriptor.buildFrom(DescriptorProtos.FileDescriptorProto.parseFrom(descriptorData), new Descriptors.FileDescriptor[] {});
@@ -367,6 +370,7 @@ public final class Rdf {
       eu_ostrzyciel_jelly_core_proto_v1_RdfStreamOptions_descriptor = descriptor.getMessageTypes().get(11);
       eu_ostrzyciel_jelly_core_proto_v1_RdfStreamRow_descriptor = descriptor.getMessageTypes().get(12);
       eu_ostrzyciel_jelly_core_proto_v1_RdfStreamFrame_descriptor = descriptor.getMessageTypes().get(13);
+      eu_ostrzyciel_jelly_core_proto_v1_RdfStreamFrame_MetadataEntry_descriptor = eu_ostrzyciel_jelly_core_proto_v1_RdfStreamFrame_descriptor.getNestedTypes().get(0);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }

@@ -26,4 +26,8 @@ lazy val generator = (project in file("generator"))
 lazy val testProject = (project in file("test-project"))
   .settings(
     name := "protoc-java-fast-test",
+    libraryDependencies ++= Seq(
+      "com.google.protobuf" % "protobuf-java" % protobufJavaV,
+      "org.scalatest" %% "scalatest" % "3.2.19" % Test,
+    ),
   ).dependsOn(generator)

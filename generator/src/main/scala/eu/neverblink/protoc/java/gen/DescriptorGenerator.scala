@@ -96,8 +96,15 @@ class DescriptorGenerator(val info: RequestInfo.FileInfo):
     )
     // Descriptor field for each nested type
     val staticBlock = CodeBlock.builder
+    val getBase = CodeBlock.of("$N.getMessageTypes()", DescriptorGenerator.getFileDescriptorFieldName)
     for (message, ix) <- info.messageTypes.asScala.zipWithIndex do
-      addMessageDescriptor(t, staticBlock, message, ix)
+      addMessageDescriptor(
+        t,
+        staticBlock,
+        getBase,
+        message,
+        ix
+      )
     
     t.addStaticBlock(CodeBlock.builder
       .beginControlFlow("try")
@@ -110,7 +117,11 @@ class DescriptorGenerator(val info: RequestInfo.FileInfo):
     )
 
   private def addMessageDescriptor(
-    t: TypeSpec.Builder, staticBlock: CodeBlock.Builder, message: RequestInfo.MessageInfo, index: Int
+    t: TypeSpec.Builder,
+    staticBlock: CodeBlock.Builder,
+    getBase: CodeBlock,
+    message: RequestInfo.MessageInfo,
+    index: Int,
   ): Unit =
     val msgDesc = message.descriptor
     val descriptorBytes = message.descriptor.toByteArray
@@ -120,15 +131,15 @@ class DescriptorGenerator(val info: RequestInfo.FileInfo):
       .build
     )
     staticBlock.addStatement(
-      "$N = $N.getMessageTypes().get($L)",
+      "$N = " + getBase + ".get($L)",
       DescriptorGenerator.getDescriptorFieldName(message),
-      DescriptorGenerator.getFileDescriptorFieldName,
       index
     )
     // Recursively add nested messages
-//    for (nestedType <- message.nestedTypes.asScala) {
-//      addMessageDescriptor(t, staticBlock, nestedType, startOffset2)
-//    }
+    val nestedGetBase = CodeBlock.of("$N.getNestedTypes()", DescriptorGenerator.getDescriptorFieldName(message))
+    for ((nestedType, j) <- message.nestedTypes.asScala.zipWithIndex) {
+      addMessageDescriptor(t, staticBlock, nestedGetBase, nestedType, j)
+    }
     
 
   private def generateEmbeddedByteBlock(descriptor: Array[Byte]) =
@@ -152,11 +163,11 @@ class DescriptorGenerator(val info: RequestInfo.FileInfo):
       .add("$T.getDecoder().decode(", RuntimeClasses.Base64)
       .add("$>")
     val block = Base64.getEncoder.encodeToString(descriptor)
-    var line = block.substring(0, Math.min(charsPerLine, block.length))
-    var blockIx = line.length
+    //var line = block.substring(0, Math.min(charsPerLine, block.length))
+    var blockIx = 0
     while (blockIx < block.length) {
-      line = block.substring(blockIx, Math.min(blockIx + charsPerLine, block.length))
-      if blockIx > line.length then initBlock.add(" + \n$S", line)
+      val line = block.substring(blockIx, Math.min(blockIx + charsPerLine, block.length))
+      if blockIx > 0 then initBlock.add(" + \n$S", line)
       else initBlock.add("\n$S", line)
       blockIx += charsPerLine
     }
