@@ -58,29 +58,34 @@ class DescriptorGenerator(val info: RequestInfo.FileInfo):
 
   def generate(t: TypeSpec.Builder): Unit =
     // bytes shared by everything
-    t.addField(FieldSpec.builder(RuntimeClasses.BytesType, DescriptorGenerator.getDescriptorBytesFieldName).addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL).initializer(generateEmbeddedByteBlock(fileDescriptorBytes)).build)
+    t.addField(FieldSpec
+      .builder(Helpers.TYPE_BYTE_ARRAY, DescriptorGenerator.getDescriptorBytesFieldName)
+      .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+      .initializer(generateEmbeddedByteBlock(fileDescriptorBytes))
+      .build
+    )
     // field for the main file descriptor
     val initBlock = CodeBlock.builder
     initBlock.add(
-      "$T.internalBuildGeneratedFileFrom($S, $S, $N",
+      "$T.buildFrom($T.parseFrom($N), new $T[] {})",
       RuntimeClasses.FileDescriptor,
-      info.descriptor.getName,
-      info.descriptor.getPackage,
-      DescriptorGenerator.getDescriptorBytesFieldName
+      RuntimeClasses.FileDescriptorProto,
+      DescriptorGenerator.getDescriptorBytesFieldName,
+      RuntimeClasses.FileDescriptor,
     )
     // any file dependencies
-    if (info.descriptor.getDependencyCount > 0) {
-      for (fileName <- info.descriptor.getDependencyList.asScala) {
-        initBlock.add(", $T.getDescriptor()", info.parentRequest.getInfoForFile(fileName).outerClassName)
-      }
-    }
-    initBlock.add(")")
+//    if (info.descriptor.getDependencyCount > 0) {
+//      for (fileName <- info.descriptor.getDependencyList.asScala) {
+//        initBlock.add(", $T.getDescriptor()", info.parentRequest.getInfoForFile(fileName).outerClassName)
+//      }
+//    }
+//    initBlock.add(")")
     val fileDescriptor = FieldSpec
       .builder(RuntimeClasses.FileDescriptor, DescriptorGenerator.getFileDescriptorFieldName)
       .addModifiers(Modifier.STATIC, Modifier.FINAL)
-      .initializer(initBlock.build)
       .build
     t.addField(fileDescriptor)
+
     // Add a static method
     t.addMethod(MethodSpec.methodBuilder("getDescriptor")
       .addJavadoc("@return this proto file's descriptor.")
@@ -89,39 +94,42 @@ class DescriptorGenerator(val info: RequestInfo.FileInfo):
       .addStatement("return $N", DescriptorGenerator.getFileDescriptorFieldName)
       .build
     )
-    // Descriptor field for each nested type. The message protos should
-    // be serialized sequentially, so we start the next search offset where
-    // the last descriptor ended.
-    var offset = 0
-    for (message <- info.messageTypes.asScala) {
-      offset = addMessageDescriptor(t, message, offset)
-    }
+    // Descriptor field for each nested type
+    val staticBlock = CodeBlock.builder
+    for (message, ix) <- info.messageTypes.asScala.zipWithIndex do
+      addMessageDescriptor(t, staticBlock, message, ix)
+    
+    t.addStaticBlock(CodeBlock.builder
+      .beginControlFlow("try")
+      .addStatement("descriptor = $L", initBlock.build)
+      .add(staticBlock.build)
+      .nextControlFlow("catch ($T e)", RuntimeClasses.Exception)
+      .addStatement("throw new $T(e)", RuntimeClasses.RuntimeException)
+      .endControlFlow
+      .build
+    )
 
   private def addMessageDescriptor(
-    t: TypeSpec.Builder, message: RequestInfo.MessageInfo, startOffset: Int
-  ): Int =
-    var startOffset2 = startOffset
+    t: TypeSpec.Builder, staticBlock: CodeBlock.Builder, message: RequestInfo.MessageInfo, index: Int
+  ): Unit =
     val msgDesc = message.descriptor
     val descriptorBytes = message.descriptor.toByteArray
-    val offset = DescriptorGenerator.findOffset(fileDescriptorBytes, descriptorBytes, startOffset2)
-    val length = descriptorBytes.length
     t.addField(FieldSpec
       .builder(RuntimeClasses.MessageDescriptor, DescriptorGenerator.getDescriptorFieldName(message))
       .addModifiers(Modifier.STATIC, Modifier.FINAL)
-      .initializer(
-        "$N.internalContainedType($L, $L, $S, $S)", 
-        DescriptorGenerator.getFileDescriptorFieldName,
-        offset, length, msgDesc.getName, message.fullName
-      )
       .build
     )
+    staticBlock.addStatement(
+      "$N = $N.getMessageTypes().get($L)",
+      DescriptorGenerator.getDescriptorFieldName(message),
+      DescriptorGenerator.getFileDescriptorFieldName,
+      index
+    )
     // Recursively add nested messages
-    for (nestedType <- message.nestedTypes.asScala) {
-      startOffset2 = addMessageDescriptor(t, nestedType, startOffset2)
-    }
-    // Messages should be serialized sequentially, so we start
-    // the next search where the current descriptor ends.
-    offset + length
+//    for (nestedType <- message.nestedTypes.asScala) {
+//      addMessageDescriptor(t, staticBlock, nestedType, startOffset2)
+//    }
+    
 
   private def generateEmbeddedByteBlock(descriptor: Array[Byte]) =
     // Inspired by Protoc's SharedCodeGenerator::GenerateDescriptors:
@@ -136,31 +144,21 @@ class DescriptorGenerator(val info: RequestInfo.FileInfo):
     // This makes huge bytecode files and can easily hit the compiler's internal
     // code size limits (error "code to large").  String literals are apparently
     // embedded raw, which is what we want.
-    // Note: Protobuf uses escaped ISO_8859_1 strings, but for now we use Base64
-    // Every block of bytes, start a new string literal, in order to avoid the
-    // 64k length limit. Note that this value needs to be <64k.
     val charsPerLine = 80 // should be a multiple of 4
-
-    val linesPerPart = 20
-    val charsPerPart = linesPerPart * charsPerLine
-    val bytesPerPart = charsPerPart * 3 / 4 // 3x 8 bit => 4x 6 bit
 
     // Construct bytes from individual base64 String sections
     val initBlock = CodeBlock.builder
-    initBlock.addNamed("$protoUtil:T.decodeBase64(", m).add("$L$>", descriptor.length)
-    var partIx = 0
-    while (partIx < descriptor.length) {
-      val part = util.Arrays.copyOfRange(descriptor, partIx, Math.min(descriptor.length, partIx + bytesPerPart))
-      val block = Base64.getEncoder.encodeToString(part)
-      var line = block.substring(0, Math.min(charsPerLine, block.length))
-      initBlock.add(",\n$S", line)
-      var blockIx = line.length
-      while (blockIx < block.length) {
-        line = block.substring(blockIx, Math.min(blockIx + charsPerLine, block.length))
-        initBlock.add(" + \n$S", line)
-        blockIx += charsPerLine
-      }
-      partIx += bytesPerPart
+    initBlock
+      .add("$T.getDecoder().decode(", RuntimeClasses.Base64)
+      .add("$>")
+    val block = Base64.getEncoder.encodeToString(descriptor)
+    var line = block.substring(0, Math.min(charsPerLine, block.length))
+    var blockIx = line.length
+    while (blockIx < block.length) {
+      line = block.substring(blockIx, Math.min(blockIx + charsPerLine, block.length))
+      if blockIx > line.length then initBlock.add(" + \n$S", line)
+      else initBlock.add("\n$S", line)
+      blockIx += charsPerLine
     }
     initBlock.add(")$<")
     initBlock.build

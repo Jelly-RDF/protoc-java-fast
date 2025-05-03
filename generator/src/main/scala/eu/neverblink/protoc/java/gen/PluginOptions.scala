@@ -56,7 +56,7 @@ object PluginOptions:
       case "2" => "  "
       case "tab" => "\t"
       case _ => throw new Exception("Expected 2,4,8,tab. Found: " + indent)
-      
+
   private def parseImplements(map: util.Map[String, String]): Map[String, Seq[String]] =
     map.asScala
       .filter((k, _) => k.startsWith("implements_"))
@@ -71,8 +71,7 @@ class PluginOptions(request: PluginProtos.CodeGeneratorRequest):
   val outputOrder = PluginOptions.FieldSerializationOrder.parseInputOrder(map.getOrDefault("output_order", "quickbuf"))
   val allocationStrategy = PluginOptions.AllocationStrategy.parseFromString(map.getOrDefault("allocation", "lazy"))
   val extensionSupport = PluginOptions.ExtensionSupport.parseFromString(map.getOrDefault("extensions", "disabled"))
-  // TODO: fix
-  val generateDescriptors = parseBoolean(map.getOrDefault("gen_descriptors", "false"))
+  val generateDescriptors = parseBoolean(map.getOrDefault("gen_descriptors", "true"))
   val implements = parseImplements(map)
 
   def parseReplacePackage(replaceOption: String): String => String =

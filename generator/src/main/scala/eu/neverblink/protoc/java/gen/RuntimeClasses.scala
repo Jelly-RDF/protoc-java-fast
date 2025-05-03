@@ -24,12 +24,15 @@ object RuntimeClasses:
   val ObjectType = ClassName.get(classOf[Object])
   val StringType = ClassName.get(classOf[String])
   val BytesType = ClassName.get(GOOGLE_PACKAGE, "ByteString")
+  val Exception = ClassName.get(classOf[Exception])
+  val RuntimeException = ClassName.get(classOf[RuntimeException])
   val InvalidProtocolBufferException = ClassName.get(GOOGLE_PACKAGE, "InvalidProtocolBufferException")
   val UninitializedMessageException = ClassName.get(GOOGLE_PACKAGE, "UninitializedMessageException")
   val ProtoEnum = ClassName.get(API_PACKAGE, "ProtoEnum")
   val EnumConverter = ProtoEnum.nestedClass("EnumConverter")
-  val FileDescriptor = ClassName.get(API_PACKAGE, "Descriptors").nestedClass("FileDescriptor")
-  val MessageDescriptor = ClassName.get(API_PACKAGE, "Descriptors").nestedClass("Descriptor")
+  val FileDescriptor = ClassName.get(GOOGLE_PACKAGE, "Descriptors").nestedClass("FileDescriptor")
+  val FileDescriptorProto = ClassName.get(GOOGLE_PACKAGE, "DescriptorProtos").nestedClass("FileDescriptorProto")
+  val MessageDescriptor = ClassName.get(GOOGLE_PACKAGE, "Descriptors").nestedClass("Descriptor")
   private val RepeatedDouble = ClassName.get(API_PACKAGE, "RepeatedDouble")
   private val RepeatedFloat = ClassName.get(API_PACKAGE, "RepeatedFloat")
   private val RepeatedLong = ClassName.get(API_PACKAGE, "RepeatedLong")
@@ -41,6 +44,7 @@ object RuntimeClasses:
   val ArrayList = ClassName.get(JAVA_UTIL_PACKAGE, "ArrayList")
   val RepeatedEnum = ClassName.get(API_PACKAGE, "RepeatedEnum")
   val Collections = ClassName.get(JAVA_UTIL_PACKAGE, "Collections")
+  val Base64 = ClassName.get(JAVA_UTIL_PACKAGE, "Base64")
 
   def getRepeatedStoreType(t: FieldDescriptorProto.Type) = t match
     case TYPE_DOUBLE => RepeatedDouble
