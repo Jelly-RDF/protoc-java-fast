@@ -28,6 +28,9 @@ public abstract class RdfIri extends ProtoMessage<RdfIri> implements Cloneable {
    */
   protected int nameId;
 
+  private RdfIri() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

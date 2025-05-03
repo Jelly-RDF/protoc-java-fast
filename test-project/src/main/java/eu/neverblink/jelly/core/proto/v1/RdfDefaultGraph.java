@@ -18,6 +18,9 @@ import java.io.InputStream;
  */
 @SuppressWarnings("hiding")
 public abstract class RdfDefaultGraph extends ProtoMessage<RdfDefaultGraph> implements Cloneable {
+  private RdfDefaultGraph() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

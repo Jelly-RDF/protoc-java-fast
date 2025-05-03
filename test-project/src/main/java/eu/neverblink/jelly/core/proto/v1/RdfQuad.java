@@ -80,6 +80,9 @@ public abstract class RdfQuad extends ProtoMessage<RdfQuad> implements SpoBase, 
 
   protected byte graphNumber = 0;
 
+  private RdfQuad() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

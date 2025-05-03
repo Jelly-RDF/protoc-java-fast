@@ -28,6 +28,9 @@ public abstract class RdfDatatypeEntry extends ProtoMessage<RdfDatatypeEntry> im
    */
   protected String value_ = "";
 
+  private RdfDatatypeEntry() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

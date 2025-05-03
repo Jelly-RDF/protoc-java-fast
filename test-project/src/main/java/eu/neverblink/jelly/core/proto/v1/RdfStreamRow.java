@@ -43,6 +43,9 @@ public abstract class RdfStreamRow extends ProtoMessage<RdfStreamRow> implements
 
   protected byte rowNumber = 0;
 
+  private RdfStreamRow() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

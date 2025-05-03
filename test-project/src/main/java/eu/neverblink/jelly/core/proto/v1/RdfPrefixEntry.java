@@ -28,6 +28,9 @@ public abstract class RdfPrefixEntry extends ProtoMessage<RdfPrefixEntry> implem
    */
   protected String value_ = "";
 
+  private RdfPrefixEntry() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

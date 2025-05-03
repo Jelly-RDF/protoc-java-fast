@@ -34,6 +34,9 @@ public abstract class RdfGraphStart extends ProtoMessage<RdfGraphStart> implemen
 
   protected byte graphNumber = 0;
 
+  private RdfGraphStart() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

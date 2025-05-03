@@ -64,6 +64,9 @@ public abstract class RdfTriple extends ProtoMessage<RdfTriple> implements SpoBa
 
   protected byte objectNumber = 0;
 
+  private RdfTriple() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

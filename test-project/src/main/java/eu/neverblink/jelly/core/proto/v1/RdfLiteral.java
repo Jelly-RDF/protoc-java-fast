@@ -34,6 +34,9 @@ public abstract class RdfLiteral extends ProtoMessage<RdfLiteral> implements Clo
 
   protected byte literalKindNumber = 0;
 
+  private RdfLiteral() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

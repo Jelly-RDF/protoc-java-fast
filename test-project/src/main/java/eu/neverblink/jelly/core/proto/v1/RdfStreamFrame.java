@@ -31,6 +31,9 @@ public abstract class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implem
    */
   protected final List<MetadataEntry> metadata = new ArrayList<>();
 
+  private RdfStreamFrame() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */
@@ -145,6 +148,9 @@ public abstract class RdfStreamFrame extends ProtoMessage<RdfStreamFrame> implem
      * <code>optional bytes value = 2;</code>
      */
     protected ByteString value_ = ByteString.EMPTY;
+
+    private MetadataEntry() {
+    }
 
     /**
      * @return a new empty instance of {@code Mutable}

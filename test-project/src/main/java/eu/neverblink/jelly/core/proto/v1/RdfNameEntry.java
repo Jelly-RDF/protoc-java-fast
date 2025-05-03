@@ -28,6 +28,9 @@ public abstract class RdfNameEntry extends ProtoMessage<RdfNameEntry> implements
    */
   protected String value_ = "";
 
+  private RdfNameEntry() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

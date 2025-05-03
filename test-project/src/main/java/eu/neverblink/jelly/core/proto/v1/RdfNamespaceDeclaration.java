@@ -29,6 +29,9 @@ public abstract class RdfNamespaceDeclaration extends ProtoMessage<RdfNamespaceD
    */
   protected RdfIri value_ = null;
 
+  private RdfNamespaceDeclaration() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

@@ -63,6 +63,9 @@ public abstract class RdfStreamOptions extends ProtoMessage<RdfStreamOptions> im
    */
   protected int version;
 
+  private RdfStreamOptions() {
+  }
+
   /**
    * @return a new empty instance of {@code Mutable}
    */

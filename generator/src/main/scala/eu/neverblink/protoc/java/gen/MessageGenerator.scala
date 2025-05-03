@@ -80,7 +80,9 @@ class MessageGenerator(val info: MessageInfo):
       .addStatement("return new $T()", info.mutableTypeName)
       .build
     )
-    // Constructor
+    // Constructors
+    // Private constructor for the parent abstract class to disallow subclassing
+    t.addMethod(MethodSpec.constructorBuilder.addModifiers(Modifier.PRIVATE).build)
     tMutable.addMethod(MethodSpec.constructorBuilder.addModifiers(Modifier.PRIVATE).build)
     // Member state
     fields.foreach(_.generateMemberFields(t))
