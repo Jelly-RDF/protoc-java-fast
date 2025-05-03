@@ -17,10 +17,15 @@ class FastJavaPluginSpec extends AnyWordSpec, Matchers:
       val options = request.getParameter
       val newRequest = request.toBuilder.setParameter(options +
         ",implements_RdfTriple=eu.neverblink.jelly.core.internal.proto.SpoBase" +
+        ",implements_RdfTriple.Mutable=eu.neverblink.jelly.core.internal.proto.SpoBase.Setters" +
         ",implements_RdfQuad=eu.neverblink.jelly.core.internal.proto.SpoBase;" +
         "eu.neverblink.jelly.core.internal.proto.GraphBase" +
+        ",implements_RdfQuad.Mutable=eu.neverblink.jelly.core.internal.proto.SpoBase.Setters;" +
+        "eu.neverblink.jelly.core.internal.proto.GraphBase.Setters" +
         ",implements_RdfGraphStart=eu.neverblink.jelly.core.internal.proto.GraphBase" +
+        ",implements_RdfGraphStart.Mutable=eu.neverblink.jelly.core.internal.proto.GraphBase.Setters" +
         ",implements_RdfNamespaceDeclaration=eu.neverblink.jelly.core.internal.proto.NsBase" +
+        ",implements_RdfNamespaceDeclaration.Mutable=eu.neverblink.jelly.core.internal.proto.NsBase.Setters" +
         ",replace_package=eu.ostrzyciel=eu.neverblink"
       ).build()
       val response = FastJavaPlugin.handleRequest(newRequest)

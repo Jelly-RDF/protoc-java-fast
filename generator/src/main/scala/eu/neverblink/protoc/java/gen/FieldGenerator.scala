@@ -94,7 +94,7 @@ class FieldGenerator(val info: FieldInfo):
   def generateMemberFields(t: TypeSpec.Builder): Unit =
     val field = FieldSpec.builder(storeType, info.fieldName)
       .addJavadoc(Javadoc.forMessageField(info).build)
-      .addModifiers(Modifier.PRIVATE)
+      .addModifiers(Modifier.PROTECTED)
     if info.isRepeated && info.isMessage then field.addModifiers(Modifier.FINAL)
     if info.isRepeated || info.isBytes || info.isString then
       field.initializer(initializer)
@@ -284,11 +284,11 @@ class FieldGenerator(val info: FieldInfo):
       "size += $bytesPerTag:L + $protoSink:T.compute$capitalizedType:LSizeNoTag($field:N)"
     )) // non-repeated
 
-  def generateMemberMethods(t: TypeSpec.Builder): Unit =
-    generateInitializedMethod(t)
+  def generateMemberMethods(t: TypeSpec.Builder, tMutable: TypeSpec.Builder): Unit =
+    generateInitializedMethod(tMutable)
     generateGetMethods(t)
     if (info.isEnum) generateExtraEnumAccessors(t)
-    generateSetMethods(t)
+    generateSetMethods(tMutable)
 
   def generateInitializedMethod(t: TypeSpec.Builder): Unit =
     if !info.isRepeated && info.isMessage then
@@ -318,7 +318,7 @@ class FieldGenerator(val info: FieldInfo):
         .addAnnotations(info.methodAnnotations)
         .addModifiers(Modifier.PUBLIC)
         .addParameter(RuntimeClasses.BytesType, "values", Modifier.FINAL)
-        .returns(info.parentType)
+        .returns(info.parentTypeInfo.mutableTypeName)
         .addStatement(named("$field:N = values"))
         .addStatement(named("return this"))
       t.addMethod(setBytes.build)
@@ -332,7 +332,7 @@ class FieldGenerator(val info: FieldInfo):
         .addAnnotations(info.methodAnnotations)
         .addModifiers(Modifier.PUBLIC)
         .addParameter(info.getInputParameterType, "value", Modifier.FINAL)
-        .returns(info.parentType)
+        .returns(info.parentTypeInfo.mutableTypeName)
         .addCode(ensureFieldNotNull)
         .addStatement(named("$field:N.add(value)"))
         .addStatement(named("return this"))
@@ -347,7 +347,7 @@ class FieldGenerator(val info: FieldInfo):
         )
         .addAnnotations(info.methodAnnotations)
         .addModifiers(Modifier.PUBLIC)
-        .returns(info.parentType)
+        .returns(info.parentTypeInfo.mutableTypeName)
         .addParameter(info.getInputParameterType, "value", Modifier.FINAL)
         .addCode(ensureFieldNotNull)
         .addStatement(named("$field:N.copyFrom(value)"))
@@ -363,7 +363,7 @@ class FieldGenerator(val info: FieldInfo):
         )
         .addAnnotations(info.methodAnnotations)
         .addModifiers(Modifier.PUBLIC)
-        .returns(info.parentType)
+        .returns(info.parentTypeInfo.mutableTypeName)
         .addParameter(RuntimeClasses.StringType, "value", Modifier.FINAL)
         .addStatement(named("$field:N = value"))
         .addStatement(named("return this"))
@@ -380,7 +380,7 @@ class FieldGenerator(val info: FieldInfo):
         .addAnnotations(info.methodAnnotations)
         .addModifiers(Modifier.PUBLIC)
         .addParameter(info.getTypeName, "value", Modifier.FINAL)
-        .returns(info.parentType)
+        .returns(info.parentTypeInfo.mutableTypeName)
         .addNamedCode("" + "$field:N = $valueOrNumber:L;\n" + "return this;\n", m)
         .build
       t.addMethod(setter)

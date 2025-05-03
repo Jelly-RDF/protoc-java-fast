@@ -17,15 +17,15 @@ class OneOfGenerator(val info: OneOfInfo):
   def generateMemberFields(t: TypeSpec.Builder): Unit =
     val field = FieldSpec.builder(RuntimeClasses.ObjectType, info.fieldName)
       .addJavadoc(Javadoc.forOneOfField(info).build)
-      .addModifiers(Modifier.PRIVATE)
+      .addModifiers(Modifier.PROTECTED)
     field.initializer("null")
     t.addField(field.build)
     val numberField = FieldSpec.builder(TypeName.BYTE, info.numberFieldName)
-      .addModifiers(Modifier.PRIVATE)
+      .addModifiers(Modifier.PROTECTED)
       .initializer("$L", 0)
     t.addField(numberField.build)
 
-  def generateMemberMethods(t: TypeSpec.Builder): Unit =
+  def generateMemberMethods(t: TypeSpec.Builder, tMutable: TypeSpec.Builder): Unit =
     // Checks if any has state is true
     val has = MethodSpec.methodBuilder(info.hazzerName)
       .addModifiers(Modifier.PUBLIC)
@@ -39,13 +39,13 @@ class OneOfGenerator(val info: OneOfInfo):
         info.descriptor.getName
       )
       .addModifiers(Modifier.PUBLIC)
-      .returns(info.parentType)
+      .returns(info.parentTypeInfo.mutableTypeName)
       .addParameter(RuntimeClasses.ObjectType, info.fieldName)
       .addParameter(TypeName.BYTE, "number")
       .addStatement("this.$N = $N", info.fieldName, info.fieldName)
       .addStatement("this.$N = $L", info.numberFieldName, "number")
       .addStatement("return this")
-    t.addMethod(set.build)
+    tMutable.addMethod(set.build)
     // Get the value -- general method
     val get = MethodSpec.methodBuilder(info.getterName)
       .addJavadoc("Returns the <code>$L</code> oneof field.",
@@ -72,12 +72,12 @@ class OneOfGenerator(val info: OneOfInfo):
           info.descriptor.getName, field.fieldName
         )
         .addModifiers(Modifier.PUBLIC)
-        .returns(info.parentType)
+        .returns(info.parentTypeInfo.mutableTypeName)
         .addParameter(field.getTypeName, field.fieldName)
         .addStatement("this.$N = $N", info.fieldName, field.fieldName)
         .addStatement("this.$N = $L", info.numberFieldName, field.descriptor.getNumber)
         .addStatement("return this")
-      t.addMethod(setField.build)
+      tMutable.addMethod(setField.build)
       // Get
       val getField = MethodSpec.methodBuilder(field.getterName)
         .addJavadoc("Returns the <code>$L</code> oneof field.\n" +

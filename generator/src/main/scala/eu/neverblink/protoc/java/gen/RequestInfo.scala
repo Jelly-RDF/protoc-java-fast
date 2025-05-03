@@ -99,6 +99,7 @@ object RequestInfo:
   ) extends RequestInfo.TypeInfo(
     parentFile, parentTypeId, parentType, isNested, descriptor.getName
   ) {
+    val mutableTypeName = typeName.nestedClass("Mutable")
     val fieldCount = descriptor.getFieldCount
     val options = parentFile.parentRequest.pluginOptions
     val expectedInputOrder = options.expectedInputOrder
@@ -146,7 +147,9 @@ object RequestInfo:
     }
 
     val implements: Seq[String] = parentFile.parentRequest.pluginOptions.implements
-      .getOrElse(typeId.split('.').last, Seq())
+      .getOrElse(typeName.simpleName(), Seq())
+    val implementsMutable = parentFile.parentRequest.pluginOptions.implements
+      .getOrElse(typeName.simpleName() + ".Mutable", Seq())
     // Build map
     val fields = for desc <- sortedFields.asScala yield
       new RequestInfo.FieldInfo(parentFile, this, typeName, desc, bitIndices.get(desc))

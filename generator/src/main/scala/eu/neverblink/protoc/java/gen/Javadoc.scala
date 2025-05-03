@@ -58,7 +58,12 @@ object Javadoc:
     builder
 
   private def forType(name: String, info: RequestInfo.TypeInfo) =
-    withComments(info.sourceLocation).add("Protobuf $L {@code $T}", name, info.typeName).build
+    withComments(info.sourceLocation)
+      .add("Protobuf $L {@code $T}", name, info.typeName)
+      .add("\nDO NOT INHERIT FROM THIS CLASS!\n" +
+        "It's not <code>final</code> only to facilitate the Mutable nested subclass."
+      )
+      .build
 
   private def getFieldDefinitionLine(descriptor: DescriptorProtos.FieldDescriptorProto) = {
     // optional int32 my_field = 2 [default = 1];

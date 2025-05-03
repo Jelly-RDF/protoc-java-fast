@@ -30,10 +30,23 @@ class MessageGenerator(val info: MessageInfo):
     val t = TypeSpec.classBuilder(info.typeName)
       .addJavadoc(Javadoc.forMessage(info))
       .superclass(ParameterizedTypeName.get(RuntimeClasses.AbstractMessage, info.typeName))
-      .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
+      .addModifiers(Modifier.PUBLIC, Modifier.ABSTRACT)
+    val tMutable = TypeSpec.classBuilder(info.mutableTypeName)
+      .addJavadoc(
+        "Mutable subclass of the parent class.\n" +
+        "You can call setters on this class to set the values.\n" +
+        "When passing the constructed message to the serializer,\n" +
+        "you should use the parent class (using .asImmutable()) to\n" +
+        "ensure the message won't be modified by accident."
+      )
+      .superclass(info.typeName)
+      .addModifiers(Modifier.PUBLIC, Modifier.STATIC, Modifier.FINAL)
     info.implements
       .map(ClassName.bestGuess)
       .foreach(t.addSuperinterface)
+    info.implementsMutable
+      .map(ClassName.bestGuess)
+      .foreach(tMutable.addSuperinterface)
     if (info.isNested) t.addModifiers(Modifier.STATIC)
     if (!info.isNested) {
       // Note: constants from enums and fields may have the same names
@@ -59,37 +72,48 @@ class MessageGenerator(val info: MessageInfo):
     // newInstance() method
     t.addMethod(MethodSpec.methodBuilder("newInstance")
       .addJavadoc(Javadoc.withComments(info.sourceLocation)
-        .add("@return a new empty instance of {@code $T}", info.typeName)
+        .add("@return a new empty instance of {@code $T}", info.mutableTypeName)
         .build
       )
       .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-      .returns(info.typeName)
-      .addStatement("return new $T()", info.typeName)
+      .returns(info.mutableTypeName)
+      .addStatement("return new $T()", info.mutableTypeName)
       .build
     )
     // Constructor
-    t.addMethod(MethodSpec.constructorBuilder.addModifiers(Modifier.PRIVATE).build)
+    tMutable.addMethod(MethodSpec.constructorBuilder.addModifiers(Modifier.PRIVATE).build)
     // Member state
     fields.foreach(_.generateMemberFields(t))
     // OneOf fields and methods
     oneOfGenerators.foreach(_.generateMemberFields(t))
-    oneOfGenerators.foreach(_.generateMemberMethods(t))
+    oneOfGenerators.foreach(_.generateMemberMethods(t, tMutable))
     // Fields accessors
-    fields.foreach(_.generateMemberMethods(t))
-    generateCopyFrom(t)
-    generateMergeFromMessage(t)
+    fields.foreach(_.generateMemberMethods(t, tMutable))
+    generateCopyFrom(tMutable)
+    generateMergeFromMessage(tMutable)
     generateEquals(t)
     generateWriteTo(t)
     generateComputeSerializedSize(t)
-    generateMergeFrom(t)
+    generateMergeFrom(tMutable)
     generateClone(t)
     // Static utilities
     oneOfGenerators.foreach(_.generateConstants(t))
     generateParseFrom(t)
     generateMessageFactory(t)
+    generateAsImmutable(tMutable)
     // Descriptors
     if (info.parentFile.parentRequest.pluginOptions.generateDescriptors) generateDescriptors(t)
+    t.addType(tMutable.build)
     t.build
+
+  private def generateAsImmutable(t: TypeSpec.Builder): Unit =
+    t.addMethod(MethodSpec.methodBuilder("asImmutable")
+      .addJavadoc("Returns this message as an immutable message, without any copies.")
+      .addModifiers(Modifier.PUBLIC)
+      .returns(info.typeName)
+      .addStatement("return this")
+      .build
+    )
 
   private def generateEquals(t: TypeSpec.Builder): Unit =
     val equals = MethodSpec.methodBuilder("equals")
@@ -126,7 +150,7 @@ class MessageGenerator(val info: MessageInfo):
     val mergeFrom = MethodSpec.methodBuilder("mergeFrom")
       .addJavadoc(Javadoc.inherit)
       .addAnnotation(classOf[Override])
-      .addModifiers(Modifier.PUBLIC).returns(info.typeName)
+      .addModifiers(Modifier.PUBLIC).returns(info.mutableTypeName)
       .addParameter(RuntimeClasses.LimitedCodedInputStream, "inputLimited", Modifier.FINAL)
       .addException(classOf[IOException])
     // Fallthrough optimization:
@@ -254,7 +278,7 @@ class MessageGenerator(val info: MessageInfo):
       .addAnnotation(classOf[Override])
       .addParameter(info.typeName, "other", Modifier.FINAL)
       .addModifiers(Modifier.PUBLIC)
-      .returns(info.typeName)
+      .returns(info.mutableTypeName)
     copyFrom.addStatement("cachedSize = other.cachedSize")
     fields.foreach(_.generateCopyFromCode(copyFrom))
     oneOfGenerators.foreach(_.generateCopyFromCode(copyFrom))
@@ -266,7 +290,7 @@ class MessageGenerator(val info: MessageInfo):
       .addJavadoc(Javadoc.inherit)
       .addAnnotation(classOf[Override])
       .addParameter(info.typeName, "other", Modifier.FINAL)
-      .addModifiers(Modifier.PUBLIC).returns(info.typeName)
+      .addModifiers(Modifier.PUBLIC).returns(info.mutableTypeName)
     mergeFrom.addStatement("cachedSize = -1")
     fields.foreach(_.generateMergeFromMessageCode(mergeFrom))
     oneOfGenerators.foreach(_.generateMergeFromMessageCode(mergeFrom))
@@ -279,8 +303,8 @@ class MessageGenerator(val info: MessageInfo):
       .addJavadoc(Javadoc.inherit)
       .addAnnotation(classOf[Override])
       .addModifiers(Modifier.PUBLIC)
-      .returns(info.typeName)
-      .addStatement("return new $T().copyFrom(this)", info.typeName)
+      .returns(info.mutableTypeName)
+      .addStatement("return newInstance().copyFrom(this)")
       .build
     )
 
@@ -290,7 +314,7 @@ class MessageGenerator(val info: MessageInfo):
       .addException(RuntimeClasses.InvalidProtocolBufferException)
       .addParameter(classOf[Array[Byte]], "data", Modifier.FINAL)
       .returns(info.typeName)
-      .addStatement("return $T.mergeFrom(new $T(), data)", RuntimeClasses.AbstractMessage, info.typeName)
+      .addStatement("return $T.mergeFrom(newInstance(), data)", RuntimeClasses.AbstractMessage)
       .build
     )
     t.addMethod(MethodSpec.methodBuilder("parseFrom")
@@ -298,7 +322,7 @@ class MessageGenerator(val info: MessageInfo):
       .addException(classOf[IOException])
       .addParameter(RuntimeClasses.LimitedCodedInputStream, "input", Modifier.FINAL)
       .returns(info.typeName)
-      .addStatement("return $T.mergeFrom(new $T(), input)", RuntimeClasses.AbstractMessage, info.typeName)
+      .addStatement("return $T.mergeFrom(newInstance(), input)", RuntimeClasses.AbstractMessage)
       .build
     )
     t.addMethod(MethodSpec.methodBuilder("parseDelimitedFrom")
