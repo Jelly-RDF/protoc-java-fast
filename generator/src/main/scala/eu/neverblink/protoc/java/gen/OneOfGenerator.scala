@@ -5,10 +5,31 @@ import eu.neverblink.protoc.java.gen.RequestInfo.OneOfInfo
 
 import javax.lang.model.element.Modifier
 
+/*-
+ * #%L
+ * quickbuf-generator / CrunchyProtocPlugin
+ * %%
+ * Copyright (C) 2019 HEBI Robotics
+ * %%
+ * Copyright (C) 2025 NeverBlink
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 /**
  * @author Florian Enner
  * @author Piotr Sowiński
- * @since 19 Nov 2019
  */
 class OneOfGenerator(val info: OneOfInfo):
   val fields = info.getFields

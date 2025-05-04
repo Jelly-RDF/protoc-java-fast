@@ -10,14 +10,36 @@ import javax.lang.model.element.Modifier
 import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters.*
 
+/*-
+ * #%L
+ * quickbuf-generator / CrunchyProtocPlugin
+ * %%
+ * Copyright (C) 2019 HEBI Robotics
+ * %%
+ * Copyright (C) 2025 NeverBlink
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 /**
  * Protoc plugin that gets called by the protoc executable. The communication happens
  * via protobuf messages on System.in / System.out
  *
  * @author Florian Enner
- * @since 05 Aug 2019
+ * @author Piotr Sowiński
  */
-object FastJavaPlugin:
+object CrunchyProtocPlugin:
   /**
    * The protoc-gen-plugin communicates via proto messages on System.in and System.out
    *
@@ -28,10 +50,10 @@ object FastJavaPlugin:
   def main(args: Array[String]): Unit = {
     if (args.length > 0) {
       System.out.println("This protobuf plugin should be called by protoc. Example:\n\n" +
-        "    1) protoc --plugin=protoc-gen-quickbuf=${executable} --quickbuf_out=store_unknown_fields=true:. type.proto\n" +
-        "    2) protoc --quickbuf_out=store_unknown_fields=true:. type.proto\n\n" +
+        "    1) protoc --plugin=protoc-gen-crunchy=${executable} --crunchy_out=store_unknown_fields=true:. type.proto\n" +
+        "    2) protoc --crunchy_out=store_unknown_fields=true:. type.proto\n\n" +
         "Note that if you are calling this plugin from the PATH (2), the executable\n" +
-        "file or wrapper script needs to be called \"protoc-gen-quickbuf\"."
+        "file or wrapper script needs to be called \"protoc-gen-crunchy\"."
       )
       return
     }

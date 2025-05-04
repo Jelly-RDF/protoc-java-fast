@@ -1,16 +1,37 @@
 package eu.neverblink.protoc.java.gen
 
 import com.palantir.javapoet.*
-import eu.neverblink.protoc.java.gen.PluginOptions.FieldSerializationOrder
 import eu.neverblink.protoc.java.gen.RequestInfo.MessageInfo
 
 import java.io.IOException
 import java.util.function.Consumer
 import javax.lang.model.element.Modifier
 
+/*-
+ * #%L
+ * quickbuf-generator / CrunchyProtocPlugin
+ * %%
+ * Copyright (C) 2019 HEBI Robotics
+ * %%
+ * Copyright (C) 2025 NeverBlink
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 /**
  * @author Florian Enner
- * @since 07 Aug 2019
+ * @author Piotr Sowiński
  */
 class MessageGenerator(val info: MessageInfo):
   final val allFields = info.fields
@@ -164,7 +185,7 @@ class MessageGenerator(val info: MessageInfo):
     // Packable fields make this a bit more complex since they need to generate two cases to preserve
     // backwards compatibility. However, any production proto file should already be using the packed
     // option whenever possible, so we don't need to optimize the non-packed case.
-    val enableFallthroughOptimization = info.expectedInputOrder ne FieldSerializationOrder.None
+    val enableFallthroughOptimization = true
     // Interleave the oneof fields. In Jelly-RDF, this optimizes for the case where s, p, o, g are
     // all RdfIri messages.
     val sortedFields = fields.sortBy(_.info.number) ++
@@ -245,7 +266,7 @@ class MessageGenerator(val info: MessageInfo):
       .returns(classOf[Unit])
       .addParameter(RuntimeClasses.CodedOutputStream, "output", Modifier.FINAL)
       .addException(classOf[IOException])
-    getFieldSortedByOutputOrder.foreach(f => {
+    fields.foreach(f => {
       val checker = CodeBlock.builder().add("if (")
       f.generateHasChecker(checker)
       writeTo.beginControlFlow(checker.add(")").build())
@@ -375,13 +396,6 @@ class MessageGenerator(val info: MessageInfo):
       .addStatement("return $T.$N", descriptorClass, fieldName)
       .build
     )
-
-  private def getFieldSortedByOutputOrder: Seq[FieldGenerator] =
-    // Sorts output the same way as protobuf. This is always slower,
-    // but it results in binary equivalence for conformance tests.
-    if (info.outputOrder eq FieldSerializationOrder.AscendingNumber)
-      fields.sortBy(_.info.number)
-    else fields
 
   private def named(format: String, args: AnyRef*) =
     CodeBlock.builder.addNamed(format, m).build

@@ -3,12 +3,33 @@ package eu.neverblink.protoc.java.gen
 import com.google.protobuf.DescriptorProtos.FieldDescriptorProto
 import com.google.protobuf.DescriptorProtos.FieldDescriptorProto.Type.*
 import com.palantir.javapoet.{ClassName, TypeName}
-import eu.neverblink.protoc.java.gen.PluginOptions.AllocationStrategy
 import eu.neverblink.protoc.java.gen.Preconditions.*
 import eu.neverblink.protoc.java.gen.RequestInfo.{MessageInfo, TypeInfo}
 import eu.neverblink.protoc.java.gen.TypeRegistry.RequiredType
 
 import scala.jdk.CollectionConverters.*
+
+/*-
+ * #%L
+ * quickbuf-generator / CrunchyProtocPlugin
+ * %%
+ * Copyright (C) 2019 HEBI Robotics
+ * %%
+ * Copyright (C) 2025 NeverBlink
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 
 object TypeRegistry:
   def empty = new TypeRegistry
@@ -98,18 +119,7 @@ class TypeRegistry:
     if (field.isMessageOrGroup) {
       val result = hasRequiredMap.get(field.getTypeName)
       if (result eq TypeRegistry.RequiredType.Processing) {
-        // This state is only possible while processing nested messages, so
-        // users won't see it. If any fields turn out to be required, the user
-        // call still returns true
-        if (field.pluginOptions.allocationStrategy eq AllocationStrategy.Eager) {
-          val msg = String.format(
-            "Detected recursive message definition in '%s' field '%s'. This is not " +
-              "compatible with eager allocation. You need to specify lazy allocation instead.",
-            t,
-            field.protoFieldName
-          )
-          throw new Exception(msg)
-        }
+        ()
       }
       else if ((result eq TypeRegistry.RequiredType.Required) || field.isRequired) return true
       else if (result == null) return hasRequiredFieldsInHierarchy(field.getTypeName)

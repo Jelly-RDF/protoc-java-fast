@@ -4,7 +4,6 @@ import com.google.protobuf.DescriptorProtos
 import com.google.protobuf.DescriptorProtos.*
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest
 import com.palantir.javapoet.*
-import eu.neverblink.protoc.java.gen.PluginOptions.{AllocationStrategy, ExtensionSupport}
 import eu.neverblink.protoc.java.gen.Preconditions.*
 
 import java.util.*
@@ -12,13 +11,32 @@ import java.util.function.Function
 import java.util.stream.Collectors
 import scala.jdk.CollectionConverters.*
 
+/*-
+ * #%L
+ * quickbuf-generator / CrunchyProtocPlugin
+ * %%
+ * Copyright (C) 2019 HEBI Robotics
+ * %%
+ * Copyright (C) 2025 NeverBlink
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 class RequestInfo(val descriptor: CodeGeneratorRequest):
   final private val typeRegistry = TypeRegistry.empty
-  final private val extensionRegistry = new RequestInfo.ExtensionRegistry
 
   val pluginOptions = new PluginOptions(descriptor)
-  if (pluginOptions.extensionSupport ne ExtensionSupport.Disabled)
-    extensionRegistry.registerAllExtensions(descriptor)
   val files = descriptor.getProtoFileList.stream
     .map((desc: DescriptorProtos.FileDescriptorProto) => new RequestInfo.FileInfo(this, desc))
     .collect(Collectors.toList)
@@ -38,7 +56,7 @@ class RequestInfo(val descriptor: CodeGeneratorRequest):
  * Meta info that wraps the information in descriptors in a format that is easier to work with
  *
  * @author Florian Enner
- * @since 06 Aug 2019
+ * @author Piotr Sowiński
  */
 object RequestInfo:
   def withoutTypeMap(request: CodeGeneratorRequest) = new RequestInfo(request)
@@ -102,28 +120,12 @@ object RequestInfo:
     val mutableTypeName = typeName.nestedClass("Mutable")
     val fieldCount = descriptor.getFieldCount
     val options = parentFile.parentRequest.pluginOptions
-    val expectedInputOrder = options.expectedInputOrder
-    val outputOrder = options.outputOrder
     // Extensions in embedded mode: treat extension fields the same as normal
     // fields and embed them directly into the message.
     var fieldList: java.util.List[DescriptorProtos.FieldDescriptorProto] = descriptor.getFieldList
     val nameCollisions = new java.util.HashSet[String]
     val nameCollisionCheck = nameCollisions.contains
     val request: RequestInfo = parentFile.parentRequest
-    if (!request.extensionRegistry.isEmpty && (request.pluginOptions.extensionSupport eq ExtensionSupport.Embedded)) {
-      // Check for extensions for this class
-      val extensions = request.extensionRegistry.getExtensionFields(typeId)
-      if (!extensions.isEmpty) {
-        // Build combined list
-        fieldList = new java.util.ArrayList[DescriptorProtos.FieldDescriptorProto](fieldList)
-        fieldList.addAll(extensions)
-        // Check for duplicate names
-        val names = new java.util.HashSet[String]
-        for (field <- fieldList.asScala) {
-          if (!names.add(field.getName)) nameCollisions.add(field.getName)
-        }
-      }
-    }
     // Sort fields by serialization order such that they are accessed in a
     // sequential access pattern.
     val sortedFields: java.util.List[DescriptorProtos.FieldDescriptorProto] = 
@@ -210,24 +212,8 @@ object RequestInfo:
       Collections.singletonList(AnnotationSpec.builder(classOf[Deprecated]).build)
     else Collections.emptyList
 
-    var jsonName: String = null
-    var protoFieldName: String = null
-
-    if (!descriptor.hasExtendee) {
-      jsonName = descriptor.getJsonName // Used for JSON serialization (camelCase)
-      protoFieldName = descriptor.getName // Original field name (under_score). Optional for JSON serialization. Parsers should support both.
-    }
-    else {
-      // According to https://developers.google.com/protocol-buffers/docs/reference/java/com/google/protobuf/util/JsonFormat
-      // Proto2 extensions are discarded in the JSON conversion, but the conformance tests do check for it.
-      // Swift-protobuf ran into the same issue: https://github.com/apple/swift-protobuf/issues/993
-      // According to the Python implementation, the fields get translated to "[full_name]" with brackets
-      // to indicate that it is an extension.
-      val fullName = parentTypeInfo.parentFile.parentRequest.extensionRegistry.getFullName(descriptor)
-      // note: extensions only seem to use the fully qualified proto field name
-      jsonName = "[" + fullName + "]"
-      protoFieldName = jsonName
-    }
+    // Original field name (under_score).
+    val protoFieldName = descriptor.getName
 
     def getRepeatedStoreType: TypeName =
       if (isGroup || isMessage) return ParameterizedTypeName.get(repeatedStoreType, getTypeName)
@@ -250,20 +236,6 @@ object RequestInfo:
       case FieldDescriptorProto.Type.TYPE_BYTES =>
         if (isRepeated) ArrayTypeName.of(TypeName.BYTE) else TypeName.BYTE
       case _ => getTypeName
-
-    def isLazyAllocationEnabled: Boolean =
-      // never enable on required fields or primitives
-      if (isRequired || isSingularPrimitiveOrEnum) return false
-      // the lazy flag is technically for lazy parsing, but it
-      // seems reasonable to at least do a lazy allocation.
-      if (descriptor.getOptions.hasLazy && descriptor.getOptions.getLazy) return true
-      // only messages
-      pluginOptions.allocationStrategy match {
-        case AllocationStrategy.Lazy => true
-        case AllocationStrategy.LazyMessage => isMessageOrGroup
-        case AllocationStrategy.Eager => false
-        case _ => false
-      }
 
     def isPresenceEnabled: Boolean =
       // Checks whether field presence is enabled for this field. See
@@ -426,50 +398,5 @@ object RequestInfo:
       .filter(field => field.descriptor.hasOneofIndex)
       .filter(field => field.descriptor.getOneofIndex eq oneOfIndex)
       .toSeq
-  }
-
-  class ExtensionRegistry {
-    // extendee string -> descriptor
-    final private val extensionMap = 
-      new java.util.HashMap[String, java.util.List[DescriptorProtos.FieldDescriptorProto]]
-    final private val fullNameMap = 
-      new java.util.IdentityHashMap[DescriptorProtos.FieldDescriptorProto, String]
-    
-    def getExtensionFields(protoTypeName: String) = 
-      Optional.ofNullable(extensionMap.get(protoTypeName)).orElse(Collections.emptyList)
-
-    def getFullName(extension: DescriptorProtos.FieldDescriptorProto) =
-      val fullName = fullNameMap.get(extension)
-      if (fullName == null) 
-        throw new Exception("Could not determine full name for extension: " + extension.getName)
-      fullName
-
-    def registerAllExtensions(request: CodeGeneratorRequest): Unit = {
-      request.getProtoFileList.forEach((file: DescriptorProtos.FileDescriptorProto) =>
-        addExtensions(file.getPackage, file.getExtensionList)
-        for (t <- file.getMessageTypeList.asScala) {
-          addNestedExtensions(file.getPackage, t)
-        }
-      )
-    }
-
-    private def addNestedExtensions(parent: String, descriptor: DescriptorProtos.DescriptorProto): Unit =
-      val fullName = parent + "." + descriptor.getName
-      addExtensions(fullName, descriptor.getExtensionList)
-      for (t <- descriptor.getNestedTypeList.asScala) {
-        addNestedExtensions(fullName, t)
-      }
-
-    private def addExtensions(
-      parent: String, 
-      extensions: java.util.List[DescriptorProtos.FieldDescriptorProto]
-    ): Unit =
-      if (extensions.isEmpty) return
-      for (extension <- extensions.asScala) {
-        extensionMap.computeIfAbsent(extension.getExtendee, (clazz: String) => new java.util.ArrayList[DescriptorProtos.FieldDescriptorProto]).add(extension)
-        fullNameMap.put(extension, parent + "." + extension.getName)
-      }
-
-    def isEmpty = extensionMap.isEmpty
   }
 

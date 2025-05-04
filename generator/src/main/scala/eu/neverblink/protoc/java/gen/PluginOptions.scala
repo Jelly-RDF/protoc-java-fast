@@ -8,48 +8,29 @@ import java.util
 import java.util.regex.Pattern
 import scala.jdk.CollectionConverters.*
 
+/*-
+ * #%L
+ * quickbuf-generator / CrunchyProtocPlugin
+ * %%
+ * Copyright (C) 2019 HEBI Robotics
+ * %%
+ * Copyright (C) 2025 NeverBlink
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
+
 object PluginOptions:
-  enum FieldSerializationOrder:
-    case Quickbuf, AscendingNumber, None
-
-  object FieldSerializationOrder:
-    // parsing messages from unknown sources
-    def parseInputOrder(string: String): FieldSerializationOrder = string.toLowerCase match
-      case "quickbuf" => Quickbuf
-      case "number" => AscendingNumber
-      case "random" => None
-      case "none" => None
-      case _ =>
-        throw new Exception("'input_order' parameter accepts ['quickbuf', 'number', 'random']. Found: " + string)
-
-    def parseOutputOrder(string: String): FieldSerializationOrder = string.toLowerCase match
-      case "quickbuf" => Quickbuf
-      case "number" => AscendingNumber
-      case _ =>
-        throw new Exception("'output_order' parameter accepts ['quickbuf', 'number']. Found: " + string)
-
-  enum AllocationStrategy:
-    case Lazy, LazyMessage, Eager
-
-  object AllocationStrategy:
-    def parseFromString(string: String): AllocationStrategy = string.toLowerCase match
-      case "lazy" => Lazy
-      case "lazymsg" => LazyMessage
-      case "eager" => Eager
-      case _ =>
-        throw new Exception("'allocation' parameter accepts ['lazy', 'lazymsg', 'eager']. Found: " + string)
-
-
-  enum ExtensionSupport:
-    case Disabled, Embedded
-
-  object ExtensionSupport:
-    def parseFromString(string: String): ExtensionSupport = string.toLowerCase match
-      case "embedded" => Embedded
-      case "disabled" => Disabled
-      case _ =>
-        throw new Exception("'extensions' parameter accepts ['disabled', 'embedded']. Found: " + string)
-
   private def parseIndentString(indent: String): String = indent match
       case "8" => "        "
       case "4" => "    "
@@ -67,10 +48,6 @@ class PluginOptions(request: PluginProtos.CodeGeneratorRequest):
   val map = ParserUtil.getGeneratorParameters(request)
   val indentString = PluginOptions.parseIndentString(map.getOrDefault("indent", "2"))
   val replacePackageFunction = parseReplacePackage(map.get("replace_package"))
-  val expectedInputOrder = PluginOptions.FieldSerializationOrder.parseInputOrder(map.getOrDefault("input_order", "quickbuf"))
-  val outputOrder = PluginOptions.FieldSerializationOrder.parseInputOrder(map.getOrDefault("output_order", "quickbuf"))
-  val allocationStrategy = PluginOptions.AllocationStrategy.parseFromString(map.getOrDefault("allocation", "lazy"))
-  val extensionSupport = PluginOptions.ExtensionSupport.parseFromString(map.getOrDefault("extensions", "disabled"))
   val generateDescriptors = parseBoolean(map.getOrDefault("gen_descriptors", "true"))
   val implements = parseImplements(map)
 

@@ -1,7 +1,7 @@
 package eu.neverblink.protoc.java
 
 import com.google.protobuf.compiler.PluginProtos.CodeGeneratorRequest
-import eu.neverblink.protoc.java.gen.FastJavaPlugin
+import eu.neverblink.protoc.java.gen.CrunchyProtocPlugin
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -9,8 +9,8 @@ import java.io.FileOutputStream
 import scala.jdk.CollectionConverters.*
 import scala.util.Using
 
-class FastJavaPluginSpec extends AnyWordSpec, Matchers:
-  "FastJavaPlugin" should {
+class CrunchyProtocPluginSpec extends AnyWordSpec, Matchers:
+  "CrunchyProtocPlugin" should {
     "compile" in {
       val is = getClass.getResourceAsStream("/rdf_descriptor.pb")
       val request = CodeGeneratorRequest.parseFrom(is)
@@ -28,7 +28,7 @@ class FastJavaPluginSpec extends AnyWordSpec, Matchers:
         ",implements_RdfNamespaceDeclaration.Mutable=eu.neverblink.jelly.core.internal.proto.NsBase.Setters" +
         ",replace_package=eu.ostrzyciel=eu.neverblink"
       ).build()
-      val response = FastJavaPlugin.handleRequest(newRequest)
+      val response = CrunchyProtocPlugin.handleRequest(newRequest)
       val basePath = "test-project/src/main/java/"
       // Delete all files in the directory
       val dir = new java.io.File(basePath + "eu/neverblink/jelly/core/proto/v1/")

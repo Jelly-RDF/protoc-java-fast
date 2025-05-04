@@ -6,6 +6,8 @@ import java.io.InputStream;
 
 /**
  * Wrapper for {@link com.google.protobuf.CodedInputStream} which limits the recursion depth.
+ * 
+ * @author Piotr Sowiński
  */
 public final class LimitedCodedInputStream {
     private final CodedInputStream in;
