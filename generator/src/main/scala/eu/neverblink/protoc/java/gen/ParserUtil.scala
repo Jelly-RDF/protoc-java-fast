@@ -47,7 +47,7 @@ object ParserUtil {
    * @param parameter parameter string input into protoc
    * @return map
    */
-  def parseGeneratorParameters(parameter: String): util.Map[String, String] =
+  private def parseGeneratorParameters(parameter: String): util.Map[String, String] =
     if (parameter == null || parameter.isEmpty) return Collections.emptyMap
     val map = new util.HashMap[String, String]
     val parts = parameter.split(",")

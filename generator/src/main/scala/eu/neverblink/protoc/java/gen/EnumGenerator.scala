@@ -40,10 +40,10 @@ object EnumGenerator:
 
 
 class EnumGenerator(val info: EnumInfo):
-  val converterClass = info.typeName.nestedClass(info.typeName.simpleName + "Converter")
-  val converterInterface = ParameterizedTypeName.get(RuntimeClasses.EnumConverter, info.typeName)
+  private val converterClass = info.typeName.nestedClass(info.typeName.simpleName + "Converter")
+  private val converterInterface = ParameterizedTypeName.get(RuntimeClasses.EnumConverter, info.typeName)
 
-  def generate =
+  def generate: TypeSpec =
     val t = TypeSpec.enumBuilder(info.typeName)
       .addJavadoc(Javadoc.forEnum(info))
       .addSuperinterface(ParameterizedTypeName.get(RuntimeClasses.ProtoEnum, info.typeName))

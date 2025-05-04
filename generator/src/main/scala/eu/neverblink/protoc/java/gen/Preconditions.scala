@@ -166,7 +166,7 @@ object Preconditions:
    * @throws IndexOutOfBoundsException if  <pre>index</pre>  is negative or is not less than  <pre>size</pre>
    * @throws IllegalArgumentException  if  <pre>size</pre>  is negative
    */
-  def checkElementIndex(index: Int, size: Int, desc: String): Int =
+  private def checkElementIndex(index: Int, size: Int, desc: String): Int =
     // Carefully optimized for execution by hotspot (explanatory comment above)
     if (index < 0 || index >= size) throw new IndexOutOfBoundsException(badElementIndex(index, size, desc))
     index
@@ -201,7 +201,7 @@ object Preconditions:
    * @throws IndexOutOfBoundsException if  <pre>index</pre>  is negative or is greater than  <pre>size</pre>
    * @throws IllegalArgumentException  if  <pre>size</pre>  is negative
    */
-  def checkPositionIndex(index: Int, size: Int, desc: String): Int = {
+  private def checkPositionIndex(index: Int, size: Int, desc: String): Int = {
     // Carefully optimized for execution by hotspot (explanatory comment above)
     if (index < 0 || index > size) throw new IndexOutOfBoundsException(badPositionIndex(index, size, desc))
     index

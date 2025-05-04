@@ -36,7 +36,7 @@ import scala.jdk.CollectionConverters.*
  * @author Piotr Sowiński
  */
 object BitField:
-  val BITS_PER_FIELD = 32
+  private val BITS_PER_FIELD = 32
 
   def getNumberOfFields(fieldCount: Int): Int =
     (fieldCount + (BITS_PER_FIELD - 1)) / BITS_PER_FIELD

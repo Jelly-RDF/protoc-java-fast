@@ -39,9 +39,9 @@ object TypeRegistry:
 
 
 class TypeRegistry:
-  final val typeMap = new java.util.HashMap[String, ClassName]
-  final val messageMap = new java.util.HashMap[TypeName, MessageInfo]
-  final val hasRequiredMap = new java.util.HashMap[TypeName, RequiredType]
+  private final val typeMap = new java.util.HashMap[String, ClassName]
+  private final val messageMap = new java.util.HashMap[TypeName, MessageInfo]
+  private final val hasRequiredMap = new java.util.HashMap[TypeName, RequiredType]
   
   def resolveJavaTypeFromProto(descriptor: FieldDescriptorProto): TypeName =
     descriptor.getType match
@@ -65,11 +65,11 @@ class TypeRegistry:
       case TYPE_BYTES => RuntimeClasses.BytesType
       case _ => throw new Exception("Unsupported type: " + descriptor)
 
-  def resolveMessageType(typeId: String) =
+  private def resolveMessageType(typeId: String): ClassName =
     checkNotNull(typeMap.get(typeId), "Unable to resolve type id: " + typeId)
 
   def registerContainedTypes(info: RequestInfo): Unit =
-    typeMap.clear
+    typeMap.clear()
     for (file <- info.files.asScala) {
       file.messageTypes.forEach(registerType)
       file.enumTypes.forEach(registerType)

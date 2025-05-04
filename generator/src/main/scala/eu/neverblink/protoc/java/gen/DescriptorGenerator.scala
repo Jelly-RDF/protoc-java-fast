@@ -35,11 +35,11 @@ import scala.jdk.CollectionConverters.*
  * @author Piotr Sowiński
  */
 object DescriptorGenerator {
-  def getDescriptorBytesFieldName = "descriptorData"
+  private def getDescriptorBytesFieldName = "descriptorData"
 
-  def getFileDescriptorFieldName = "descriptor"
+  private def getFileDescriptorFieldName = "descriptor"
 
-  def getDescriptorFieldName(info: RequestInfo.MessageInfo) =
+  def getDescriptorFieldName(info: RequestInfo.MessageInfo): String =
     // uniquely identifiable descriptor name. Similar to protobuf-java
     // but without the "internal_static_" prefix.
     info.fullName.replaceAll("\\.", "_") + "_descriptor"
@@ -76,7 +76,7 @@ class DescriptorGenerator(val info: RequestInfo.FileInfo):
   final val m = new util.HashMap[String, AnyRef]
   m.put("abstractMessage", RuntimeClasses.AbstractMessage)
   m.put("protoUtil", RuntimeClasses.ProtoUtil)
-  val fileDescriptorBytes = DescriptorGenerator.stripSerializedDescriptor(info.descriptor).toByteArray
+  private val fileDescriptorBytes: Array[Byte] = DescriptorGenerator.stripSerializedDescriptor(info.descriptor).toByteArray
 
   def generate(t: TypeSpec.Builder): Unit =
     // bytes shared by everything

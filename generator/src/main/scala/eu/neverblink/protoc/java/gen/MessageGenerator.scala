@@ -34,7 +34,7 @@ import javax.lang.model.element.Modifier
  * @author Piotr Sowiński
  */
 class MessageGenerator(val info: MessageInfo):
-  final val allFields = info.fields
+  private final val allFields = info.fields
     .map(new FieldGenerator(_))
     .toSeq
 

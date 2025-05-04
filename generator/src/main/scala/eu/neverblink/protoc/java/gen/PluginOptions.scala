@@ -45,15 +45,15 @@ object PluginOptions:
       .toMap
 
 class PluginOptions(request: PluginProtos.CodeGeneratorRequest):
-  val map = ParserUtil.getGeneratorParameters(request)
-  val indentString = PluginOptions.parseIndentString(map.getOrDefault("indent", "2"))
-  val replacePackageFunction = parseReplacePackage(map.get("replace_package"))
-  val generateDescriptors = parseBoolean(map.getOrDefault("gen_descriptors", "true"))
-  val implements = parseImplements(map)
+  val map: util.Map[String, String] = ParserUtil.getGeneratorParameters(request)
+  val indentString: String = PluginOptions.parseIndentString(map.getOrDefault("indent", "2"))
+  val replacePackageFunction: String => String = parseReplacePackage(map.get("replace_package"))
+  val generateDescriptors: Boolean = parseBoolean(map.getOrDefault("gen_descriptors", "true"))
+  val implements: Map[String, Seq[String]] = parseImplements(map)
 
-  def parseReplacePackage(replaceOption: String): String => String =
+  private def parseReplacePackage(replaceOption: String): String => String =
     // leave as is
-    if (replaceOption == null) return (str) => str
+    if (replaceOption == null) return str => str
     // parse "pattern=replacement"
     val parts = replaceOption.split("=")
     if (parts.length != 2) throw new Exception("'replace_package' expects 'pattern=replacement'. Found: '" + replaceOption + "'")

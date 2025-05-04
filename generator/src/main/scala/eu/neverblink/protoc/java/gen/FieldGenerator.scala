@@ -69,8 +69,8 @@ object FieldGenerator:
   private val EMPTY_BLOCK = CodeBlock.builder.build
 
 class FieldGenerator(val info: FieldInfo):
-  val typeName = info.getTypeName
-  val storeType = info.getStoreType
+  val typeName: TypeName = info.getTypeName
+  private val storeType = info.getStoreType
   
   // Common-variable map for named arguments
   final val m = new util.HashMap[String, Any]
@@ -110,7 +110,7 @@ class FieldGenerator(val info: FieldInfo):
   m.put("protoSink", RuntimeClasses.CodedOutputStream)
   m.put("protoUtil", RuntimeClasses.ProtoUtil)
   // Common configuration-dependent code blocks
-  val ensureFieldNotNull = lazyFieldInit
+  private val ensureFieldNotNull = lazyFieldInit
 
   def generateMemberFields(t: TypeSpec.Builder): Unit =
     val field = FieldSpec.builder(storeType, info.fieldName)
@@ -311,7 +311,7 @@ class FieldGenerator(val info: FieldInfo):
     if (info.isEnum) generateExtraEnumAccessors(t)
     generateSetMethods(tMutable)
 
-  def generateInitializedMethod(t: TypeSpec.Builder): Unit =
+  private def generateInitializedMethod(t: TypeSpec.Builder): Unit =
     if !info.isRepeated && info.isMessage then
       t.addMethod(MethodSpec.methodBuilder(info.lazyInitName)
         .addModifiers(Modifier.PRIVATE)
@@ -328,7 +328,7 @@ class FieldGenerator(val info: FieldInfo):
     CodeBlock.builder.addStatement("$N()", info.lazyInitName).build
   else FieldGenerator.EMPTY_BLOCK
 
-  def generateSetMethods(t: TypeSpec.Builder): Unit =
+  private def generateSetMethods(t: TypeSpec.Builder): Unit =
     if (info.isBytes) {
       val setBytes = MethodSpec.methodBuilder("set" + info.upperName)
         .addJavadoc(Javadoc.forMessageField(info)
@@ -414,9 +414,9 @@ class FieldGenerator(val info: FieldInfo):
    * we also add accessors for the internal storage type that do not require
    * conversions.
    *
-   * @param type
+   * @param t
    */
-  def generateExtraEnumAccessors(t: TypeSpec.Builder): Unit = {
+  private def generateExtraEnumAccessors(t: TypeSpec.Builder): Unit = {
     if (!info.isEnum || info.isRepeated) return
     // Overload to get the internal store without conversion
     t.addMethod(MethodSpec.methodBuilder(info.getterName + "Value")
@@ -453,7 +453,7 @@ class FieldGenerator(val info: FieldInfo):
     )
   }
 
-  def generateGetMethods(t: TypeSpec.Builder): Unit =
+  private def generateGetMethods(t: TypeSpec.Builder): Unit =
     val getter = MethodSpec.methodBuilder(info.getterName)
       .addAnnotations(info.methodAnnotations)
       .addModifiers(Modifier.PUBLIC)

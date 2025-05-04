@@ -43,13 +43,13 @@ object FieldUtil:
   private val TAG_TYPE_BITS = 3
   private val TAG_TYPE_MASK = (1 << TAG_TYPE_BITS) - 1
 
-  def makeTag(descriptor: DescriptorProtos.FieldDescriptorProto) = 
+  def makeTag(descriptor: DescriptorProtos.FieldDescriptorProto): Int =
     descriptor.getNumber << TAG_TYPE_BITS | getWireType(descriptor.getType)
 
-  def makePackedTag(descriptor: DescriptorProtos.FieldDescriptorProto) =
+  def makePackedTag(descriptor: DescriptorProtos.FieldDescriptorProto): Int =
     descriptor.getNumber << 3 | WIRETYPE_LENGTH_DELIMITED
 
-  def makeGroupEndTag(startTag: Int) =
+  def makeGroupEndTag(startTag: Int): Int =
     val fieldId = startTag >>> TAG_TYPE_BITS
     fieldId << TAG_TYPE_BITS | WIRETYPE_END_GROUP
 
@@ -70,7 +70,7 @@ object FieldUtil:
    * a single bit comparison. This sorter groups all required fields, followed by OneOf groups, followed by
    * everything else.
    */
-  val GroupOneOfAndRequiredBits = new Comparator[FieldDescriptorProto]:
+  val GroupOneOfAndRequiredBits: Comparator[FieldDescriptorProto] = new Comparator[FieldDescriptorProto]:
     override def compare(o1: FieldDescriptorProto, o2: FieldDescriptorProto): Int =
       val n1 = if (o1.hasOneofIndex) o1.getOneofIndex
       else if (o1.getLabel eq Label.LABEL_REQUIRED) Integer.MAX_VALUE
@@ -84,7 +84,7 @@ object FieldUtil:
    * Sort fields according to their specified field number. This is used as the serialization order
    * by Google's protobuf bindings.
    */
-  val AscendingNumberSorter = Comparator.comparingInt((field: FieldGenerator) => field.info.number)
+  val AscendingNumberSorter: Comparator[FieldGenerator] = Comparator.comparingInt((field: FieldGenerator) => field.info.number)
 
   /**
    * Sort the fields according to their layout in memory.
@@ -100,7 +100,7 @@ object FieldUtil:
    * For more info, see
    * http://psy-lob-saw.blogspot.com/2013/05/know-thy-java-object-memory-layout.html
    */
-  val MemoryLayoutSorter = new Comparator[FieldDescriptorProto]:
+  val MemoryLayoutSorter: Comparator[FieldDescriptorProto] = new Comparator[FieldDescriptorProto]:
     override def compare(objA: FieldDescriptorProto, objB: FieldDescriptorProto): Int =
       // The higher the number, the closer to the beginning
       val weightA = getSortingWeight(objA) + (if (objA.getLabel eq Label.LABEL_REPEATED) -50
@@ -169,9 +169,9 @@ object FieldUtil:
     case TYPE_SINT64 => "SInt64"
     case _ => throw new Exception("Unsupported type: " + t)
 
-  def isFixedWidth(t: FieldDescriptorProto.Type) = getFixedWidth(t) > 0
+  def isFixedWidth(t: FieldDescriptorProto.Type): Boolean = getFixedWidth(t) > 0
 
-  def getFixedWidth(t: FieldDescriptorProto.Type) = t match
+  def getFixedWidth(t: FieldDescriptorProto.Type): Int = t match
     // 64 bit
     case TYPE_DOUBLE => 8
     case TYPE_SFIXED64 => 8
@@ -206,7 +206,7 @@ object FieldUtil:
     case TYPE_BYTES => false
     case _ => throw new Exception("Unsupported type: " + t)
 
-  def getEmptyDefaultValue(t: FieldDescriptorProto.Type) = t match
+  def getEmptyDefaultValue(t: FieldDescriptorProto.Type): String = t match
     case TYPE_DOUBLE => "0D"
     case TYPE_FLOAT => "0F"
     case TYPE_SFIXED64 => "0L"
@@ -231,5 +231,5 @@ object FieldUtil:
    * Hash code for JSON field name lookup. Any changes need to be
    * synchronized between FieldUtil::hash32 and ProtoUtil::hash32.
    */
-  def hash32(value: String) = value.hashCode
+  def hash32(value: String): Int = value.hashCode
 

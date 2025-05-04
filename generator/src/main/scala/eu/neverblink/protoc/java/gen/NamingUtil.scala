@@ -71,7 +71,7 @@ object NamingUtil:
   private val DEFAULT_PACKAGE = ""
   private val OUTER_CLASS_SUFFIX = "OuterClass"
 
-  def toUpperCamel(name: String) = underscoresToCamelCaseImpl(name, true)
+  def toUpperCamel(name: String): String = underscoresToCamelCaseImpl(name, true)
 
   /**
    * Port of JavaNano's "UnderscoresToCamelCaseImpl". Guava's CaseFormat doesn't

@@ -32,8 +32,8 @@ import javax.lang.model.element.Modifier
  * @author Piotr Sowiński
  */
 class OneOfGenerator(val info: OneOfInfo):
-  val fields = info.getFields
-  val fieldGenerators = fields.map(FieldGenerator(_))
+  val fields: Seq[RequestInfo.FieldInfo] = info.getFields
+  val fieldGenerators: Seq[FieldGenerator] = fields.map(FieldGenerator(_))
 
   def generateMemberFields(t: TypeSpec.Builder): Unit =
     val field = FieldSpec.builder(RuntimeClasses.ObjectType, info.fieldName)
