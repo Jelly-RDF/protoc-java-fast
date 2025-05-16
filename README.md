@@ -2,7 +2,7 @@
 
 protoc plugin generating highly optimized Java code
 
-**UNDER CONSTRUCTION -- WILL BE MERGED INTO THE JELLY-JVM PROJECT**
+**THIS PROJECT IS ARCHIVED -- IT WAS MERGED INTO THE [JELLY-JVM PROJECT](https://github.com/Jelly-RDF/jelly-jvm) WHERE IT'S CONTINUED**
 
 The code here is based on the QuickBuffers project by HEBI Robotics: **https://github.com/HebiRobotics/QuickBuffers**
 
